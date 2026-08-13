@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
-import "./globals.css";
+import { notFound } from "next/navigation";
+import { locale as localeRootParam } from "next/root-params";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import "../globals.css";
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -16,31 +21,44 @@ const barlowCondensed = Barlow_Condensed({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Noiz Systems — We build the apps that move African commerce",
-    template: "%s · Noiz Systems",
-  },
-  description:
-    "Noiz Systems designs, ships and operates its own products — BDMarket for African groceries, and the logistics platform that delivers them.",
-  openGraph: {
-    title: "Noiz Systems",
-    description:
-      "Product company building commerce and logistics software for the African diaspora. Paris & beyond.",
-    siteName: "Noiz Systems",
-    locale: "en",
-    type: "website",
-  },
-};
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Meta");
+
+  return {
+    title: t("title"),
+    description: t("description"),
+    openGraph: {
+      title: "Noiz Systems",
+      description: t("ogDescription"),
+      siteName: "Noiz Systems",
+      locale: await localeRootParam(),
+      type: "website",
+    },
+  };
+}
+
+export default async function RootLayout({
+  children,
+}: LayoutProps<"/[locale]">) {
+  const locale = await localeRootParam();
+
+  // The `[locale]` segment also catches unknown top-level paths, so anything
+  // that is not a supported language is a 404 rather than a broken render.
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${barlow.variable} ${barlowCondensed.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col overflow-x-clip">
-        {children}
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   );
