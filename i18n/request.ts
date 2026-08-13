@@ -1,6 +1,7 @@
 import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 import { locale as localeRootParam } from "next/root-params";
+import { messages } from "@/i18n/messages";
 import { routing } from "@/i18n/routing";
 
 /**
@@ -17,8 +18,5 @@ export default getRequestConfig(async ({ locale: overrideLocale }) => {
     ? requested
     : routing.defaultLocale;
 
-  return {
-    locale,
-    messages: (await import(`../messages/${locale}.json`)).default,
-  };
+  return { locale, messages: messages[locale] };
 });
