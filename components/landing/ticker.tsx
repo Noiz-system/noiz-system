@@ -22,8 +22,11 @@ export async function Ticker() {
 
   return (
     <div className="relative overflow-hidden border-t border-panel-line py-3.5">
+      {/* `w-max` lets the pair of tracks size to their content. A percentage
+          width would clamp each track narrower than its items and overlap them
+          at the seam; the -50% keyframe then shifts by exactly one track. */}
       <div
-        className="animate-marquee flex w-[200%]"
+        className="animate-marquee flex w-max"
         style={{ ["--marquee-duration" as string]: `${DURATION_SECONDS}s` }}
       >
         <TickerTrack items={items} />
@@ -39,7 +42,7 @@ function TickerTrack({
 }: { items: string[] } & React.HTMLAttributes<HTMLUListElement>) {
   return (
     <ul
-      className="flex w-1/2 flex-none list-none gap-11 pr-11 font-display text-sm tracking-[0.16em] whitespace-nowrap text-panel-muted uppercase"
+      className="flex flex-none list-none gap-11 pr-11 font-display text-sm tracking-[0.16em] whitespace-nowrap text-panel-muted uppercase"
       {...rest}
     >
       {items.map((item, index) => (

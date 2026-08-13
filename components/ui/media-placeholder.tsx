@@ -16,8 +16,9 @@ export function MediaPlaceholder({
   onPanel?: boolean;
   className?: string;
 }) {
-  const stroke = onPanel ? "#ffffff" : "#14161f";
-  const patternId = onPanel ? "noiz-hatch-panel" : "noiz-hatch-canvas";
+  // Derived from the label so each instance owns its pattern: duplicate SVG ids
+  // in one document are invalid, and labels are unique per placeholder.
+  const patternId = `noiz-hatch-${label.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
 
   return (
     <svg
@@ -25,7 +26,13 @@ export function MediaPlaceholder({
       preserveAspectRatio="none"
       role="img"
       aria-label={label}
-      className={cn("block h-full w-full", className)}
+      // `currentColor` throughout, so the hatching follows the semantic text
+      // colour and stays visible when the scheme flips to dark.
+      className={cn(
+        "block h-full w-full",
+        onPanel ? "text-panel-foreground" : "text-foreground",
+        className,
+      )}
     >
       <defs>
         <pattern
@@ -40,8 +47,8 @@ export function MediaPlaceholder({
             y1="0"
             x2="0"
             y2="10"
-            stroke={stroke}
-            strokeOpacity={onPanel ? 0.16 : 0.14}
+            stroke="currentColor"
+            strokeOpacity={0.16}
             strokeWidth="1"
           />
         </pattern>
@@ -53,8 +60,8 @@ export function MediaPlaceholder({
         textAnchor="middle"
         fontFamily="ui-monospace, Menlo, monospace"
         fontSize="11"
-        fill={stroke}
-        fillOpacity={onPanel ? 0.62 : 0.55}
+        fill="currentColor"
+        fillOpacity={0.6}
       >
         {label}
       </text>

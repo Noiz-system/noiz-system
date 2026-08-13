@@ -37,11 +37,13 @@ export async function Markets() {
             className="mb-5"
           />
 
-          <p className="max-w-[30em] text-[1.03125rem] text-muted text-pretty">
+          <p className="mb-4 max-w-[30em] text-[1.03125rem] text-muted text-pretty">
             {t("body")}
           </p>
 
-          <p className="font-mono text-xs text-faint">{t("note")}</p>
+          {/* Placeholder note carried over from the design — remove once the
+              next markets are confirmed. */}
+          <p className="m-0 font-mono text-xs text-faint">{t("note")}</p>
         </div>
 
         <div className="overflow-x-auto">
