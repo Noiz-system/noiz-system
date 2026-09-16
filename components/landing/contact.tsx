@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server";
 import { BrandPanel } from "@/components/landing/brand-panel";
 import { ContactForm } from "@/components/landing/contact-form";
-import { SECTION_IDS } from "@/lib/sections";
+import { renderAccented } from "@/lib/accent";
+import { getLanding } from "@/lib/cms";
+import { SECTION_IDS, sectionIndex } from "@/lib/sections";
 
 export async function Contact() {
-  const t = await getTranslations("Contact");
+  const { contact } = await getLanding();
 
   return (
     <BrandPanel glow="contact">
@@ -13,27 +14,23 @@ export async function Contact() {
           <div>
             <div className="mb-5 flex flex-wrap items-baseline gap-x-4.5 gap-y-2">
               <span className="font-display text-xs tracking-[0.16em] text-iris-400">
-                {t("index")}
+                {sectionIndex(SECTION_IDS.contact)}
               </span>
 
               <h2 className="m-0 text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.92] text-panel-foreground">
-                {t.rich("title", {
-                  accent: (chunks) => (
-                    <span className="brand-text">{chunks}</span>
-                  ),
-                })}
+                {renderAccented(contact.title)}
               </h2>
             </div>
 
             <p className="max-w-[32em] text-[1.09375rem] text-panel-muted text-pretty">
-              {t("body")}
+              {contact.body}
             </p>
 
             <a
-              href={`mailto:${t("email")}`}
+              href={`mailto:${contact.email}`}
               className="mt-7 inline-block text-[0.9375rem] text-accent-300 underline-offset-4 hover:underline"
             >
-              {t("email")}
+              {contact.email}
             </a>
           </div>
 

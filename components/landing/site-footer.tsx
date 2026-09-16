@@ -1,8 +1,12 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { getLanding } from "@/lib/cms";
 
 export async function SiteFooter() {
-  const t = await getTranslations("Footer");
+  const [{ footer }, t] = await Promise.all([
+    getLanding(),
+    getTranslations("Footer"),
+  ]);
 
   return (
     <footer className="border-t border-panel-line bg-panel text-panel-foreground">
@@ -18,7 +22,7 @@ export async function SiteFooter() {
         </span>
 
         <span className="font-display text-xs tracking-[0.14em] text-panel-muted uppercase">
-          {t("tagline")}
+          {footer.tagline}
         </span>
 
         <span className="ml-auto text-[0.8125rem] text-panel-muted/70">

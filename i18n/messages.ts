@@ -2,7 +2,13 @@ import type { Locale } from "@/i18n/routing";
 import en from "@/messages/en.json";
 import fr from "@/messages/fr.json";
 
-/** English defines the canonical message shape. */
+/**
+ * English defines the canonical message shape.
+ *
+ * Only UI microcopy lives here — labels, aria text, form copy. Everything an
+ * editor might want to change (headlines, products, posts…) comes from the
+ * CMS; see `lib/cms.ts`.
+ */
 export type Messages = typeof en;
 
 /**

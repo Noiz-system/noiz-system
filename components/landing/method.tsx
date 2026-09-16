@@ -1,24 +1,20 @@
-import { getTranslations } from "next-intl/server";
 import { BrandPanel } from "@/components/landing/brand-panel";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { getLanding } from "@/lib/cms";
 import { cn } from "@/lib/cn";
-import { SECTION_IDS } from "@/lib/sections";
-
-const STEP_KEYS = ["groundTruth", "blueprint", "ship", "operate"] as const;
+import { SECTION_IDS, sectionIndex } from "@/lib/sections";
 
 export async function Method() {
-  const [t, steps] = await Promise.all([
-    getTranslations("Method"),
-    getTranslations("Method.steps"),
-  ]);
+  const { sections } = await getLanding();
+  const steps = sections.method.steps ?? [];
 
   return (
     <BrandPanel>
       <section id={SECTION_IDS.method} className="relative scroll-mt-24">
         <div className="mx-auto w-full max-w-[1240px] px-7 py-19.5">
           <SectionHeading
-            index={t("index")}
-            title={t("title")}
+            index={sectionIndex(SECTION_IDS.method)}
+            title={sections.method.title}
             onPanel
             className="mb-10"
           />
@@ -29,12 +25,12 @@ export async function Method() {
           />
 
           <ol className="grid list-none grid-cols-1 p-0 sm:grid-cols-2 lg:grid-cols-4">
-            {STEP_KEYS.map((key, index) => (
+            {steps.map((step, index) => (
               <li
-                key={key}
+                key={step.id ?? index}
                 className={cn(
                   "px-6.5 pt-6.5 pb-7.5",
-                  index < STEP_KEYS.length - 1 && "lg:border-r lg:border-panel-line",
+                  index < steps.length - 1 && "lg:border-r lg:border-panel-line",
                 )}
               >
                 <p
@@ -47,11 +43,11 @@ export async function Method() {
                 </p>
 
                 <h3 className="m-0 mb-2 text-[1.3125rem] text-panel-foreground">
-                  {steps(`${key}.title`)}
+                  {step.title}
                 </h3>
 
                 <p className="m-0 text-[0.90625rem] text-panel-muted">
-                  {steps(`${key}.body`)}
+                  {step.body}
                 </p>
               </li>
             ))}

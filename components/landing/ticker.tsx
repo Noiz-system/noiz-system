@@ -1,24 +1,14 @@
-import { getTranslations } from "next-intl/server";
+import { getLanding } from "@/lib/cms";
 import { cn } from "@/lib/cn";
-
-const TICKER_KEYS = [
-  "bdmarket",
-  "logistics",
-  "paris",
-  "idf",
-  "saintDenis",
-  "montreuil",
-  "creteil",
-  "mobileMoney",
-  "lastMile",
-] as const;
 
 /** Seconds for one full pass; tuned so the type stays readable. */
 const DURATION_SECONDS = 34;
 
 export async function Ticker() {
-  const t = await getTranslations("Ticker");
-  const items = TICKER_KEYS.map((key) => t(key));
+  const { hero } = await getLanding();
+  const items = (hero.ticker ?? []).map((item) => item.label);
+
+  if (items.length === 0) return null;
 
   return (
     <div className="relative overflow-hidden border-t border-panel-line py-3.5">
@@ -46,7 +36,7 @@ function TickerTrack({
       {...rest}
     >
       {items.map((item, index) => (
-        <li key={item} className="flex items-center gap-11">
+        <li key={`${index}-${item}`} className="flex items-center gap-11">
           {item}
           <span
             aria-hidden

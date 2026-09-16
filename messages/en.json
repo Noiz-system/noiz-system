@@ -1,10 +1,4 @@
 {
-  "Meta": {
-    "title": "Noiz Systems — We build the apps that move African commerce",
-    "description": "Noiz Systems designs, ships and operates its own products — BDMarket for African groceries, and the logistics platform that delivers them.",
-    "ogDescription": "Product company building commerce and logistics software for the African diaspora. Paris & beyond."
-  },
-
   "Nav": {
     "products": "Products",
     "capabilities": "What we do",
@@ -28,115 +22,10 @@
   },
 
   "Hero": {
-    "kicker": "Product company · Paris & the African diaspora",
-    "title": "We build the apps that <accent>move</accent> African commerce.",
-    "body": "Noiz Systems designs, ships and operates its own products — BDMarket for African groceries, and the logistics platform that delivers them. Two brothers, one vision, engineered software.",
-    "primaryCta": "Book a call",
-    "secondaryCta": "See the products",
     "mediaLabel": "hero photo — market / delivery in motion"
   },
 
-  "Ticker": {
-    "bdmarket": "BDMarket",
-    "logistics": "Noiz Logistics",
-    "paris": "Paris",
-    "idf": "Île-de-France",
-    "saintDenis": "Saint-Denis",
-    "montreuil": "Montreuil",
-    "creteil": "Créteil",
-    "mobileMoney": "Mobile money",
-    "lastMile": "Last mile"
-  },
-
-  "Stats": {
-    "productsLive": { "label": "Products live", "value": "02" },
-    "foundedBy": { "label": "Founded by", "value": "2 brothers" },
-    "inHouse": { "label": "Built in-house", "value": "100%" },
-    "liveMarket": { "label": "Live market", "value": "Paris" }
-  },
-
-  "Products": {
-    "index": "01",
-    "title": "Our products",
-    "lede": "Owned end to end — from the storefront a customer taps to the route a driver runs.",
-    "items": {
-      "bdmarket": {
-        "name": "BDMarket",
-        "status": "Live · iOS & Android",
-        "title": "African groceries, delivered",
-        "body": "A mobile marketplace for African foods and household goods: curated vendors, familiar products, prices that make sense, delivery scheduled around the neighbourhood.",
-        "cta": "Download BDMarket",
-        "mediaLabel": "BDMarket — app screens",
-        "bullets": {
-          "vendors": "Vendor onboarding and catalogue tools",
-          "payments": "Mobile money and card checkout",
-          "diaspora": "Diaspora ordering for family back home"
-        }
-      },
-      "logistics": {
-        "name": "Noiz Logistics",
-        "status": "Live · operator suite",
-        "title": "The delivery layer underneath",
-        "body": "Dispatch, routing, proof of delivery and fleet visibility — the same system that runs BDMarket orders, opened up to merchants and carriers who need it.",
-        "cta": "Request a demo",
-        "mediaLabel": "Logistics app — dispatch & driver view",
-        "bullets": {
-          "driverApp": "Driver app with offline-first tracking",
-          "dispatch": "Dispatch console and route planning",
-          "api": "Merchant API for order handoff"
-        }
-      }
-    }
-  },
-
-  "Capabilities": {
-    "index": "02",
-    "title": "What we do",
-    "lede": "The same team that operates our products builds for selected partners.",
-    "items": {
-      "mobile": {
-        "title": "Mobile products",
-        "body": "Consumer apps built for low bandwidth, mobile money and mid-range Android — the conditions our markets actually run on."
-      },
-      "logistics": {
-        "title": "Logistics systems",
-        "body": "Dispatch, tracking and last-mile operations, including the field workflows that keep drivers moving without a stable signal."
-      },
-      "platform": {
-        "title": "Platform engineering",
-        "body": "APIs, payments integration and the operational tooling a product needs on day two — not just the launch screen."
-      }
-    }
-  },
-
-  "Method": {
-    "index": "03",
-    "title": "How we work",
-    "steps": {
-      "groundTruth": {
-        "title": "Ground truth",
-        "body": "We spend time in the market — vendors, drivers, customers — before a screen is drawn."
-      },
-      "blueprint": {
-        "title": "Blueprint",
-        "body": "Flows, data model and the operational reality mapped in one document before build."
-      },
-      "ship": {
-        "title": "Ship in weeks",
-        "body": "A working release every two weeks, in real hands, with the metrics that matter instrumented."
-      },
-      "operate": {
-        "title": "Operate",
-        "body": "We run what we build: support, on-call, and iteration against live operations."
-      }
-    }
-  },
-
   "Markets": {
-    "index": "04",
-    "title": "Markets we serve",
-    "body": "One city at a time, done properly. BDMarket is live in Paris and Île-de-France, serving the African diaspora with the vendors and products they already shop for.",
-    "note": "Next markets are under review — confirm before publishing.",
     "columns": {
       "market": "Market",
       "products": "Products",
@@ -146,69 +35,19 @@
       "live": "Live",
       "next": "Next",
       "study": "Under study"
-    },
-    "rows": {
-      "paris": {
-        "market": "Paris · Île-de-France",
-        "products": "BDMarket · Noiz Logistics"
-      },
-      "lyon": { "market": "Lyon · Marseille", "products": "BDMarket" },
-      "brussels": { "market": "Bruxelles", "products": "BDMarket" },
-      "westAfrica": { "market": "West Africa", "products": "Noiz Logistics" }
     }
   },
 
   "News": {
-    "index": "05",
-    "title": "News",
     "allPosts": "All posts",
-    "items": {
-      "scheduledDelivery": {
-        "kicker": "Product · 12.06.2026",
-        "title": "BDMarket adds scheduled neighbourhood delivery",
-        "body": "Orders now group by street and time slot, cutting the cost per drop."
-      },
-      "offlineTracking": {
-        "kicker": "Logistics · 28.04.2026",
-        "title": "Offline-first tracking in the driver app",
-        "body": "Deliveries record and sync later — no dead zones in the proof-of-delivery chain."
-      },
-      "origins": {
-        "kicker": "Company · 03.03.2026",
-        "title": "Two brothers, one vision: how Noiz started",
-        "body": "From a family grocery run to a marketplace and the fleet behind it."
-      }
-    }
-  },
-
-  "Faq": {
-    "index": "06",
-    "title": "Questions",
-    "items": {
-      "clientWork": {
-        "question": "Do you build apps for other companies?",
-        "answer": "Yes — selectively, and mostly in commerce and logistics where our own products give us an unfair advantage. Book a call and we will tell you honestly whether we are the right team."
-      },
-      "standaloneLogistics": {
-        "question": "Can merchants use the logistics platform on its own?",
-        "answer": "Yes. Dispatch, driver app and proof of delivery work independently of BDMarket, with an API for handing orders over from your own storefront."
-      },
-      "payments": {
-        "question": "How do you handle payments?",
-        "answer": "Mobile money first, cards and cash on delivery where the market expects them. Payment methods are configured per market, not hard-coded."
-      },
-      "raising": {
-        "question": "Are you raising?",
-        "answer": "We talk to investors who know African commerce. Use the form and mark your role as investor — we will send the current deck."
-      }
+    "categories": {
+      "product": "Product",
+      "logistics": "Logistics",
+      "company": "Company"
     }
   },
 
   "Contact": {
-    "index": "07",
-    "title": "Book a <accent>call</accent>",
-    "body": "Tell us what you are moving and who you are moving it for. One of the founders replies — usually within a working day.",
-    "email": "hello@noiz.systems",
     "form": {
       "name": "Name",
       "email": "Work email",
@@ -226,7 +65,6 @@
   },
 
   "Footer": {
-    "tagline": "Deux frères, une vision, des solutions tech.",
     "rights": "© 2026 Noiz Systems"
   }
 }

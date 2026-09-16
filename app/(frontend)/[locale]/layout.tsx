@@ -3,9 +3,9 @@ import { Barlow, Barlow_Condensed } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locale as localeRootParam } from "next/root-params";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import "../globals.css";
+import { getLanding } from "@/lib/cms";
+import "@/app/globals.css";
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -26,14 +26,14 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("Meta");
+  const { seo } = await getLanding();
 
   return {
-    title: t("title"),
-    description: t("description"),
+    title: seo.title,
+    description: seo.description,
     openGraph: {
       title: "Noiz Systems",
-      description: t("ogDescription"),
+      description: seo.ogDescription,
       siteName: "Noiz Systems",
       locale: await localeRootParam(),
       type: "website",

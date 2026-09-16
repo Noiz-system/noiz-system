@@ -1,17 +1,17 @@
-import { getTranslations } from "next-intl/server";
 import { buttonClasses } from "@/components/ui/button";
+import { CmsImage } from "@/components/ui/cms-image";
 import { Corners } from "@/components/ui/corners";
-import { MediaPlaceholder } from "@/components/ui/media-placeholder";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Tag } from "@/components/ui/tag";
+import { getLanding, getProducts } from "@/lib/cms";
 import { cn } from "@/lib/cn";
-import { SECTION_IDS } from "@/lib/sections";
+import { SECTION_IDS, sectionIndex } from "@/lib/sections";
+import type { Product } from "@/payload-types";
 
 export async function Products() {
-  const [t, bdmarket, logistics] = await Promise.all([
-    getTranslations("Products"),
-    getTranslations("Products.items.bdmarket"),
-    getTranslations("Products.items.logistics"),
+  const [{ sections }, products] = await Promise.all([
+    getLanding(),
+    getProducts(),
   ]);
 
   return (
@@ -20,67 +20,36 @@ export async function Products() {
       className="mx-auto w-full max-w-[1240px] scroll-mt-24 px-7 py-19.5"
     >
       <SectionHeading
-        index={t("index")}
-        title={t("title")}
-        lede={t("lede")}
+        index={sectionIndex(SECTION_IDS.products)}
+        title={sections.products.title}
+        lede={sections.products.lede}
         className="mb-9"
       />
 
       <div className="grid gap-7.5 lg:grid-cols-2">
-        <ProductCard
-          name={bdmarket("name")}
-          status={bdmarket("status")}
-          title={bdmarket("title")}
-          body={bdmarket("body")}
-          cta={bdmarket("cta")}
-          mediaLabel={bdmarket("mediaLabel")}
-          bullets={[
-            bdmarket("bullets.vendors"),
-            bdmarket("bullets.payments"),
-            bdmarket("bullets.diaspora"),
-          ]}
-        />
-
-        <ProductCard
-          onPanel
-          name={logistics("name")}
-          status={logistics("status")}
-          title={logistics("title")}
-          body={logistics("body")}
-          cta={logistics("cta")}
-          mediaLabel={logistics("mediaLabel")}
-          bullets={[
-            logistics("bullets.driverApp"),
-            logistics("bullets.dispatch"),
-            logistics("bullets.api"),
-          ]}
-        />
+        {products.map((product, index) => (
+          // Cards alternate between the canvas and the navy panel so a pair
+          // reads as two distinct products rather than a list.
+          <ProductCard
+            key={product.id}
+            product={product}
+            onPanel={index % 2 === 1}
+          />
+        ))}
       </div>
     </section>
   );
 }
 
-type ProductCardProps = {
-  name: string;
-  status: string;
-  title: string;
-  body: string;
-  cta: string;
-  mediaLabel: string;
-  bullets: string[];
-  onPanel?: boolean;
-};
-
 function ProductCard({
-  name,
-  status,
-  title,
-  body,
-  cta,
-  mediaLabel,
-  bullets,
+  product,
   onPanel = false,
-}: ProductCardProps) {
+}: {
+  product: Product;
+  onPanel?: boolean;
+}) {
+  const bullets = product.bullets ?? [];
+
   return (
     <article
       className={cn(
@@ -102,11 +71,16 @@ function ProductCard({
 
       <div
         className={cn(
-          "h-59 border-b",
+          "relative h-59 overflow-hidden border-b",
           onPanel ? "border-panel-line" : "border-line bg-surface",
         )}
       >
-        <MediaPlaceholder label={mediaLabel} onPanel={onPanel} />
+        <CmsImage
+          media={product.image}
+          placeholderLabel={product.name}
+          sizes="(min-width: 1024px) 600px, 100vw"
+          onPanel={onPanel}
+        />
       </div>
 
       <div className="flex flex-1 flex-col p-6 pb-7">
@@ -118,13 +92,13 @@ function ProductCard({
               onPanel && "bg-iris-500 text-white",
             )}
           >
-            {name}
+            {product.name}
           </Tag>
           <Tag
             tone={onPanel ? "outline-panel" : "outline"}
             className="text-[0.625rem]"
           >
-            {status}
+            {product.status}
           </Tag>
         </div>
 
@@ -134,7 +108,7 @@ function ProductCard({
             onPanel && "text-panel-foreground",
           )}
         >
-          {title}
+          {product.title}
         </h3>
 
         <p
@@ -143,32 +117,32 @@ function ProductCard({
             onPanel ? "text-panel-muted" : "text-muted",
           )}
         >
-          {body}
+          {product.body}
         </p>
 
         <ul className="m-0 mb-5 grid list-none gap-2 p-0 text-sm">
-          {bullets.map((bullet) => (
-            <li key={bullet} className="flex gap-2.5">
+          {bullets.map((bullet, index) => (
+            <li key={bullet.id ?? index} className="flex gap-2.5">
               <span
                 aria-hidden
                 className={onPanel ? "text-accent-300" : "text-iris-600"}
               >
                 /
               </span>
-              {bullet}
+              {bullet.text}
             </li>
           ))}
         </ul>
 
         <a
-          href={`#${SECTION_IDS.contact}`}
+          href={product.ctaHref || `#${SECTION_IDS.contact}`}
           className={buttonClasses(
             onPanel ? "onPanel" : "secondary",
             "md",
             "mt-auto self-start",
           )}
         >
-          {cta}
+          {product.cta}
         </a>
       </div>
     </article>
