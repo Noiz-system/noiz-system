@@ -1,9 +1,14 @@
 import type { ReactNode } from "react";
-import { getTranslations } from "next-intl/server";
 import { Corners } from "@/components/ui/corners";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { getLanding } from "@/lib/cms";
 import { cn } from "@/lib/cn";
-import { SECTION_IDS } from "@/lib/sections";
+import { SECTION_IDS, sectionIndex } from "@/lib/sections";
+import type { Landing } from "@/payload-types";
+
+type CapabilityIcon = NonNullable<
+  Landing["sections"]["capabilities"]["items"]
+>[number]["icon"];
 
 const iconProps = {
   width: 24,
@@ -15,9 +20,12 @@ const iconProps = {
   "aria-hidden": true,
 } as const;
 
-const CAPABILITIES = [
-  {
-    key: "mobile",
+/**
+ * The icon an editor picks in the CMS is a name; the drawing and its tint
+ * stay here, so the palette cannot drift from the design system.
+ */
+const ICONS: Record<CapabilityIcon, { accent: string; icon: ReactNode }> = {
+  mobile: {
     accent: "text-accent",
     icon: (
       <svg {...iconProps}>
@@ -26,8 +34,7 @@ const CAPABILITIES = [
       </svg>
     ),
   },
-  {
-    key: "logistics",
+  logistics: {
     accent: "text-iris-600 dark:text-iris-400",
     icon: (
       <svg {...iconProps}>
@@ -38,8 +45,7 @@ const CAPABILITIES = [
       </svg>
     ),
   },
-  {
-    key: "platform",
+  platform: {
     accent: "text-accent",
     icon: (
       <svg {...iconProps}>
@@ -48,17 +54,11 @@ const CAPABILITIES = [
       </svg>
     ),
   },
-] as const satisfies ReadonlyArray<{
-  key: string;
-  accent: string;
-  icon: ReactNode;
-}>;
+};
 
 export async function Capabilities() {
-  const [t, items] = await Promise.all([
-    getTranslations("Capabilities"),
-    getTranslations("Capabilities.items"),
-  ]);
+  const { sections } = await getLanding();
+  const { title, lede, items = [] } = sections.capabilities;
 
   return (
     <section
@@ -67,36 +67,38 @@ export async function Capabilities() {
     >
       <div className="mx-auto w-full max-w-[1240px] px-7 py-19.5">
         <SectionHeading
-          index={t("index")}
-          title={t("title")}
-          lede={t("lede")}
+          index={sectionIndex(SECTION_IDS.capabilities)}
+          title={title}
+          lede={lede}
           className="mb-9"
         />
 
         <div className="blueprint grid md:grid-cols-3">
           <Corners />
 
-          {CAPABILITIES.map((capability, index) => (
-            <div
-              key={capability.key}
-              className={cn(
-                "px-7 pt-7.5 pb-8.5",
-                index > 0 && "border-t border-line md:border-t-0 md:border-l",
-              )}
-            >
-              <div className={cn("mb-4.5", capability.accent)}>
-                {capability.icon}
+          {(items ?? []).map((capability, index) => {
+            const { accent, icon } = ICONS[capability.icon];
+
+            return (
+              <div
+                key={capability.id ?? index}
+                className={cn(
+                  "px-7 pt-7.5 pb-8.5",
+                  index > 0 && "border-t border-line md:border-t-0 md:border-l",
+                )}
+              >
+                <div className={cn("mb-4.5", accent)}>{icon}</div>
+
+                <h3 className="m-0 mb-2.5 text-[1.4375rem]">
+                  {capability.title}
+                </h3>
+
+                <p className="m-0 text-[0.90625rem] text-muted">
+                  {capability.body}
+                </p>
               </div>
-
-              <h3 className="m-0 mb-2.5 text-[1.4375rem]">
-                {items(`${capability.key}.title`)}
-              </h3>
-
-              <p className="m-0 text-[0.90625rem] text-muted">
-                {items(`${capability.key}.body`)}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

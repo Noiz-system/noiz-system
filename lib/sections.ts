@@ -26,3 +26,8 @@ export const RAIL_SECTIONS = [
   SECTION_IDS.faq,
   SECTION_IDS.contact,
 ] as const;
+
+/** Two-digit label printed before a section title, e.g. "01". */
+export function sectionIndex(id: SectionId): string {
+  return String(RAIL_SECTIONS.indexOf(id) + 1).padStart(2, "0");
+}

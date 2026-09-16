@@ -1,30 +1,29 @@
 import { getTranslations } from "next-intl/server";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Tag } from "@/components/ui/tag";
-import { SECTION_IDS } from "@/lib/sections";
+import { getLanding, getMarkets } from "@/lib/cms";
+import { SECTION_IDS, sectionIndex } from "@/lib/sections";
+import type { Market } from "@/payload-types";
 
-/**
- * Which market is at what stage is a business fact, not a translation — so the
- * status lives here and only its label comes from the catalogue.
- */
-const MARKET_ROWS = [
-  { key: "paris", status: "live" },
-  { key: "lyon", status: "next" },
-  { key: "brussels", status: "study" },
-  { key: "westAfrica", status: "study" },
-] as const;
-
-const STATUS_TONE = {
+const STATUS_TONE: Record<Market["status"], "accent" | "iris" | "outline"> = {
   live: "accent",
   next: "iris",
   study: "outline",
-} as const;
+};
+
+/** "BDMarket · Noiz Logistics" from a populated products relationship. */
+function productNames(products: Market["products"]): string {
+  return products
+    .map((product) => (typeof product === "object" ? product.name : null))
+    .filter(Boolean)
+    .join(" · ");
+}
 
 export async function Markets() {
-  const [t, rows, status] = await Promise.all([
+  const [{ sections }, markets, t] = await Promise.all([
+    getLanding(),
+    getMarkets(),
     getTranslations("Markets"),
-    getTranslations("Markets.rows"),
-    getTranslations("Markets.status"),
   ]);
 
   return (
@@ -32,18 +31,20 @@ export async function Markets() {
       <div className="mx-auto grid w-full max-w-[1240px] items-start gap-15 px-7 py-19.5 lg:grid-cols-[0.85fr_1.15fr]">
         <div>
           <SectionHeading
-            index={t("index")}
-            title={t("title")}
+            index={sectionIndex(SECTION_IDS.markets)}
+            title={sections.markets.title}
             className="mb-5"
           />
 
           <p className="mb-4 max-w-[30em] text-[1.03125rem] text-muted text-pretty">
-            {t("body")}
+            {sections.markets.body}
           </p>
 
-          {/* Placeholder note carried over from the design — remove once the
-              next markets are confirmed. */}
-          <p className="m-0 font-mono text-xs text-faint">{t("note")}</p>
+          {sections.markets.note ? (
+            <p className="m-0 font-mono text-xs text-faint">
+              {sections.markets.note}
+            </p>
+          ) : null}
         </div>
 
         <div className="overflow-x-auto">
@@ -63,20 +64,20 @@ export async function Markets() {
             </thead>
 
             <tbody>
-              {MARKET_ROWS.map((row) => (
+              {markets.map((market) => (
                 <tr
-                  key={row.key}
+                  key={market.id}
                   className="transition-colors hover:bg-foreground/4"
                 >
                   <td className="border-b border-foreground/8 p-2">
-                    {rows(`${row.key}.market`)}
+                    {market.name}
                   </td>
                   <td className="border-b border-foreground/8 p-2">
-                    {rows(`${row.key}.products`)}
+                    {productNames(market.products)}
                   </td>
                   <td className="border-b border-foreground/8 p-2">
-                    <Tag tone={STATUS_TONE[row.status]}>
-                      {status(row.status)}
+                    <Tag tone={STATUS_TONE[market.status]}>
+                      {t(`status.${market.status}`)}
                     </Tag>
                   </td>
                 </tr>

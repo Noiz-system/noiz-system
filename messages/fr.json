@@ -1,10 +1,4 @@
 {
-  "Meta": {
-    "title": "Noiz Systems — Nous construisons les apps qui font bouger le commerce africain",
-    "description": "Noiz Systems conçoit, lance et exploite ses propres produits — BDMarket pour l’épicerie africaine, et la plateforme logistique qui la livre.",
-    "ogDescription": "Éditeur de produits pour le commerce et la logistique de la diaspora africaine. Paris et au-delà."
-  },
-
   "Nav": {
     "products": "Produits",
     "capabilities": "Savoir-faire",
@@ -28,115 +22,10 @@
   },
 
   "Hero": {
-    "kicker": "Éditeur de produits · Paris & la diaspora africaine",
-    "title": "Nous construisons les apps qui <accent>font bouger</accent> le commerce africain.",
-    "body": "Noiz Systems conçoit, lance et exploite ses propres produits — BDMarket pour l’épicerie africaine, et la plateforme logistique qui la livre. Deux frères, une vision, des solutions tech.",
-    "primaryCta": "Réserver un appel",
-    "secondaryCta": "Voir les produits",
     "mediaLabel": "photo principale — marché / livraison en mouvement"
   },
 
-  "Ticker": {
-    "bdmarket": "BDMarket",
-    "logistics": "Noiz Logistics",
-    "paris": "Paris",
-    "idf": "Île-de-France",
-    "saintDenis": "Saint-Denis",
-    "montreuil": "Montreuil",
-    "creteil": "Créteil",
-    "mobileMoney": "Mobile money",
-    "lastMile": "Dernier kilomètre"
-  },
-
-  "Stats": {
-    "productsLive": { "label": "Produits en ligne", "value": "02" },
-    "foundedBy": { "label": "Fondée par", "value": "2 frères" },
-    "inHouse": { "label": "Développé en interne", "value": "100%" },
-    "liveMarket": { "label": "Marché actif", "value": "Paris" }
-  },
-
-  "Products": {
-    "index": "01",
-    "title": "Nos produits",
-    "lede": "Maîtrisés de bout en bout — de la boutique que le client ouvre à la tournée que le livreur effectue.",
-    "items": {
-      "bdmarket": {
-        "name": "BDMarket",
-        "status": "En ligne · iOS & Android",
-        "title": "L’épicerie africaine, livrée",
-        "body": "Une place de marché mobile pour les produits alimentaires africains : vendeurs sélectionnés, produits familiers, des prix justes, livraison planifiée au quartier.",
-        "cta": "Télécharger BDMarket",
-        "mediaLabel": "BDMarket — écrans de l’application",
-        "bullets": {
-          "vendors": "Intégration vendeurs et outils catalogue",
-          "payments": "Paiement mobile money et carte",
-          "diaspora": "Commande depuis la diaspora pour la famille"
-        }
-      },
-      "logistics": {
-        "name": "Noiz Logistics",
-        "status": "En ligne · suite opérateur",
-        "title": "La couche logistique en dessous",
-        "body": "Répartition, tournées, preuve de livraison et suivi de flotte — le système qui traite les commandes BDMarket, ouvert aux commerçants et transporteurs.",
-        "cta": "Demander une démo",
-        "mediaLabel": "App logistique — répartition & vue livreur",
-        "bullets": {
-          "driverApp": "App livreur avec suivi hors-ligne",
-          "dispatch": "Console de répartition et planification",
-          "api": "API marchand pour le transfert de commandes"
-        }
-      }
-    }
-  },
-
-  "Capabilities": {
-    "index": "02",
-    "title": "Savoir-faire",
-    "lede": "L’équipe qui exploite nos produits construit aussi pour des partenaires sélectionnés.",
-    "items": {
-      "mobile": {
-        "title": "Produits mobiles",
-        "body": "Des apps grand public pensées pour la faible bande passante, le mobile money et l’Android d’entrée de gamme — les conditions réelles de nos marchés."
-      },
-      "logistics": {
-        "title": "Systèmes logistiques",
-        "body": "Répartition, suivi et dernier kilomètre, avec les parcours terrain qui gardent les livreurs en mouvement sans réseau stable."
-      },
-      "platform": {
-        "title": "Ingénierie plateforme",
-        "body": "API, intégration des paiements et l’outillage opérationnel dont un produit a besoin le lendemain du lancement."
-      }
-    }
-  },
-
-  "Method": {
-    "index": "03",
-    "title": "Notre méthode",
-    "steps": {
-      "groundTruth": {
-        "title": "Terrain",
-        "body": "Nous passons du temps sur le marché — vendeurs, livreurs, clients — avant de dessiner un écran."
-      },
-      "blueprint": {
-        "title": "Plan",
-        "body": "Parcours, modèle de données et réalité opérationnelle cartographiés avant le développement."
-      },
-      "ship": {
-        "title": "Livrer en semaines",
-        "body": "Une version fonctionnelle toutes les deux semaines, entre de vraies mains, instrumentée."
-      },
-      "operate": {
-        "title": "Exploiter",
-        "body": "Nous exploitons ce que nous construisons : support, astreinte et itération en conditions réelles."
-      }
-    }
-  },
-
   "Markets": {
-    "index": "04",
-    "title": "Marchés desservis",
-    "body": "Une ville à la fois, bien faite. BDMarket est en ligne à Paris et en Île-de-France, au service de la diaspora africaine, avec les vendeurs et les produits qu’elle achète déjà.",
-    "note": "Les prochains marchés sont à l’étude — à confirmer avant publication.",
     "columns": {
       "market": "Marché",
       "products": "Produits",
@@ -146,72 +35,19 @@
       "live": "En ligne",
       "next": "À venir",
       "study": "À l’étude"
-    },
-    "rows": {
-      "paris": {
-        "market": "Paris · Île-de-France",
-        "products": "BDMarket · Noiz Logistics"
-      },
-      "lyon": { "market": "Lyon · Marseille", "products": "BDMarket" },
-      "brussels": { "market": "Bruxelles", "products": "BDMarket" },
-      "westAfrica": {
-        "market": "Afrique de l’Ouest",
-        "products": "Noiz Logistics"
-      }
     }
   },
 
   "News": {
-    "index": "05",
-    "title": "Actualités",
     "allPosts": "Tous les articles",
-    "items": {
-      "scheduledDelivery": {
-        "kicker": "Produit · 12.06.2026",
-        "title": "BDMarket lance la livraison planifiée au quartier",
-        "body": "Les commandes se regroupent par rue et créneau, réduisant le coût par livraison."
-      },
-      "offlineTracking": {
-        "kicker": "Logistique · 28.04.2026",
-        "title": "Suivi hors-ligne dans l’app livreur",
-        "body": "Les livraisons s’enregistrent puis se synchronisent — plus de zone blanche dans la preuve de livraison."
-      },
-      "origins": {
-        "kicker": "Entreprise · 03.03.2026",
-        "title": "Deux frères, une vision : les débuts de Noiz",
-        "body": "D’une course d’épicerie familiale à une place de marché et sa flotte."
-      }
-    }
-  },
-
-  "Faq": {
-    "index": "06",
-    "title": "Questions",
-    "items": {
-      "clientWork": {
-        "question": "Développez-vous des applications pour d’autres entreprises ?",
-        "answer": "Oui — de façon sélective, surtout dans le commerce et la logistique où nos propres produits nous donnent un avantage réel. Réservez un appel et nous vous dirons honnêtement si nous sommes la bonne équipe."
-      },
-      "standaloneLogistics": {
-        "question": "Les commerçants peuvent-ils utiliser la plateforme logistique seule ?",
-        "answer": "Oui. La répartition, l’app livreur et la preuve de livraison fonctionnent indépendamment de BDMarket, avec une API pour transférer les commandes depuis votre boutique."
-      },
-      "payments": {
-        "question": "Comment gérez-vous les paiements ?",
-        "answer": "Mobile money d’abord, carte et paiement à la livraison là où le marché l’attend. Les moyens de paiement sont configurés par marché, pas codés en dur."
-      },
-      "raising": {
-        "question": "Levez-vous des fonds ?",
-        "answer": "Nous échangeons avec les investisseurs qui connaissent le commerce africain. Utilisez le formulaire en indiquant votre rôle — nous enverrons le deck actuel."
-      }
+    "categories": {
+      "product": "Produit",
+      "logistics": "Logistique",
+      "company": "Entreprise"
     }
   },
 
   "Contact": {
-    "index": "07",
-    "title": "Réserver un <accent>appel</accent>",
-    "body": "Dites-nous ce que vous déplacez et pour qui. L’un des fondateurs vous répond — généralement sous un jour ouvré.",
-    "email": "hello@noiz.systems",
     "form": {
       "name": "Nom",
       "email": "E-mail professionnel",
@@ -229,7 +65,6 @@
   },
 
   "Footer": {
-    "tagline": "Deux frères, une vision, des solutions tech.",
     "rights": "© 2026 Noiz Systems"
   }
 }
