@@ -7,8 +7,8 @@ English, with its content managed in [Payload CMS](https://payloadcms.com).
 
 ```bash
 pnpm install
-cp .env.example .env        # then set PAYLOAD_SECRET (openssl rand -hex 32)
-pnpm seed                   # creates the database, an admin user and the launch copy
+cp .env.example .env        # set PAYLOAD_SECRET (openssl rand -hex 32) and DATABASE_URI
+pnpm seed                   # creates the tables, an admin user and the launch copy
 pnpm dev
 ```
 
@@ -58,14 +58,12 @@ messages/                  next-intl catalogues (UI strings only)
 
 ## Database
 
-Development uses a local SQLite file (`DATABASE_URI=file:./noiz.db`) and
-Payload pushes schema changes to it automatically. In production the schema
-is applied through migrations instead:
+Payload runs on Postgres; `DATABASE_URI` is a standard connection string
+(add `?sslmode=require` for hosted providers such as Neon). In development
+Payload pushes schema changes to the database automatically. In production
+the schema is applied through migrations instead:
 
 ```bash
 pnpm payload migrate:create   # after changing a collection or global
 pnpm payload migrate          # on deploy
 ```
-
-`DATABASE_URI` accepts any libSQL URL, so a hosted Turso database is a
-one-line change.

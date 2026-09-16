@@ -1,6 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { sqliteAdapter } from "@payloadcms/db-sqlite";
+import { postgresAdapter } from "@payloadcms/db-postgres";
 import { en } from "@payloadcms/translations/languages/en";
 import { fr } from "@payloadcms/translations/languages/fr";
 import { buildConfig } from "payload";
@@ -25,8 +25,10 @@ const LOCALE_LABELS: Record<(typeof routing.locales)[number], string> = {
 export default buildConfig({
   secret: process.env.PAYLOAD_SECRET ?? "",
 
-  db: sqliteAdapter({
-    client: { url: process.env.DATABASE_URI ?? "file:./noiz.db" },
+  // Any Postgres works: a local container, Neon, Supabase… `sslmode=require`
+  // in the URL is enough for the hosted ones; node-postgres reads it.
+  db: postgresAdapter({
+    pool: { connectionString: process.env.DATABASE_URI },
   }),
 
   collections: [Products, Markets, Posts, Faqs, Media, Users],
