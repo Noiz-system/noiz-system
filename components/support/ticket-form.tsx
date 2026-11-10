@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  createTicket,
-  requestSupportCode,
-  resetSupportEmail,
-  verifySupportCode,
+  confirmTicket,
+  resendTicketCode,
+  submitTicket,
+  type TicketResult,
 } from "@/app/(frontend)/[locale]/support/actions";
 import { Field, fieldClasses } from "@/components/support/field";
 import { buttonClasses } from "@/components/ui/button";
-import { ArrowUpRight, Check, CheckCircle2, Send } from "@/components/ui/icons";
+import { ArrowUpRight, CheckCircle2, Send } from "@/components/ui/icons";
 import {
   SUPPORT_CODE_TTL_MINUTES,
   TICKET_CATEGORIES,
@@ -19,40 +19,36 @@ import {
   validateTicket,
 } from "@/lib/tickets";
 
-type Step = "email" | "code" | "ticket";
+type CodeError = "throttled" | "codeInvalid" | "codeExpired" | "tooManyAttempts" | "failed";
 
-type VerifyError =
-  | "emailInvalid"
-  | "accountNotFound"
-  | "throttled"
-  | "codeInvalid"
-  | "codeExpired"
-  | "tooManyAttempts"
-  | "notVerified"
-  | "failed";
+type Pending = { email: string; values: Record<string, string> };
 
 const linkButton =
-  "cursor-pointer text-sm font-semibold text-primary underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:opacity-50";
+  "cursor-pointer whitespace-nowrap text-sm font-semibold text-primary underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:opacity-50";
 
 /**
- * Ticket creation in three steps: prove the email belongs to a BDMarket
- * account (code sent to that inbox), then describe the request. The server
- * keeps the verified email in a signed cookie, so `initialEmail` lets a
- * reload land straight on the last step.
+ * The ticket form, then a dialog asking for the code emailed to the address
+ * typed in the form. The ticket is only saved once that code checks out —
+ * or straight away when this browser verified the same email in the last
+ * 30 minutes (`initialEmail`, read from the signed session cookie).
  */
 export function TicketForm({ initialEmail }: { initialEmail: string | null }) {
   const t = useTranslations("Support");
   const locale = useLocale();
+  const formRef = useRef<HTMLFormElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const codeRef = useRef<HTMLInputElement>(null);
 
-  const [step, setStep] = useState<Step>(initialEmail ? "ticket" : "email");
-  const [email, setEmail] = useState(initialEmail ?? "");
-  const [name, setName] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [verifyError, setVerifyError] = useState<{ code: VerifyError; minutes?: number } | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
   const [errors, setErrors] = useState<TicketErrors>({});
+  const [emailNotice, setEmailNotice] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
   const [created, setCreated] = useState<{ reference: string; emailed: boolean } | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+
+  const [pending, setPending] = useState<Pending | null>(null);
+  const [codeError, setCodeError] = useState<{ code: CodeError; minutes?: number } | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [confirming, setConfirming] = useState(false);
 
   useEffect(() => {
     if (!toast) return;
@@ -60,75 +56,54 @@ export function TicketForm({ initialEmail }: { initialEmail: string | null }) {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  function showVerifyError(code: VerifyError, retryAfter?: number) {
-    setNotice(null);
-    setVerifyError({
-      code,
-      minutes: retryAfter ? Math.max(1, Math.ceil(retryAfter / 60)) : undefined,
-    });
-  }
-
-  async function sendCode(target: string, isResend = false) {
-    setBusy(true);
-    setVerifyError(null);
-    setNotice(null);
-    try {
-      const result = await requestSupportCode({ email: target, locale });
-      if (result.ok) {
-        setEmail(result.email);
-        setStep("code");
-        if (isResend) setNotice(t("verify.resent"));
-      } else {
-        showVerifyError(result.error, "retryAfter" in result ? result.retryAfter : undefined);
-      }
-    } catch {
-      showVerifyError("failed");
-    } finally {
-      setBusy(false);
+  // Opening/closing follows `pending`; the dialog's own `close` event
+  // (Escape key) clears it back.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (pending && !dialog.open) {
+      dialog.showModal();
+      codeRef.current?.focus();
+    } else if (!pending && dialog.open) {
+      dialog.close();
     }
-  }
+  }, [pending]);
 
-  async function onEmailSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const value = String(new FormData(event.currentTarget).get("email") ?? "");
-    await sendCode(value);
-  }
+  const minutes = (retryAfter: number) => Math.max(1, Math.ceil(retryAfter / 60));
 
-  async function onCodeSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const code = String(new FormData(event.currentTarget).get("code") ?? "");
-    setBusy(true);
-    setVerifyError(null);
-    setNotice(null);
-    try {
-      const result = await verifySupportCode({ email, code });
-      if (result.ok) {
-        setName(result.name);
-        setStep("ticket");
-      } else {
-        showVerifyError(result.error);
-      }
-    } catch {
-      showVerifyError("failed");
-    } finally {
-      setBusy(false);
+  /** Shared handling of what the server answers to any of the three actions. */
+  function handleResult(result: TicketResult, from: "form" | "dialog") {
+    if (result.ok) {
+      setPending(null);
+      setCreated({ reference: result.reference, emailed: result.emailed });
+      formRef.current?.reset();
+      return;
     }
+    if ("errors" in result) {
+      setPending(null);
+      setErrors(result.errors);
+      return;
+    }
+    if ("needsCode" in result) {
+      if (from === "dialog") setNotice(t("verify.resent"));
+      return;
+    }
+    if (result.error === "throttled") {
+      const message = t("verifyErrors.throttled", { minutes: minutes(result.retryAfter) });
+      if (from === "dialog") setCodeError({ code: "throttled", minutes: minutes(result.retryAfter) });
+      else setEmailNotice(message);
+      return;
+    }
+    if (from === "dialog") setCodeError({ code: result.error });
+    else setToast(t("form.failed"));
   }
 
-  async function changeEmail() {
-    setVerifyError(null);
-    setNotice(null);
-    setErrors({});
-    setStep("email");
-    await resetSupportEmail().catch(() => undefined);
-  }
-
-  async function onTicketSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const values = Object.fromEntries(new FormData(form));
+    const values = Object.fromEntries(new FormData(event.currentTarget)) as Record<string, string>;
 
-    const parsed = validateTicket({ ...values, email });
+    setEmailNotice(null);
+    const parsed = validateTicket(values);
     if (!parsed.ok) {
       setErrors(parsed.errors);
       return;
@@ -137,17 +112,13 @@ export function TicketForm({ initialEmail }: { initialEmail: string | null }) {
     setErrors({});
     setBusy(true);
     try {
-      const result = await createTicket({ values, locale });
-      if (result.ok) {
-        setCreated({ reference: result.reference, emailed: result.emailed });
-        form.reset();
-      } else if ("errors" in result) {
-        setErrors(result.errors);
-      } else if (result.error === "notVerified") {
-        setStep("email");
-        showVerifyError("notVerified");
+      const result = await submitTicket({ values, locale });
+      if (!result.ok && "needsCode" in result) {
+        setCodeError(null);
+        setNotice(null);
+        setPending({ email: result.email, values });
       } else {
-        setToast(t("form.failed"));
+        handleResult(result, "form");
       }
     } catch {
       setToast(t("form.failed"));
@@ -156,21 +127,45 @@ export function TicketForm({ initialEmail }: { initialEmail: string | null }) {
     }
   }
 
+  async function onConfirm(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!pending) return;
+    const code = String(new FormData(event.currentTarget).get("code") ?? "");
+
+    setCodeError(null);
+    setNotice(null);
+    setConfirming(true);
+    try {
+      handleResult(await confirmTicket({ values: pending.values, code, locale }), "dialog");
+    } catch {
+      setCodeError({ code: "failed" });
+    } finally {
+      setConfirming(false);
+    }
+  }
+
+  async function onResend() {
+    if (!pending) return;
+    setCodeError(null);
+    setNotice(null);
+    setConfirming(true);
+    try {
+      handleResult(await resendTicketCode({ email: pending.email, locale }), "dialog");
+    } catch {
+      setCodeError({ code: "failed" });
+    } finally {
+      setConfirming(false);
+    }
+  }
+
   const fieldError = (field: keyof TicketErrors) =>
     errors[field] ? t(`errors.${errors[field]}`) : undefined;
 
-  const verifyMessage = verifyError
-    ? verifyError.code === "throttled"
-      ? t("verifyErrors.throttled", { minutes: verifyError.minutes ?? 1 })
-      : t(`verifyErrors.${verifyError.code}`)
+  const codeMessage = codeError
+    ? codeError.code === "throttled"
+      ? t("verifyErrors.throttled", { minutes: codeError.minutes ?? 1 })
+      : t(`verifyErrors.${codeError.code}`)
     : undefined;
-
-  const header = (title: string) => (
-    <div className="mb-7 border-b border-border pb-6">
-      <p className="mb-2 text-xs font-bold text-primary uppercase">{t("form.step")}</p>
-      <h2 className="text-2xl font-bold">{title}</h2>
-    </div>
-  );
 
   return (
     <>
@@ -193,96 +188,11 @@ export function TicketForm({ initialEmail }: { initialEmail: string | null }) {
             {t("created.again")} <ArrowUpRight />
           </button>
         </div>
-      ) : step === "email" ? (
-        <form onSubmit={onEmailSubmit} className="space-y-5" noValidate>
-          {header(t("verify.emailTitle"))}
-          <p className="text-muted-foreground">{t("verify.emailIntro")}</p>
-          <Field label={t("verify.email")} error={verifyMessage}>
-            <input
-              name="email"
-              type="email"
-              autoComplete="email"
-              spellCheck={false}
-              required
-              defaultValue={email}
-              maxLength={TICKET_LIMITS.email}
-              className={fieldClasses}
-            />
-          </Field>
-          <button
-            type="submit"
-            disabled={busy}
-            className={buttonClasses("brand", "h-12 w-full px-6 sm:w-auto")}
-          >
-            {busy ? t("verify.sending") : t("verify.sendCode")}
-            <Send />
-          </button>
-        </form>
-      ) : step === "code" ? (
-        <form onSubmit={onCodeSubmit} className="space-y-5" noValidate>
-          {header(t("verify.codeTitle"))}
-          <p className="text-muted-foreground">
-            {t("verify.codeIntro", { email, minutes: SUPPORT_CODE_TTL_MINUTES })}
-          </p>
-          <Field label={t("verify.code")} error={verifyMessage}>
-            <input
-              name="code"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              pattern="[0-9]*"
-              maxLength={6}
-              required
-              autoFocus
-              className={`${fieldClasses} max-w-xs text-center font-mono text-2xl tracking-[0.5em]`}
-            />
-          </Field>
-          {notice ? (
-            <p className="text-sm font-medium text-primary" aria-live="polite">
-              {notice}
-            </p>
-          ) : null}
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-            <button
-              type="submit"
-              disabled={busy}
-              className={buttonClasses("brand", "h-12 w-full px-6 sm:w-auto")}
-            >
-              {busy ? t("verify.checking") : t("verify.confirm")}
-              <Check />
-            </button>
-            <div className="flex gap-5">
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => void sendCode(email, true)}
-                className={linkButton}
-              >
-                {t("verify.resend")}
-              </button>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => void changeEmail()}
-                className={linkButton}
-              >
-                {t("verify.changeEmail")}
-              </button>
-            </div>
-          </div>
-        </form>
       ) : (
-        <form onSubmit={onTicketSubmit} className="space-y-5" noValidate>
-          {header(t("form.title"))}
-
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-sm border border-input bg-paper px-4 py-3">
-            <p className="flex min-w-0 items-center gap-2 text-sm">
-              <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" />
-              <span className="font-medium text-foreground">{t("verify.verified")}</span>
-              <span className="truncate text-muted-foreground">{email}</span>
-            </p>
-            <button type="button" onClick={() => void changeEmail()} className={linkButton}>
-              {t("verify.changeEmail")}
-            </button>
+        <form ref={formRef} onSubmit={onSubmit} className="space-y-5" noValidate>
+          <div className="mb-7 border-b border-border pb-6">
+            <p className="mb-2 text-xs font-bold text-primary uppercase">{t("form.step")}</p>
+            <h2 className="text-2xl font-bold">{t("form.title")}</h2>
           </div>
 
           <Field label={t("form.category")} error={fieldError("category")}>
@@ -300,23 +210,33 @@ export function TicketForm({ initialEmail }: { initialEmail: string | null }) {
               <input
                 name="name"
                 autoComplete="name"
-                defaultValue={name}
-                key={name}
                 maxLength={TICKET_LIMITS.name}
                 className={fieldClasses}
               />
             </Field>
-            <Field label={t("form.orderNumber")} error={fieldError("orderNumber")}>
+            <Field label={t("form.email")} error={fieldError("email") ?? emailNotice ?? undefined}>
               <input
-                name="orderNumber"
-                autoComplete="off"
+                name="email"
+                type="email"
+                autoComplete="email"
                 spellCheck={false}
-                maxLength={TICKET_LIMITS.orderNumber}
-                placeholder={t("form.orderPlaceholder")}
+                defaultValue={initialEmail ?? ""}
+                maxLength={TICKET_LIMITS.email}
                 className={fieldClasses}
               />
             </Field>
           </div>
+
+          <Field label={t("form.orderNumber")} error={fieldError("orderNumber")}>
+            <input
+              name="orderNumber"
+              autoComplete="off"
+              spellCheck={false}
+              maxLength={TICKET_LIMITS.orderNumber}
+              placeholder={t("form.orderPlaceholder")}
+              className={fieldClasses}
+            />
+          </Field>
 
           <Field label={t("form.subject")} error={fieldError("subject")}>
             <input
@@ -346,6 +266,73 @@ export function TicketForm({ initialEmail }: { initialEmail: string | null }) {
           </button>
         </form>
       )}
+
+      {/* Code confirmation. Native <dialog>: modal, focus-trapped, Escape closes. */}
+      <dialog
+        ref={dialogRef}
+        aria-labelledby="ticket-code-title"
+        onClose={() => setPending(null)}
+        className="m-auto w-[calc(100%-2rem)] max-w-md rounded-md border border-t-2 border-border border-t-primary bg-background p-0 text-foreground shadow-editorial backdrop:bg-[oklch(0.22_0.018_280/0.45)]"
+      >
+        {pending ? (
+          <form onSubmit={onConfirm} className="space-y-5 p-6 md:p-8" noValidate>
+            <div>
+              <p className="mb-2 text-xs font-bold text-primary uppercase">{t("verify.kicker")}</p>
+              <h2 id="ticket-code-title" className="text-2xl font-bold">
+                {t("verify.title")}
+              </h2>
+            </div>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {t("verify.intro", { email: pending.email, minutes: SUPPORT_CODE_TTL_MINUTES })}
+            </p>
+            <Field label={t("verify.code")} error={codeMessage}>
+              <input
+                ref={codeRef}
+                name="code"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                pattern="[0-9]*"
+                maxLength={6}
+                required
+                className={`${fieldClasses} text-center font-mono text-2xl tracking-[0.5em]`}
+              />
+            </Field>
+            {notice ? (
+              <p className="text-sm font-medium text-primary" aria-live="polite">
+                {notice}
+              </p>
+            ) : null}
+            <div className="flex flex-col gap-3">
+              <button
+                type="submit"
+                disabled={confirming}
+                className={buttonClasses("brand", "h-12 w-full px-6")}
+              >
+                {confirming ? t("verify.checking") : t("verify.confirm")}
+                <Send />
+              </button>
+              <div className="flex justify-center gap-5">
+                <button
+                  type="button"
+                  disabled={confirming}
+                  onClick={() => void onResend()}
+                  className={linkButton}
+                >
+                  {t("verify.resend")}
+                </button>
+                <button
+                  type="button"
+                  disabled={confirming}
+                  onClick={() => setPending(null)}
+                  className={linkButton}
+                >
+                  {t("verify.cancel")}
+                </button>
+              </div>
+            </div>
+          </form>
+        ) : null}
+      </dialog>
 
       {/* Failure notice, styled after the reference design's toaster. */}
       <div

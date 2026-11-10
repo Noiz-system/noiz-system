@@ -132,6 +132,15 @@ export async function issueCode(email: string): Promise<IssueCodeResult> {
   return { ok: true, code };
 }
 
+/** Whether a code sent to this address can still be used. */
+export async function hasActiveCode(email: string): Promise<boolean> {
+  const snap = await bdmarketDb().collection("supportEmailCodes").doc(emailKey(email)).get();
+  const data = snap.data() as { expiresAt?: number; attempts?: number } | undefined;
+  return Boolean(
+    data && (data.expiresAt ?? 0) > Date.now() && (data.attempts ?? 0) < MAX_ATTEMPTS,
+  );
+}
+
 export type CheckCodeResult = "ok" | "codeInvalid" | "codeExpired" | "tooManyAttempts";
 
 /** Checks a submitted code; a correct code is consumed. */
@@ -206,8 +215,4 @@ export async function readSession(): Promise<string | null> {
   if (Number(expires) * 1000 < Date.now()) return null;
 
   return Buffer.from(encodedEmail, "base64url").toString("utf8");
-}
-
-export async function endSession(): Promise<void> {
-  (await cookies()).delete(SESSION_COOKIE);
 }
