@@ -27,6 +27,8 @@ export default buildConfig({
 
   // Any Postgres works: a local container, Neon, Supabase… `sslmode=require`
   // in the URL is enough for the hosted ones; node-postgres reads it.
+  // Dev pushes the schema on its own; deployed databases only change through
+  // `migrations/`, applied by the `vercel-build` script before `next build`.
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI },
   }),
