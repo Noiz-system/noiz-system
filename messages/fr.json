@@ -1,70 +1,188 @@
 {
   "Nav": {
-    "products": "Produits",
-    "capabilities": "Savoir-faire",
-    "markets": "Marchés",
-    "news": "Actualités",
-    "bookCall": "Réserver un appel",
+    "ariaLabel": "Navigation principale",
+    "bdmarket": "BDMarket",
+    "method": "Méthode",
+    "faq": "FAQ",
+    "support": "Support",
+    "contact": "Nous contacter ↗",
     "skipToContent": "Aller au contenu",
-    "languageLabel": "Langue",
     "home": "Noiz Systems — accueil"
   },
 
-  "Rail": {
-    "ariaLabel": "Navigation par section",
-    "products": "PRODUITS",
-    "capabilities": "SAVOIR-FAIRE",
-    "method": "MÉTHODE",
-    "markets": "MARCHÉS",
-    "news": "ACTUALITÉS",
-    "faq": "QUESTIONS",
-    "contact": "CONTACT"
-  },
-
-  "Hero": {
-    "mediaLabel": "photo principale — marché / livraison en mouvement"
-  },
-
-  "Markets": {
-    "columns": {
-      "market": "Marché",
-      "products": "Produits",
-      "status": "Statut"
+  "Products": {
+    "support": "Support {name}",
+    "appStore": {
+      "kicker": "Télécharger sur l’",
+      "name": "App Store",
+      "label": "Télécharger {name} sur l’App Store"
     },
-    "status": {
-      "live": "En ligne",
-      "next": "À venir",
-      "study": "À l’étude"
+    "googlePlay": {
+      "kicker": "Disponible sur",
+      "name": "Google Play",
+      "label": "Télécharger {name} sur Google Play"
     }
   },
 
-  "News": {
-    "allPosts": "Tous les articles",
-    "categories": {
-      "product": "Produit",
-      "logistics": "Logistique",
-      "company": "Entreprise"
-    }
-  },
-
-  "Contact": {
-    "form": {
-      "name": "Nom",
-      "email": "E-mail professionnel",
-      "roleLabel": "Je suis…",
-      "message": "Quel est votre besoin ?",
-      "submit": "Envoyer la demande",
-      "privacy": "Nous ne partageons jamais vos coordonnées.",
-      "success": "Merci — nous revenons vers vous sous un jour ouvré.",
-      "roles": {
-        "client": "Client",
-        "partner": "Commerçant / livreur",
-        "investor": "Investisseur"
-      }
-    }
+  "Help": {
+    "kicker": "Centre d'aide",
+    "title": "Un souci avec une commande ?",
+    "body": "Ouvrez un ticket, recevez une référence et suivez sa résolution.",
+    "cta": "Ouvrir un ticket"
   },
 
   "Footer": {
-    "rights": "© 2026 Noiz Systems"
+    "cta": {
+      "kicker": "Découvrez BDMarket",
+      "title": "Votre épicerie africaine et caribéenne.<br></br><accent>Toujours à portée de main.</accent>",
+      "button": "Découvrir BDMarket"
+    },
+    "navLabel": "Navigation du bas de page",
+    "product": {
+      "heading": "Produit",
+      "name": "BDMarket",
+      "discover": "Découvrir BDMarket",
+      "grocery": "L’épicerie africaine et caribéenne",
+      "getApp": "Obtenir l’application",
+      "support": "Support du produit"
+    },
+    "resources": {
+      "heading": "Ressources",
+      "faq": "Questions fréquentes",
+      "help": "Centre d’aide",
+      "method": "Notre méthode"
+    },
+    "assistance": {
+      "heading": "Assistance",
+      "sub": "À vos côtés",
+      "open": "Ouvrir un ticket",
+      "track": "Suivre un ticket",
+      "order": "Aide sur une commande"
+    },
+    "company": {
+      "heading": "Noiz Systems",
+      "home": "Accueil",
+      "approach": "Notre approche",
+      "contact": "Nous contacter"
+    },
+    "talk": "Une question ? Parlons-en",
+    "rights": "© 2026 Noiz Systems. Tous droits réservés.",
+    "contact": "Contact",
+    "languageLabel": "Langue"
+  },
+
+  "Languages": {
+    "fr": "Français",
+    "en": "English"
+  },
+
+  "Support": {
+    "metaTitle": "Centre d'aide BDMarket — Noiz Systems",
+    "metaDescription": "Ouvrez un ticket pour une commande BDMarket ou une demande d'aide, et suivez son avancement.",
+    "kicker": "Centre d’aide · BDMarket",
+    "title": "Vous aider.<br></br><accent>Tout simplement.</accent>",
+    "intro": "Une commande, une livraison ou une question ?<brmd></brmd> Nous sommes là pour vous.",
+    "productTagline": "L’épicerie africaine et caribéenne, livrée chez vous.",
+    "created": {
+      "kicker": "Ticket créé",
+      "body": "Conservez cette référence : elle vous permet de suivre votre demande avec votre email.",
+      "again": "Ouvrir un autre ticket",
+      "emailed": "Un e-mail de confirmation avec cette référence vient de vous être envoyé."
+    },
+    "form": {
+      "step": "01 / Votre demande",
+      "title": "Ouvrir un ticket",
+      "category": "Type de demande",
+      "name": "Nom",
+      "email": "Email",
+      "orderNumber": "Numéro de commande (facultatif)",
+      "orderPlaceholder": "ex. BD-102938",
+      "subject": "Sujet",
+      "message": "Message",
+      "submit": "Envoyer le ticket",
+      "sending": "Envoi…",
+      "failed": "Impossible d'envoyer le ticket, réessayez."
+    },
+    "categories": {
+      "commande": "Problème de commande",
+      "livraison": "Livraison",
+      "paiement": "Paiement / remboursement",
+      "compte": "Compte & connexion",
+      "autre": "Autre demande d'aide"
+    },
+    "errors": {
+      "nameRequired": "Nom requis",
+      "emailInvalid": "Email invalide",
+      "subjectShort": "Sujet trop court",
+      "messageShort": "Décrivez votre demande (10 caractères min.)",
+      "tooLong": "Texte trop long",
+      "categoryInvalid": "Choisissez un type de demande"
+    },
+    "lookup": {
+      "step": "02 / Votre suivi",
+      "title": "Suivre un ticket",
+      "reference": "Référence du ticket",
+      "referencePlaceholder": "Référence (NZ-XXXXXX)",
+      "email": "Votre email",
+      "emailPlaceholder": "Votre email",
+      "submit": "Rechercher",
+      "notFound": "Aucun ticket trouvé avec ces informations.",
+      "status": "Statut :",
+      "createdOn": "Créé le {date}",
+      "replies": "Réponses de l’équipe"
+    },
+    "statuses": {
+      "ouvert": "Ouvert",
+      "en_cours": "En cours",
+      "resolu": "Résolu",
+      "ferme": "Fermé"
+    },
+    "aside": {
+      "title": "Votre commande à portée de main",
+      "body": "Indiquez votre numéro de commande pour un traitement plus rapide."
+    },
+    "verify": {
+      "emailTitle": "Vérifier votre e-mail",
+      "emailIntro": "Le ticket est rattaché à votre compte BDMarket. Saisissez l’e-mail de votre compte : nous vous envoyons un code de validation.",
+      "email": "E-mail du compte BDMarket",
+      "sendCode": "Recevoir un code",
+      "sending": "Envoi…",
+      "codeTitle": "Saisissez le code",
+      "codeIntro": "Nous avons envoyé un code à 6 chiffres à {email}. Il expire dans {minutes} minutes.",
+      "code": "Code de validation",
+      "confirm": "Valider le code",
+      "checking": "Vérification…",
+      "resend": "Renvoyer le code",
+      "resent": "Nouveau code envoyé.",
+      "changeEmail": "Changer d’e-mail",
+      "verified": "E-mail vérifié",
+      "retryIn": "Réessayez dans {seconds} s."
+    },
+    "verifyErrors": {
+      "emailInvalid": "Email invalide",
+      "accountNotFound": "Aucun compte BDMarket n’utilise cet e-mail. Saisissez l’adresse de votre compte.",
+      "throttled": "Trop de codes demandés pour cet e-mail. Réessayez dans {minutes} min.",
+      "codeInvalid": "Code incorrect. Vérifiez les 6 chiffres reçus par e-mail.",
+      "codeExpired": "Ce code a expiré. Demandez-en un nouveau.",
+      "tooManyAttempts": "Trop d’essais. Demandez un nouveau code.",
+      "notVerified": "Votre vérification a expiré. Confirmez à nouveau votre e-mail.",
+      "failed": "Le service est momentanément indisponible. Réessayez dans un instant."
+    }
+  },
+
+  "SupportEmail": {
+    "code": {
+      "subject": "Votre code de vérification BDMarket : {code}",
+      "title": "Votre code de vérification",
+      "intro": "Saisissez ce code sur le centre d’aide BDMarket pour confirmer votre adresse e-mail. Il expire dans {minutes} minutes.",
+      "ignore": "Si vous n’êtes pas à l’origine de cette demande, ignorez simplement cet e-mail."
+    },
+    "ticket": {
+      "subject": "Ticket {reference} enregistré — {subject}",
+      "title": "Votre ticket est enregistré",
+      "intro": "Bonjour {name}, nous avons bien reçu votre demande. Voici sa référence :",
+      "track": "Suivez son avancement sur le centre d’aide avec cette référence et votre e-mail.",
+      "cta": "Suivre mon ticket"
+    }
   }
 }

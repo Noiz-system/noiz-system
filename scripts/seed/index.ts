@@ -1,7 +1,20 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { getPayload, type CollectionSlug, type Payload } from "payload";
 import config from "@payload-config";
 import { routing, type Locale } from "@/i18n/routing";
-import { faqs, landing, markets, posts, products, type L } from "./content";
+import {
+  brandAssets,
+  faqs,
+  landing,
+  markets,
+  posts,
+  products,
+  type BrandAsset,
+  type L,
+} from "./content";
+
+const ASSETS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "assets");
 
 /**
  * Populates the CMS with the landing page's launch copy in every locale.
@@ -44,9 +57,14 @@ async function main() {
     await wipeContent(payload);
   }
 
+  const media = await ensureBrandMedia(payload);
+
   const productIds = new Map<string, number>();
-  for (const product of products) {
-    const doc = await createLocalized(payload, "products", product);
+  for (const { imageAsset, ...product } of products) {
+    const doc = await createLocalized(payload, "products", {
+      ...product,
+      image: media[imageAsset],
+    });
     productIds.set(product.name, doc.id);
   }
   payload.logger.info(`Seeded ${products.length} products`);
@@ -67,16 +85,19 @@ async function main() {
   for (const faq of faqs) await createLocalized(payload, "faqs", faq);
   payload.logger.info(`Seeded ${faqs.length} FAQs`);
 
+  const { imageAsset: heroAsset, ...hero } = landing.hero;
+  const landingData = { ...landing, hero: { ...hero, image: media[heroAsset] } };
+
   const doc = await payload.updateGlobal({
     slug: "landing",
-    data: pick(landing, primary),
+    data: pick(landingData, primary),
     locale: primary,
     context,
   });
   for (const locale of secondary) {
     await payload.updateGlobal({
       slug: "landing",
-      data: withRowIds(doc, pick(landing, locale)),
+      data: withRowIds(doc, pick(landingData, locale)),
       locale,
       context,
     });
@@ -102,6 +123,55 @@ async function ensureAdminUser(payload: Payload) {
     data: { email, password, name: "Noiz admin" },
   });
   payload.logger.info(`Created admin user ${email} (password from .env)`);
+}
+
+/**
+ * Uploads the brand files in `scripts/seed/assets/` to Media, reusing an
+ * upload that already carries the same filename, so re-seeding does not pile
+ * up duplicates. Returns each asset's media id.
+ */
+async function ensureBrandMedia(
+  payload: Payload,
+): Promise<Record<BrandAsset, number>> {
+  const ids = {} as Record<BrandAsset, number>;
+
+  for (const [key, asset] of Object.entries(brandAssets) as Array<
+    [BrandAsset, (typeof brandAssets)[BrandAsset]]
+  >) {
+    const { docs } = await payload.find({
+      collection: "media",
+      where: { filename: { equals: asset.file } },
+      limit: 1,
+      depth: 0,
+    });
+
+    let id = docs[0]?.id;
+    if (!id) {
+      const doc = await payload.create({
+        collection: "media",
+        data: { alt: asset.alt[primary] },
+        filePath: path.join(ASSETS_DIR, asset.file),
+        locale: primary,
+        context,
+      });
+      id = doc.id;
+    }
+
+    for (const locale of secondary) {
+      await payload.update({
+        collection: "media",
+        id,
+        data: { alt: asset.alt[locale] },
+        locale,
+        context,
+      });
+    }
+
+    ids[key] = id;
+  }
+
+  payload.logger.info(`Brand media ready (${Object.keys(ids).length} files)`);
+  return ids;
 }
 
 async function countContent(payload: Payload) {

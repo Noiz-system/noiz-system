@@ -1,5 +1,5 @@
-import { BrandPanel } from "@/components/landing/brand-panel";
-import { ContactForm } from "@/components/landing/contact-form";
+import { ArrowUpRight } from "@/components/ui/icons";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { renderAccented } from "@/lib/accent";
 import { getLanding } from "@/lib/cms";
 import { SECTION_IDS, sectionIndex } from "@/lib/sections";
@@ -8,35 +8,18 @@ export async function Contact() {
   const { contact } = await getLanding();
 
   return (
-    <BrandPanel glow="contact">
-      <section id={SECTION_IDS.contact} className="relative scroll-mt-24">
-        <div className="mx-auto grid w-full max-w-[1240px] items-start gap-15 px-7 py-19.5 lg:grid-cols-2">
-          <div>
-            <div className="mb-5 flex flex-wrap items-baseline gap-x-4.5 gap-y-2">
-              <span className="font-display text-xs tracking-[0.16em] text-iris-400">
-                {sectionIndex(SECTION_IDS.contact)}
-              </span>
-
-              <h2 className="m-0 text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.92] text-panel-foreground">
-                {renderAccented(contact.title)}
-              </h2>
-            </div>
-
-            <p className="max-w-[32em] text-[1.09375rem] text-panel-muted text-pretty">
-              {contact.body}
-            </p>
-
-            <a
-              href={`mailto:${contact.email}`}
-              className="mt-7 inline-block text-[0.9375rem] text-accent-300 underline-offset-4 hover:underline"
-            >
-              {contact.email}
-            </a>
-          </div>
-
-          <ContactForm />
-        </div>
-      </section>
-    </BrandPanel>
+    <section id={SECTION_IDS.contact} className="mx-auto max-w-6xl px-6 pb-24">
+      <SectionHeading
+        index={sectionIndex(SECTION_IDS.contact)}
+        title={renderAccented(contact.title)}
+        lede={contact.body}
+      />
+      <a
+        href={`mailto:${contact.email}`}
+        className="flex flex-wrap items-center justify-center gap-3 font-display text-xl break-all text-primary md:text-3xl"
+      >
+        {contact.email} <ArrowUpRight className="shrink-0" />
+      </a>
+    </section>
   );
 }

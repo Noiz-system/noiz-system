@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Barlow, Barlow_Condensed } from "next/font/google";
+import { JetBrains_Mono, Noto_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locale as localeRootParam } from "next/root-params";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
@@ -7,17 +7,17 @@ import { routing } from "@/i18n/routing";
 import { getLanding } from "@/lib/cms";
 import "@/app/globals.css";
 
-const barlow = Barlow({
-  variable: "--font-barlow",
-  weight: ["400", "500", "700"],
+const notoSans = Noto_Sans({
+  variable: "--font-noto-sans",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin", "latin-ext"],
   display: "swap",
 });
 
-const barlowCondensed = Barlow_Condensed({
-  variable: "--font-barlow-condensed",
-  weight: ["400", "600"],
-  subsets: ["latin", "latin-ext"],
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  weight: ["400"],
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: seo.title,
     description: seo.description,
     openGraph: {
-      title: "Noiz Systems",
+      title: seo.title,
       description: seo.ogDescription,
       siteName: "Noiz Systems",
       locale: await localeRootParam(),
@@ -55,7 +55,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${barlow.variable} ${barlowCondensed.variable} h-full antialiased`}
+      className={`${notoSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col overflow-x-clip">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>

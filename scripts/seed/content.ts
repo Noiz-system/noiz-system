@@ -3,38 +3,55 @@ import type { Market, Post } from "@/payload-types";
 /** One string per content locale. French is the source; English follows. */
 export type L = { fr: string; en: string };
 
+/** Brand files in `scripts/seed/assets/`, uploaded to Media by the seed. */
+export const brandAssets = {
+  bdmarketIcon: {
+    file: "bdmarket-icon.svg",
+    alt: { fr: "Icône BDMarket", en: "BDMarket icon" },
+  },
+  bdmarketWordmark: {
+    file: "bdmarket-wordmark.svg",
+    alt: { fr: "BDMarket", en: "BDMarket" },
+  },
+} as const;
+
+export type BrandAsset = keyof typeof brandAssets;
+
 export const products = [
   {
     name: "BDMarket",
+    imageAsset: "bdmarketIcon" as BrandAsset,
     status: { fr: "En ligne · iOS & Android", en: "Live · iOS & Android" },
-    title: { fr: "L’épicerie africaine, livrée", en: "African groceries, delivered" },
+    title: {
+      fr: "L’épicerie africaine et caribéenne, livrée chez vous",
+      en: "African and Caribbean groceries, delivered to your door",
+    },
     body: {
-      fr: "Une place de marché mobile pour les produits alimentaires africains : vendeurs sélectionnés, produits familiers, des prix justes, livraison planifiée au quartier.",
-      en: "A mobile marketplace for African foods and household goods: curated vendors, familiar products, prices that make sense, delivery scheduled around the neighbourhood.",
+      fr: "Une application dédiée aux produits alimentaires des communautés africaines et caribéennes d’Île-de-France, avec des livraisons planifiées par secteurs.",
+      en: "An app dedicated to the food products of Île-de-France’s African and Caribbean communities, with deliveries scheduled by area.",
     },
     bullets: [
-      { text: { fr: "Intégration vendeurs et outils catalogue", en: "Vendor onboarding and catalogue tools" } },
-      { text: { fr: "Paiement mobile money et carte", en: "Mobile money and card checkout" } },
-      { text: { fr: "Commande depuis la diaspora pour la famille", en: "Diaspora ordering for family back home" } },
+      { text: { fr: "Catalogue et outils vendeurs", en: "Catalogue and vendor tools" } },
+      {
+        text: {
+          fr: "Paiement dans l’app : virement instantané via Bridge ou carte bancaire",
+          en: "In-app payment: instant bank transfer via Bridge or bank card",
+        },
+      },
+      {
+        text: {
+          fr: "Commandes diaspora pour la famille au pays",
+          en: "Diaspora orders for family back home",
+        },
+      },
     ],
     cta: { fr: "Télécharger BDMarket", en: "Download BDMarket" },
+    // Google Play: the Android package from the BDMarket Expo config.
+    // App Store: no public listing link known yet, so the official site for
+    // now — replace it in the admin once the App Store URL is available.
+    appStoreUrl: "https://bdmarket.fr/",
+    playStoreUrl: "https://play.google.com/store/apps/details?id=com.noizsystems.bdmarket",
     order: 1,
-  },
-  {
-    name: "Noiz Logistics",
-    status: { fr: "En ligne · suite opérateur", en: "Live · operator suite" },
-    title: { fr: "La couche logistique en dessous", en: "The delivery layer underneath" },
-    body: {
-      fr: "Répartition, tournées, preuve de livraison et suivi de flotte — le système qui traite les commandes BDMarket, ouvert aux commerçants et transporteurs.",
-      en: "Dispatch, routing, proof of delivery and fleet visibility — the same system that runs BDMarket orders, opened up to merchants and carriers who need it.",
-    },
-    bullets: [
-      { text: { fr: "App livreur avec suivi hors-ligne", en: "Driver app with offline-first tracking" } },
-      { text: { fr: "Console de répartition et planification", en: "Dispatch console and route planning" } },
-      { text: { fr: "API marchand pour le transfert de commandes", en: "Merchant API for order handoff" } },
-    ],
-    cta: { fr: "Demander une démo", en: "Request a demo" },
-    order: 2,
   },
 ];
 
@@ -47,7 +64,7 @@ export const markets: Array<{
 }> = [
   {
     name: { fr: "Paris · Île-de-France", en: "Paris · Île-de-France" },
-    products: ["BDMarket", "Noiz Logistics"],
+    products: ["BDMarket"],
     status: "live",
     order: 1,
   },
@@ -65,7 +82,7 @@ export const markets: Array<{
   },
   {
     name: { fr: "Afrique de l’Ouest", en: "West Africa" },
-    products: ["Noiz Logistics"],
+    products: ["BDMarket"],
     status: "study",
     order: 4,
   },
@@ -118,42 +135,42 @@ export const posts: Array<{
 export const faqs = [
   {
     question: {
-      fr: "Développez-vous des applications pour d’autres entreprises ?",
-      en: "Do you build apps for other companies?",
+      fr: "Comment obtenir de l'aide sur une commande BDMarket ?",
+      en: "How do I get help with a BDMarket order?",
     },
     answer: {
-      fr: "Oui — de façon sélective, surtout dans le commerce et la logistique où nos propres produits nous donnent un avantage réel. Réservez un appel et nous vous dirons honnêtement si nous sommes la bonne équipe.",
-      en: "Yes — selectively, and mostly in commerce and logistics where our own products give us an unfair advantage. Book a call and we will tell you honestly whether we are the right team.",
+      fr: "Ouvrez un ticket dans notre centre d'aide avec votre numéro de commande. Vous recevez une référence pour suivre son avancement.",
+      en: "Open a ticket in our help center with your order number. You get a reference to follow its progress.",
     },
     order: 1,
   },
   {
     question: {
-      fr: "Les commerçants peuvent-ils utiliser la plateforme logistique seule ?",
-      en: "Can merchants use the logistics platform on its own?",
+      fr: "Développez-vous des apps pour d'autres entreprises ?",
+      en: "Do you build apps for other companies?",
     },
     answer: {
-      fr: "Oui. La répartition, l’app livreur et la preuve de livraison fonctionnent indépendamment de BDMarket, avec une API pour transférer les commandes depuis votre boutique.",
-      en: "Yes. Dispatch, driver app and proof of delivery work independently of BDMarket, with an API for handing orders over from your own storefront.",
+      fr: "Oui, de façon sélective, surtout dans le commerce et la logistique où nos propres produits nous donnent un vrai avantage.",
+      en: "Yes, selectively, mostly in commerce and logistics, where our own products give us a real edge.",
     },
     order: 2,
   },
   {
     question: {
-      fr: "Comment gérez-vous les paiements ?",
-      en: "How do you handle payments?",
+      fr: "Quels moyens de paiement acceptez-vous ?",
+      en: "Which payment methods do you accept?",
     },
     answer: {
-      fr: "Mobile money d’abord, carte et paiement à la livraison là où le marché l’attend. Les moyens de paiement sont configurés par marché, pas codés en dur.",
-      en: "Mobile money first, cards and cash on delivery where the market expects them. Payment methods are configured per market, not hard-coded.",
+      fr: "Uniquement dans l’application BDMarket : virement bancaire instantané via notre partenaire Bridge, ou paiement par carte bancaire.",
+      en: "Only in the BDMarket app: instant bank transfer via our partner Bridge, or payment by bank card.",
     },
     order: 3,
   },
   {
-    question: { fr: "Levez-vous des fonds ?", en: "Are you raising?" },
+    question: { fr: "Levez-vous des fonds ?", en: "Are you raising funds?" },
     answer: {
-      fr: "Nous échangeons avec les investisseurs qui connaissent le commerce africain. Utilisez le formulaire en indiquant votre rôle — nous enverrons le deck actuel.",
-      en: "We talk to investors who know African commerce. Use the form and mark your role as investor — we will send the current deck.",
+      fr: "Nous échangeons avec des investisseurs qui connaissent le commerce africain. Écrivez-nous en précisant votre profil.",
+      en: "We talk with investors who know African commerce. Write to us and tell us about your profile.",
     },
     order: 4,
   },
@@ -161,20 +178,21 @@ export const faqs = [
 
 export const landing = {
   hero: {
+    imageAsset: "bdmarketWordmark" as BrandAsset,
     kicker: {
-      fr: "Éditeur de produits · Paris & la diaspora africaine",
-      en: "Product company · Paris & the African diaspora",
+      fr: "Bienvenue sur notre site web",
+      en: "Welcome to our website",
     },
     title: {
-      fr: "Nous construisons les apps qui <accent>font bouger</accent> le commerce africain.",
-      en: "We build the apps that <accent>move</accent> African commerce.",
+      fr: "L’épicerie africaine<br-md> et caribéenne,<br> <accent>livrée chez vous.</accent>",
+      en: "African<br-md> and Caribbean groceries,<br> <accent>delivered to your door.</accent>",
     },
     body: {
-      fr: "Noiz Systems conçoit, lance et exploite ses propres produits — BDMarket pour l’épicerie africaine, et la plateforme logistique qui la livre. Deux frères, une vision, des solutions tech.",
-      en: "Noiz Systems designs, ships and operates its own products — BDMarket for African groceries, and the logistics platform that delivers them. Two brothers, one vision, engineered software.",
+      fr: "Vos produits alimentaires africains et caribéens, réunis dans une seule application. Des livraisons planifiées par secteurs en Île-de-France, avec Noiz Systems.",
+      en: "Your African and Caribbean food products, brought together in one app. Deliveries scheduled by area across Île-de-France, with Noiz Systems.",
     },
-    primaryCta: { fr: "Réserver un appel", en: "Book a call" },
-    secondaryCta: { fr: "Voir les produits", en: "See the products" },
+    primaryCta: { fr: "Découvrir BDMarket", en: "Discover BDMarket" },
+    secondaryCta: { fr: "Centre d'aide", en: "Help center" },
     ticker: [
       { label: { fr: "BDMarket", en: "BDMarket" } },
       { label: { fr: "Noiz Logistics", en: "Noiz Logistics" } },
@@ -187,18 +205,17 @@ export const landing = {
       { label: { fr: "Dernier kilomètre", en: "Last mile" } },
     ],
     stats: [
-      { value: { fr: "02", en: "02" }, label: { fr: "Produits en ligne", en: "Products live" } },
-      { value: { fr: "2 frères", en: "2 brothers" }, label: { fr: "Fondée par", en: "Founded by" } },
-      { value: { fr: "100%", en: "100%" }, label: { fr: "Développé en interne", en: "Built in-house" } },
-      { value: { fr: "Paris", en: "Paris" }, label: { fr: "Marché actif", en: "Live market" } },
+      { value: { fr: "01", en: "01" }, label: { fr: "Produit en ligne", en: "Product live" } },
+      { value: { fr: "100%", en: "100%" }, label: { fr: "Conçu en interne", en: "Built in-house" } },
+      { value: { fr: "Île-de-France", en: "Île-de-France" }, label: { fr: "Marché actif", en: "Active market" } },
     ],
   },
   sections: {
     products: {
-      title: { fr: "Nos produits", en: "Our products" },
+      title: { fr: "BDMarket", en: "BDMarket" },
       lede: {
-        fr: "Maîtrisés de bout en bout — de la boutique que le client ouvre à la tournée que le livreur effectue.",
-        en: "Owned end to end — from the storefront a customer taps to the route a driver runs.",
+        fr: "Maîtrisé de bout en bout, de l'écran que touche le client jusqu'au service après-vente.",
+        en: "Owned end to end, from the screen the customer touches to after-sales service.",
       },
     },
     capabilities: {
@@ -235,34 +252,27 @@ export const landing = {
       ],
     },
     method: {
-      title: { fr: "Notre méthode", en: "How we work" },
+      title: { fr: "Notre méthode", en: "Our method" },
       steps: [
         {
-          title: { fr: "Terrain", en: "Ground truth" },
+          title: { fr: "Écouter", en: "Listen" },
           body: {
-            fr: "Nous passons du temps sur le marché — vendeurs, livreurs, clients — avant de dessiner un écran.",
-            en: "We spend time in the market — vendors, drivers, customers — before a screen is drawn.",
+            fr: "Nous échangeons avec vous pour comprendre vos besoins.",
+            en: "We talk with you to understand your needs.",
           },
         },
         {
-          title: { fr: "Plan", en: "Blueprint" },
+          title: { fr: "Simplifier", en: "Simplify" },
           body: {
-            fr: "Parcours, modèle de données et réalité opérationnelle cartographiés avant le développement.",
-            en: "Flows, data model and the operational reality mapped in one document before build.",
+            fr: "Nous rendons vos courses alimentaires plus simples.",
+            en: "We make your grocery shopping simpler.",
           },
         },
         {
-          title: { fr: "Livrer en semaines", en: "Ship in weeks" },
+          title: { fr: "Accompagner", en: "Support" },
           body: {
-            fr: "Une version fonctionnelle toutes les deux semaines, entre de vraies mains, instrumentée.",
-            en: "A working release every two weeks, in real hands, with the metrics that matter instrumented.",
-          },
-        },
-        {
-          title: { fr: "Exploiter", en: "Operate" },
-          body: {
-            fr: "Nous exploitons ce que nous construisons : support, astreinte et itération en conditions réelles.",
-            en: "We run what we build: support, on-call, and iteration against live operations.",
+            fr: "Nos équipes vous accompagnent, de la commande au suivi.",
+            en: "Our teams support you, from order to follow-up.",
           },
         },
       ],
@@ -282,15 +292,12 @@ export const landing = {
     faq: { title: { fr: "Questions", en: "Questions" } },
   },
   contact: {
-    title: {
-      fr: "Réserver un <accent>appel</accent>",
-      en: "Book a <accent>call</accent>",
-    },
+    title: { fr: "Nous contacter", en: "Contact us" },
     body: {
-      fr: "Dites-nous ce que vous déplacez et pour qui. L’un des fondateurs vous répond — généralement sous un jour ouvré.",
-      en: "Tell us what you are moving and who you are moving it for. One of the founders replies — usually within a working day.",
+      fr: "Une question ou une demande ? Nos équipes sont à votre écoute.",
+      en: "A question or a request? Our teams are here to listen.",
     },
-    email: "hello@noiz.systems",
+    email: "support@noizsystems.tech",
   },
   footer: {
     tagline: {
@@ -299,17 +306,14 @@ export const landing = {
     },
   },
   seo: {
-    title: {
-      fr: "Noiz Systems — Nous construisons les apps qui font bouger le commerce africain",
-      en: "Noiz Systems — We build the apps that move African commerce",
-    },
+    title: { fr: "Noiz Systems — BDMarket", en: "Noiz Systems — BDMarket" },
     description: {
-      fr: "Noiz Systems conçoit, lance et exploite ses propres produits — BDMarket pour l’épicerie africaine, et la plateforme logistique qui la livre.",
-      en: "Noiz Systems designs, ships and operates its own products — BDMarket for African groceries, and the logistics platform that delivers them.",
+      fr: "Découvrez BDMarket, l’épicerie alimentaire des communautés africaines et caribéennes en Île-de-France, avec des livraisons planifiées par secteurs.",
+      en: "Discover BDMarket, the grocery store of Île-de-France’s African and Caribbean communities, with deliveries scheduled by area.",
     },
     ogDescription: {
-      fr: "Éditeur de produits pour le commerce et la logistique de la diaspora africaine. Paris et au-delà.",
-      en: "Product company building commerce and logistics software for the African diaspora. Paris & beyond.",
+      fr: "BDMarket réunit vos produits alimentaires africains et caribéens en Île-de-France, avec des livraisons planifiées par secteurs.",
+      en: "BDMarket brings together your African and Caribbean food products in Île-de-France, with deliveries scheduled by area.",
     },
   },
 };

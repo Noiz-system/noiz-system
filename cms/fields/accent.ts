@@ -2,7 +2,8 @@ import type { TextField } from "payload";
 
 /**
  * A plain text field whose value may carry `<accent>…</accent>` markup, which
- * the frontend renders with the brand gradient (see `lib/accent.tsx`).
+ * the frontend renders with the brand gradient, plus `<br>` / `<br-md>` line
+ * breaks (see `lib/accent.tsx`).
  *
  * Kept as text rather than rich text on purpose: the only formatting a
  * headline needs is "which words glow", and a tag the editor can type is
@@ -17,8 +18,8 @@ export function accentedText(name: string, label?: TextField["label"]): TextFiel
     ...(label ? { label } : {}),
     admin: {
       description: {
-        en: "Wrap words in <accent>…</accent> to highlight them with the brand gradient.",
-        fr: "Entourez des mots de <accent>…</accent> pour les mettre en avant avec le dégradé de la marque.",
+        en: "Wrap words in <accent>…</accent> to highlight them with the brand gradient. <br> forces a line break; <br-md> breaks on wide screens only.",
+        fr: "Entourez des mots de <accent>…</accent> pour les mettre en avant avec le dégradé de la marque. <br> force un retour à la ligne ; <br-md> uniquement sur grand écran.",
       },
     },
   };

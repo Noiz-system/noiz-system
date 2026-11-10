@@ -31,6 +31,8 @@ export default buildConfig({
     pool: { connectionString: process.env.DATABASE_URI },
   }),
 
+  // Support tickets are not a collection here: they live in BDMarket's
+  // Firestore so its back-office can process them (lib/server/support-tickets.ts).
   collections: [Products, Markets, Posts, Faqs, Media, Users],
   globals: [Landing],
 

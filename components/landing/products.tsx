@@ -1,39 +1,52 @@
+import type { ReactNode } from "react";
+import { getTranslations } from "next-intl/server";
 import { buttonClasses } from "@/components/ui/button";
-import { CmsImage } from "@/components/ui/cms-image";
-import { Corners } from "@/components/ui/corners";
+import {
+  AppleLogo,
+  ArrowUpRight,
+  Check,
+  GooglePlayLogo,
+  Headphones,
+} from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { Tag } from "@/components/ui/tag";
-import { getLanding, getProducts } from "@/lib/cms";
-import { cn } from "@/lib/cn";
+import { Link } from "@/i18n/navigation";
+import { getLanding, getProducts, resolveMedia } from "@/lib/cms";
 import { SECTION_IDS, sectionIndex } from "@/lib/sections";
 import type { Product } from "@/payload-types";
 
 export async function Products() {
-  const [{ sections }, products] = await Promise.all([
+  const [{ sections }, products, t] = await Promise.all([
     getLanding(),
     getProducts(),
+    getTranslations("Products"),
   ]);
 
   return (
-    <section
-      id={SECTION_IDS.products}
-      className="mx-auto w-full max-w-[1240px] scroll-mt-24 px-7 py-19.5"
-    >
+    <section id={SECTION_IDS.products} className="mx-auto max-w-6xl px-6 py-24">
       <SectionHeading
         index={sectionIndex(SECTION_IDS.products)}
         title={sections.products.title}
         lede={sections.products.lede}
-        className="mb-9"
       />
 
-      <div className="grid gap-7.5 lg:grid-cols-2">
-        {products.map((product, index) => (
-          // Cards alternate between the canvas and the navy panel so a pair
-          // reads as two distinct products rather than a list.
+      <div className="mx-auto grid max-w-3xl gap-6">
+        {products.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
-            onPanel={index % 2 === 1}
+            labels={{
+              support: t("support", { name: product.name }),
+              appStore: {
+                kicker: t("appStore.kicker"),
+                name: t("appStore.name"),
+                label: t("appStore.label", { name: product.name }),
+              },
+              googlePlay: {
+                kicker: t("googlePlay.kicker"),
+                name: t("googlePlay.name"),
+                label: t("googlePlay.label", { name: product.name }),
+              },
+            }}
           />
         ))}
       </div>
@@ -41,109 +54,119 @@ export async function Products() {
   );
 }
 
-function ProductCard({
-  product,
-  onPanel = false,
-}: {
-  product: Product;
-  onPanel?: boolean;
-}) {
-  const bullets = product.bullets ?? [];
+type StoreLabels = { kicker: string; name: string; label: string };
 
+type CardLabels = {
+  support: string;
+  appStore: StoreLabels;
+  googlePlay: StoreLabels;
+};
+
+/** Two-line store button: "Download on the / App Store". */
+function StoreButton({
+  href,
+  icon,
+  labels,
+}: {
+  href: string;
+  icon: ReactNode;
+  labels: StoreLabels;
+}) {
   return (
-    <article
-      className={cn(
-        "blueprint group flex flex-col transition-transform duration-250 ease-out hover:-translate-y-1",
-        onPanel && "blueprint-panel bg-panel text-panel-foreground",
+    <a
+      href={href}
+      aria-label={labels.label}
+      className={buttonClasses(
+        "brand",
+        "h-12 gap-3 px-5 text-left [&_svg]:size-6",
       )}
     >
-      <Corners />
+      {icon}
+      <span className="flex flex-col leading-none">
+        <span className="text-[0.6875rem] font-medium opacity-80">
+          {labels.kicker}
+        </span>
+        <span className="mt-1 text-base leading-none font-bold">
+          {labels.name}
+        </span>
+      </span>
+    </a>
+  );
+}
 
-      <div
-        aria-hidden
-        className={cn(
-          "h-[3px] origin-left scale-x-0 transition-transform duration-350 ease-out group-hover:scale-x-100",
-          onPanel
-            ? "bg-gradient-to-r from-iris to-accent"
-            : "bg-gradient-to-r from-accent to-iris",
-        )}
-      />
+function ProductCard({
+  product,
+  labels,
+}: {
+  product: Product;
+  labels: CardLabels;
+}) {
+  const icon = resolveMedia(product.image);
+  const hasStores = Boolean(product.appStoreUrl || product.playStoreUrl);
 
-      <div
-        className={cn(
-          "relative h-59 overflow-hidden border-b",
-          onPanel ? "border-panel-line" : "border-line bg-surface",
-        )}
-      >
-        <CmsImage
-          media={product.image}
-          placeholderLabel={product.name}
-          sizes="(min-width: 1024px) 600px, 100vw"
-          onPanel={onPanel}
-        />
+  return (
+    <article className="flex flex-col border-t-2 border-primary bg-background py-8">
+      <div className="mb-6 flex items-center gap-3">
+        {icon ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={icon.url}
+            alt=""
+            className="h-12 w-12 rounded-md bg-paper p-1"
+          />
+        ) : null}
+        <div>
+          <p className="font-display text-xl font-semibold">{product.name}</p>
+          <p className="eyebrow text-muted-foreground">{product.status}</p>
+        </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-6 pb-7">
-        <div className="mb-3 flex flex-wrap items-center gap-2.5">
-          <Tag
-            tone={onPanel ? "iris" : "accent"}
-            className={cn(
-              "font-display tracking-[0.08em] uppercase",
-              onPanel && "bg-iris-500 text-white",
-            )}
+      <h3 className="text-3xl font-semibold">{product.title}</h3>
+      <p className="mt-3 text-muted-foreground">{product.body}</p>
+
+      <ul className="mt-6 space-y-2 text-sm">
+        {(product.bullets ?? []).map((bullet, index) => (
+          <li key={bullet.id ?? index} className="flex items-start gap-3">
+            <Check className="h-5 w-5 shrink-0 text-primary" />
+            {bullet.text}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-auto flex flex-wrap gap-3 pt-8">
+        {hasStores ? (
+          <>
+            {product.appStoreUrl ? (
+              <StoreButton
+                href={product.appStoreUrl}
+                icon={<AppleLogo />}
+                labels={labels.appStore}
+              />
+            ) : null}
+            {product.playStoreUrl ? (
+              <StoreButton
+                href={product.playStoreUrl}
+                icon={<GooglePlayLogo />}
+                labels={labels.googlePlay}
+              />
+            ) : null}
+          </>
+        ) : (
+          <a
+            href={product.ctaHref || `#${SECTION_IDS.contact}`}
+            className={buttonClasses("brand", "h-12 px-6")}
           >
-            {product.name}
-          </Tag>
-          <Tag
-            tone={onPanel ? "outline-panel" : "outline"}
-            className="text-[0.625rem]"
-          >
-            {product.status}
-          </Tag>
-        </div>
-
-        <h3
-          className={cn(
-            "m-0 mb-2.5 text-3xl leading-none",
-            onPanel && "text-panel-foreground",
-          )}
+            {product.cta}
+            <ArrowUpRight />
+          </a>
+        )}
+        <Link
+          href="/support"
+          className={buttonClasses("brandOutline", "h-12 px-6")}
         >
-          {product.title}
-        </h3>
-
-        <p
-          className={cn(
-            "m-0 mb-4.5 text-[0.9375rem] text-pretty",
-            onPanel ? "text-panel-muted" : "text-muted",
-          )}
-        >
-          {product.body}
-        </p>
-
-        <ul className="m-0 mb-5 grid list-none gap-2 p-0 text-sm">
-          {bullets.map((bullet, index) => (
-            <li key={bullet.id ?? index} className="flex gap-2.5">
-              <span
-                aria-hidden
-                className={onPanel ? "text-accent-300" : "text-iris-600"}
-              >
-                /
-              </span>
-              {bullet.text}
-            </li>
-          ))}
-        </ul>
-
-        <a
-          href={product.ctaHref || `#${SECTION_IDS.contact}`}
-          className={buttonClasses(
-            onPanel ? "onPanel" : "secondary",
-            "md",
-            "mt-auto self-start",
-          )}
-        >
-          {product.cta}
-        </a>
+          {labels.support}
+          <Headphones />
+        </Link>
       </div>
     </article>
   );

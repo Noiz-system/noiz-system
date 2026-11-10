@@ -1,70 +1,188 @@
 {
   "Nav": {
-    "products": "Products",
-    "capabilities": "What we do",
-    "markets": "Markets",
-    "news": "News",
-    "bookCall": "Book a call",
+    "ariaLabel": "Main navigation",
+    "bdmarket": "BDMarket",
+    "method": "Method",
+    "faq": "FAQ",
+    "support": "Support",
+    "contact": "Contact us ↗",
     "skipToContent": "Skip to content",
-    "languageLabel": "Language",
     "home": "Noiz Systems — home"
   },
 
-  "Rail": {
-    "ariaLabel": "Section navigation",
-    "products": "PRODUCTS",
-    "capabilities": "CAPABILITIES",
-    "method": "METHOD",
-    "markets": "MARKETS",
-    "news": "NEWS",
-    "faq": "QUESTIONS",
-    "contact": "CONTACT"
-  },
-
-  "Hero": {
-    "mediaLabel": "hero photo — market / delivery in motion"
-  },
-
-  "Markets": {
-    "columns": {
-      "market": "Market",
-      "products": "Products",
-      "status": "Status"
+  "Products": {
+    "support": "{name} support",
+    "appStore": {
+      "kicker": "Download on the",
+      "name": "App Store",
+      "label": "Download {name} on the App Store"
     },
-    "status": {
-      "live": "Live",
-      "next": "Next",
-      "study": "Under study"
+    "googlePlay": {
+      "kicker": "Get it on",
+      "name": "Google Play",
+      "label": "Get {name} on Google Play"
     }
   },
 
-  "News": {
-    "allPosts": "All posts",
-    "categories": {
-      "product": "Product",
-      "logistics": "Logistics",
-      "company": "Company"
-    }
-  },
-
-  "Contact": {
-    "form": {
-      "name": "Name",
-      "email": "Work email",
-      "roleLabel": "I am a…",
-      "message": "What do you need?",
-      "submit": "Send request",
-      "privacy": "We never share your details.",
-      "success": "Thanks — we'll reply within a working day.",
-      "roles": {
-        "client": "Client",
-        "partner": "Merchant / driver",
-        "investor": "Investor"
-      }
-    }
+  "Help": {
+    "kicker": "Help center",
+    "title": "A problem with an order?",
+    "body": "Open a ticket, get a reference and follow its resolution.",
+    "cta": "Open a ticket"
   },
 
   "Footer": {
-    "rights": "© 2026 Noiz Systems"
+    "cta": {
+      "kicker": "Discover BDMarket",
+      "title": "Your African and Caribbean grocery store.<br></br><accent>Always within reach.</accent>",
+      "button": "Discover BDMarket"
+    },
+    "navLabel": "Footer navigation",
+    "product": {
+      "heading": "Product",
+      "name": "BDMarket",
+      "discover": "Discover BDMarket",
+      "grocery": "African and Caribbean groceries",
+      "getApp": "Get the app",
+      "support": "Product support"
+    },
+    "resources": {
+      "heading": "Resources",
+      "faq": "Frequently asked questions",
+      "help": "Help center",
+      "method": "Our method"
+    },
+    "assistance": {
+      "heading": "Assistance",
+      "sub": "By your side",
+      "open": "Open a ticket",
+      "track": "Track a ticket",
+      "order": "Help with an order"
+    },
+    "company": {
+      "heading": "Noiz Systems",
+      "home": "Home",
+      "approach": "Our approach",
+      "contact": "Contact us"
+    },
+    "talk": "A question? Let’s talk",
+    "rights": "© 2026 Noiz Systems. All rights reserved.",
+    "contact": "Contact",
+    "languageLabel": "Language"
+  },
+
+  "Languages": {
+    "fr": "Français",
+    "en": "English"
+  },
+
+  "Support": {
+    "metaTitle": "BDMarket Help Center — Noiz Systems",
+    "metaDescription": "Open a ticket for a BDMarket order or a help request, and track its progress.",
+    "kicker": "Help center · BDMarket",
+    "title": "Helping you.<br></br><accent>Simply.</accent>",
+    "intro": "An order, a delivery or a question?<brmd></brmd> We’re here for you.",
+    "productTagline": "African and Caribbean groceries, delivered to your door.",
+    "created": {
+      "kicker": "Ticket created",
+      "body": "Keep this reference: with your email, it lets you track your request.",
+      "again": "Open another ticket",
+      "emailed": "We’ve just emailed you a confirmation with this reference."
+    },
+    "form": {
+      "step": "01 / Your request",
+      "title": "Open a ticket",
+      "category": "Request type",
+      "name": "Name",
+      "email": "Email",
+      "orderNumber": "Order number (optional)",
+      "orderPlaceholder": "e.g. BD-102938",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send ticket",
+      "sending": "Sending…",
+      "failed": "The ticket couldn’t be sent. Try again."
+    },
+    "categories": {
+      "commande": "Order problem",
+      "livraison": "Delivery",
+      "paiement": "Payment / refund",
+      "compte": "Account & sign-in",
+      "autre": "Other help request"
+    },
+    "errors": {
+      "nameRequired": "Name required",
+      "emailInvalid": "Invalid email",
+      "subjectShort": "Subject too short",
+      "messageShort": "Describe your request (10 characters min.)",
+      "tooLong": "Text too long",
+      "categoryInvalid": "Choose a request type"
+    },
+    "lookup": {
+      "step": "02 / Your tracking",
+      "title": "Track a ticket",
+      "reference": "Ticket reference",
+      "referencePlaceholder": "Reference (NZ-XXXXXX)",
+      "email": "Your email",
+      "emailPlaceholder": "Your email",
+      "submit": "Search",
+      "notFound": "No ticket found with these details.",
+      "status": "Status:",
+      "createdOn": "Created on {date}",
+      "replies": "Replies from the team"
+    },
+    "statuses": {
+      "ouvert": "Open",
+      "en_cours": "In progress",
+      "resolu": "Resolved",
+      "ferme": "Closed"
+    },
+    "aside": {
+      "title": "Your order at your fingertips",
+      "body": "Add your order number for faster handling."
+    },
+    "verify": {
+      "emailTitle": "Verify your email",
+      "emailIntro": "Tickets are linked to your BDMarket account. Enter your account email and we’ll send you a verification code.",
+      "email": "BDMarket account email",
+      "sendCode": "Get a code",
+      "sending": "Sending…",
+      "codeTitle": "Enter the code",
+      "codeIntro": "We sent a 6-digit code to {email}. It expires in {minutes} minutes.",
+      "code": "Verification code",
+      "confirm": "Verify code",
+      "checking": "Checking…",
+      "resend": "Resend code",
+      "resent": "New code sent.",
+      "changeEmail": "Change email",
+      "verified": "Email verified",
+      "retryIn": "Try again in {seconds}s."
+    },
+    "verifyErrors": {
+      "emailInvalid": "Invalid email",
+      "accountNotFound": "No BDMarket account uses this email. Enter your account’s address.",
+      "throttled": "Too many codes requested for this email. Try again in {minutes} min.",
+      "codeInvalid": "Wrong code. Check the 6 digits we emailed you.",
+      "codeExpired": "This code has expired. Request a new one.",
+      "tooManyAttempts": "Too many attempts. Request a new code.",
+      "notVerified": "Your verification has expired. Confirm your email again.",
+      "failed": "The service is temporarily unavailable. Try again in a moment."
+    }
+  },
+
+  "SupportEmail": {
+    "code": {
+      "subject": "Your BDMarket verification code: {code}",
+      "title": "Your verification code",
+      "intro": "Enter this code on the BDMarket help center to confirm your email address. It expires in {minutes} minutes.",
+      "ignore": "If you didn’t ask for this, simply ignore this email."
+    },
+    "ticket": {
+      "subject": "Ticket {reference} received — {subject}",
+      "title": "Your ticket is in",
+      "intro": "Hi {name}, we’ve received your request. Here is its reference:",
+      "track": "Track its progress on the help center with this reference and your email.",
+      "cta": "Track my ticket"
+    }
   }
 }
