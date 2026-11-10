@@ -1,4 +1,3 @@
-import { Corners } from "@/components/ui/corners";
 import { getLanding } from "@/lib/cms";
 import { cn } from "@/lib/cn";
 
@@ -9,22 +8,20 @@ export async function StatsBand() {
   if (stats.length === 0) return null;
 
   return (
-    <section className="mx-auto w-full max-w-[1240px] px-7">
-      <div className="blueprint -mt-px grid grid-cols-2 bg-canvas lg:grid-cols-4">
-        <Corners />
-
+    <section className="mx-auto max-w-6xl px-6 pt-16">
+      <div
+        className={cn(
+          "grid grid-cols-2 border-y border-border",
+          stats.length >= 4 ? "md:grid-cols-4" : "md:grid-cols-3",
+        )}
+      >
         {stats.map((stat, index) => (
           <div
             key={stat.id ?? index}
-            className={cn(
-              "px-6 pt-5.5 pb-6.5 transition-colors hover:bg-accent/7",
-              index > 0 && "border-l border-line",
-            )}
+            className="border-r border-border p-6 last:border-r-0"
           >
-            <p className="mb-2 font-display text-[0.6875rem] tracking-[0.14em] text-accent-700 uppercase dark:text-accent-400">
-              {stat.label}
-            </p>
-            <p className="font-display text-[2.75rem] leading-[0.9]">
+            <p className="eyebrow text-primary">{stat.label}</p>
+            <p className="mt-2 text-4xl font-bold text-foreground">
               {stat.value}
             </p>
           </div>

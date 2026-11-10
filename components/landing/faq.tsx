@@ -1,48 +1,34 @@
+import { Minus, Plus } from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getFaqs, getLanding } from "@/lib/cms";
-import { cn } from "@/lib/cn";
 import { SECTION_IDS, sectionIndex } from "@/lib/sections";
 
 /**
- * Built on native `<details>`, so the accordion opens with zero JavaScript and
- * stays usable if hydration never happens.
+ * Built on native `<details>`, so each answer opens with zero JavaScript and
+ * stays usable if hydration never happens. The summary carries the reference
+ * design's ghost-button styling.
  */
 export async function Faq() {
   const [{ sections }, faqs] = await Promise.all([getLanding(), getFaqs()]);
 
   return (
-    <section id={SECTION_IDS.faq} className="scroll-mt-24 border-t border-line">
-      <div className="mx-auto grid w-full max-w-[1240px] items-start gap-15 px-7 py-19.5 lg:grid-cols-[0.65fr_1.35fr]">
-        <SectionHeading
-          index={sectionIndex(SECTION_IDS.faq)}
-          title={sections.faq.title}
-        />
+    <section id={SECTION_IDS.faq} className="mx-auto max-w-6xl px-6 py-24">
+      <SectionHeading
+        index={sectionIndex(SECTION_IDS.faq)}
+        title={sections.faq.title}
+      />
 
-        <div className="border-t border-line">
-          {faqs.map((faq, index) => (
-            <details
-              key={faq.id}
-              className={cn(
-                "group",
-                index < faqs.length - 1 && "border-b border-line",
-              )}
-            >
-              <summary className="flex cursor-pointer list-none items-center gap-4.5 px-0.5 py-5 font-display text-[1.375rem] font-semibold [&::-webkit-details-marker]:hidden">
-                <span className="flex-1">{faq.question}</span>
-                <span
-                  aria-hidden
-                  className="text-2xl leading-none text-accent transition-transform duration-200 group-open:rotate-45"
-                >
-                  +
-                </span>
-              </summary>
-
-              <p className="m-0 max-w-[62ch] px-0.5 pb-5.5 text-[0.96875rem] text-muted">
-                {faq.answer}
-              </p>
-            </details>
-          ))}
-        </div>
+      <div className="divide-y divide-border border-y border-border">
+        {faqs.map((faq) => (
+          <details key={faq.id} className="group">
+            <summary className="flex w-full cursor-pointer list-none items-center justify-between gap-5 rounded-none px-0 py-6 text-left font-display text-base font-medium transition-colors hover:text-primary focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none md:text-xl [&::-webkit-details-marker]:hidden [&_svg]:size-4 [&_svg]:shrink-0">
+              {faq.question}
+              <Plus className="text-primary group-open:hidden" />
+              <Minus className="hidden text-primary group-open:block" />
+            </summary>
+            <p className="pb-5 text-muted-foreground">{faq.answer}</p>
+          </details>
+        ))}
       </div>
     </section>
   );

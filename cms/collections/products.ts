@@ -3,6 +3,12 @@ import { publicRead } from "@/cms/access";
 import { orderField } from "@/cms/fields/order";
 import { collectionRevalidation } from "@/cms/hooks/revalidate";
 
+/** Shown under both store-link fields. */
+const STORE_LINK_DESCRIPTION = {
+  en: "Optional. Once a store link is set, the card shows download buttons instead of the button above.",
+  fr: "Optionnel. Dès qu’un lien de store est renseigné, la carte affiche des boutons de téléchargement à la place du bouton ci-dessus.",
+};
+
 /**
  * The product cards in section 01.
  *
@@ -83,8 +89,8 @@ export const Products: CollectionConfig = {
       relationTo: "media",
       admin: {
         description: {
-          en: "Optional. A hatched placeholder is shown until an image is set.",
-          fr: "Optionnel. Un motif hachuré s’affiche tant qu’aucune image n’est définie.",
+          en: "Optional. Square product icon shown next to the name and on the help center.",
+          fr: "Optionnel. Icône carrée du produit, affichée à côté du nom et dans le centre d’aide.",
         },
       },
     },
@@ -108,6 +114,23 @@ export const Products: CollectionConfig = {
               fr: "Laissez vide pour renvoyer vers le formulaire de contact.",
             },
           },
+        },
+      ],
+    },
+    {
+      type: "row",
+      fields: [
+        {
+          name: "appStoreUrl",
+          type: "text",
+          label: { en: "App Store link", fr: "Lien App Store" },
+          admin: { description: STORE_LINK_DESCRIPTION },
+        },
+        {
+          name: "playStoreUrl",
+          type: "text",
+          label: { en: "Google Play link", fr: "Lien Google Play" },
+          admin: { description: STORE_LINK_DESCRIPTION },
         },
       ],
     },

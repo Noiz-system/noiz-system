@@ -85,8 +85,8 @@ export const Landing: GlobalConfig = {
               relationTo: "media",
               admin: {
                 description: {
-                  en: "Optional. A hatched placeholder is shown until an image is set.",
-                  fr: "Optionnel. Un motif hachuré s’affiche tant qu’aucune image n’est définie.",
+                  en: "Optional. Brand mark shown above the headline (e.g. the BDMarket wordmark).",
+                  fr: "Optionnel. Logo affiché au-dessus du titre (ex. le logotype BDMarket).",
                 },
               },
             },
@@ -103,12 +103,12 @@ export const Landing: GlobalConfig = {
               name: "stats",
               type: "array",
               label: { en: "Stats band", fr: "Bandeau de chiffres" },
-              minRows: 4,
+              minRows: 1,
               maxRows: 4,
               admin: {
                 description: {
-                  en: "Exactly four, laid out in a row under the hero.",
-                  fr: "Exactement quatre, alignés sous l’en-tête.",
+                  en: "One to four, laid out in a row under the hero.",
+                  fr: "Un à quatre, alignés sous l’en-tête.",
                 },
               },
               fields: [

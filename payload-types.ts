@@ -152,7 +152,7 @@ export interface Product {
       }[]
     | null;
   /**
-   * Optional. A hatched placeholder is shown until an image is set.
+   * Optional. Square product icon shown next to the name and on the help center.
    */
   image?: (number | null) | Media;
   cta: string;
@@ -160,6 +160,14 @@ export interface Product {
    * Leave empty to scroll to the contact form.
    */
   ctaHref?: string | null;
+  /**
+   * Optional. Once a store link is set, the card shows download buttons instead of the button above.
+   */
+  appStoreUrl?: string | null;
+  /**
+   * Optional. Once a store link is set, the card shows download buttons instead of the button above.
+   */
+  playStoreUrl?: string | null;
   /**
    * Lower numbers are shown first.
    */
@@ -371,6 +379,8 @@ export interface ProductsSelect<T extends boolean = true> {
   image?: T;
   cta?: T;
   ctaHref?: T;
+  appStoreUrl?: T;
+  playStoreUrl?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -501,14 +511,14 @@ export interface Landing {
   hero: {
     kicker: string;
     /**
-     * Wrap words in <accent>…</accent> to highlight them with the brand gradient.
+     * Wrap words in <accent>…</accent> to highlight them with the brand gradient. <br> forces a line break; <br-md> breaks on wide screens only.
      */
     title: string;
     body: string;
     primaryCta: string;
     secondaryCta: string;
     /**
-     * Optional. A hatched placeholder is shown until an image is set.
+     * Optional. Brand mark shown above the headline (e.g. the BDMarket wordmark).
      */
     image?: (number | null) | Media;
     ticker?:
@@ -518,7 +528,7 @@ export interface Landing {
         }[]
       | null;
     /**
-     * Exactly four, laid out in a row under the hero.
+     * One to four, laid out in a row under the hero.
      */
     stats?:
       | {
@@ -572,7 +582,7 @@ export interface Landing {
   };
   contact: {
     /**
-     * Wrap words in <accent>…</accent> to highlight them with the brand gradient.
+     * Wrap words in <accent>…</accent> to highlight them with the brand gradient. <br> forces a line break; <br-md> breaks on wide screens only.
      */
     title: string;
     body: string;

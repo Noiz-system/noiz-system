@@ -89,3 +89,15 @@ export function resolveImage(
   if (!value.url || !value.width || !value.height) return null;
   return value as Media & { url: string; width: number; height: number };
 }
+
+/**
+ * Looser than `resolveImage`: any populated upload with a URL. Used for brand
+ * marks (SVG logos and icons) rendered with a plain `<img>`, which do not
+ * need the intrinsic dimensions `next/image` requires.
+ */
+export function resolveMedia(
+  value: number | Media | null | undefined,
+): (Media & { url: string }) | null {
+  if (!value || typeof value !== "object" || !value.url) return null;
+  return value as Media & { url: string };
+}
