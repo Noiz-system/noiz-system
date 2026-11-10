@@ -116,7 +116,8 @@
       "subjectShort": "Sujet trop court",
       "messageShort": "Décrivez votre demande (10 caractères min.)",
       "tooLong": "Texte trop long",
-      "categoryInvalid": "Choisissez un type de demande"
+      "categoryInvalid": "Choisissez un type de demande",
+      "accountNotFound": "Aucun compte BDMarket n’utilise cet e-mail. Saisissez l’adresse de votre compte."
     },
     "lookup": {
       "step": "02 / Votre suivi",
@@ -142,30 +143,21 @@
       "body": "Indiquez votre numéro de commande pour un traitement plus rapide."
     },
     "verify": {
-      "emailTitle": "Vérifier votre e-mail",
-      "emailIntro": "Le ticket est rattaché à votre compte BDMarket. Saisissez l’e-mail de votre compte : nous vous envoyons un code de validation.",
-      "email": "E-mail du compte BDMarket",
-      "sendCode": "Recevoir un code",
-      "sending": "Envoi…",
-      "codeTitle": "Saisissez le code",
-      "codeIntro": "Nous avons envoyé un code à 6 chiffres à {email}. Il expire dans {minutes} minutes.",
+      "kicker": "Vérification de l’e-mail",
+      "title": "Saisissez le code",
+      "intro": "Pour confirmer que cette adresse vous appartient, nous avons envoyé un code à 6 chiffres à {email}. Il expire dans {minutes} minutes.",
       "code": "Code de validation",
-      "confirm": "Valider le code",
-      "checking": "Vérification…",
+      "confirm": "Valider et envoyer",
+      "checking": "Envoi…",
       "resend": "Renvoyer le code",
       "resent": "Nouveau code envoyé.",
-      "changeEmail": "Changer d’e-mail",
-      "verified": "E-mail vérifié",
-      "retryIn": "Réessayez dans {seconds} s."
+      "cancel": "Annuler"
     },
     "verifyErrors": {
-      "emailInvalid": "Email invalide",
-      "accountNotFound": "Aucun compte BDMarket n’utilise cet e-mail. Saisissez l’adresse de votre compte.",
       "throttled": "Trop de codes demandés pour cet e-mail. Réessayez dans {minutes} min.",
       "codeInvalid": "Code incorrect. Vérifiez les 6 chiffres reçus par e-mail.",
       "codeExpired": "Ce code a expiré. Demandez-en un nouveau.",
       "tooManyAttempts": "Trop d’essais. Demandez un nouveau code.",
-      "notVerified": "Votre vérification a expiré. Confirmez à nouveau votre e-mail.",
       "failed": "Le service est momentanément indisponible. Réessayez dans un instant."
     }
   },

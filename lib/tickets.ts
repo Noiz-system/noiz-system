@@ -40,7 +40,9 @@ export type TicketErrorCode =
   | "emailInvalid"
   | "subjectShort"
   | "messageShort"
-  | "tooLong";
+  | "tooLong"
+  /** Set by the server: no BDMarket account uses this email. */
+  | "accountNotFound";
 
 export type TicketErrors = Partial<Record<keyof TicketInput, TicketErrorCode>>;
 

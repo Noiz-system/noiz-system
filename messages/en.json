@@ -116,7 +116,8 @@
       "subjectShort": "Subject too short",
       "messageShort": "Describe your request (10 characters min.)",
       "tooLong": "Text too long",
-      "categoryInvalid": "Choose a request type"
+      "categoryInvalid": "Choose a request type",
+      "accountNotFound": "No BDMarket account uses this email. Enter your account’s address."
     },
     "lookup": {
       "step": "02 / Your tracking",
@@ -142,30 +143,21 @@
       "body": "Add your order number for faster handling."
     },
     "verify": {
-      "emailTitle": "Verify your email",
-      "emailIntro": "Tickets are linked to your BDMarket account. Enter your account email and we’ll send you a verification code.",
-      "email": "BDMarket account email",
-      "sendCode": "Get a code",
-      "sending": "Sending…",
-      "codeTitle": "Enter the code",
-      "codeIntro": "We sent a 6-digit code to {email}. It expires in {minutes} minutes.",
+      "kicker": "Email verification",
+      "title": "Enter the code",
+      "intro": "To confirm this address is yours, we sent a 6-digit code to {email}. It expires in {minutes} minutes.",
       "code": "Verification code",
-      "confirm": "Verify code",
-      "checking": "Checking…",
+      "confirm": "Verify and send",
+      "checking": "Sending…",
       "resend": "Resend code",
       "resent": "New code sent.",
-      "changeEmail": "Change email",
-      "verified": "Email verified",
-      "retryIn": "Try again in {seconds}s."
+      "cancel": "Cancel"
     },
     "verifyErrors": {
-      "emailInvalid": "Invalid email",
-      "accountNotFound": "No BDMarket account uses this email. Enter your account’s address.",
       "throttled": "Too many codes requested for this email. Try again in {minutes} min.",
       "codeInvalid": "Wrong code. Check the 6 digits we emailed you.",
       "codeExpired": "This code has expired. Request a new one.",
       "tooManyAttempts": "Too many attempts. Request a new code.",
-      "notVerified": "Your verification has expired. Confirm your email again.",
       "failed": "The service is temporarily unavailable. Try again in a moment."
     }
   },
