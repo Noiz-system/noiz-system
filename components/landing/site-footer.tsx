@@ -33,12 +33,12 @@ export async function SiteFooter() {
             accent: (chunks) => <span className="text-move">{chunks}</span>,
           })}
         </h2>
-        <a
-          href="https://bdmarket.fr/"
+        <Link
+          href={homeAnchor(SECTION_IDS.contact)}
           className={buttonClasses("brand", "mt-7 h-12 max-w-full px-6")}
         >
           {t("cta.button")} <ArrowUpRight />
-        </a>
+        </Link>
       </div>
 
       <div className="h-1 bg-bar" aria-hidden="true" />
@@ -49,6 +49,27 @@ export async function SiteFooter() {
           className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.3fr_1fr_1fr_1fr] md:gap-x-10"
         >
           <div>
+            <h3 className={headingClass}>{t("company.heading")}</h3>
+            <div className="mt-4">
+              <Link href={homeAnchor(SECTION_IDS.company)} className={linkClass}>
+                {t("company.about")}
+              </Link>
+              <Link href={homeAnchor(SECTION_IDS.vision)} className={linkClass}>
+                {t("company.vision")}
+              </Link>
+              <Link href={homeAnchor(SECTION_IDS.method)} className={linkClass}>
+                {t("company.approach")}
+              </Link>
+              <Link href={homeAnchor(SECTION_IDS.contact)} className={linkClass}>
+                {t("company.contact")}
+              </Link>
+              <address className="mt-4 text-sm leading-relaxed text-footer-muted not-italic">
+                {t.rich("company.address", { br: () => <br /> })}
+              </address>
+            </div>
+          </div>
+
+          <div>
             <h3 className={headingClass}>{t("product.heading")}</h3>
             <p className="mt-5 mb-3 flex items-center gap-2 text-xs font-bold text-footer-heading uppercase">
               <ShoppingBag className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -58,7 +79,7 @@ export async function SiteFooter() {
               {t("product.discover")}
             </Link>
             <Link href={homeAnchor(SECTION_IDS.products)} className={linkClass}>
-              {t("product.grocery")}
+              {t("product.market")}
             </Link>
             <Link href={homeAnchor(SECTION_IDS.contact)} className={linkClass}>
               {t("product.getApp")}
@@ -108,21 +129,6 @@ export async function SiteFooter() {
               {t("assistance.order")}
             </Link>
           </div>
-
-          <div>
-            <h3 className={headingClass}>{t("company.heading")}</h3>
-            <div className="mt-4">
-              <Link href="/" className={linkClass}>
-                {t("company.home")}
-              </Link>
-              <Link href={homeAnchor(SECTION_IDS.method)} className={linkClass}>
-                {t("company.approach")}
-              </Link>
-              <Link href={homeAnchor(SECTION_IDS.contact)} className={linkClass}>
-                {t("company.contact")}
-              </Link>
-            </div>
-          </div>
         </nav>
 
         <div className="flex flex-col items-start justify-between gap-6 pt-12 pb-8 sm:flex-row sm:items-center md:pt-16">
@@ -155,7 +161,10 @@ export async function SiteFooter() {
         </div>
 
         <div className="flex flex-col gap-4 border-t border-footer-border py-6 text-xs text-footer-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>{t("rights")}</p>
+          <div className="space-y-1">
+            <p>{t("rights")}</p>
+            <p>{t("legal")}</p>
+          </div>
           <div className="flex items-center gap-6">
             <Link
               href={homeAnchor(SECTION_IDS.contact)}

@@ -13,6 +13,17 @@ export const brandAssets = {
     file: "bdmarket-wordmark.svg",
     alt: { fr: "BDMarket", en: "BDMarket" },
   },
+  bdmarketAppLogo: {
+    file: "bdmarket-app-logo.png",
+    alt: { fr: "Logo de l’application BDMarket", en: "BDMarket app logo" },
+  },
+  founderPortrait: {
+    file: "kenny-matuka.png",
+    alt: {
+      fr: "Portrait de Kenny Matuka, fondateur de NOIZ SYSTEMS",
+      en: "Portrait of Kenny Matuka, founder of NOIZ SYSTEMS",
+    },
+  },
 } as const;
 
 export type BrandAsset = keyof typeof brandAssets;
@@ -20,28 +31,34 @@ export type BrandAsset = keyof typeof brandAssets;
 export const products = [
   {
     name: "BDMarket",
-    imageAsset: "bdmarketIcon" as BrandAsset,
-    status: { fr: "En ligne · iOS & Android", en: "Live · iOS & Android" },
+    imageAsset: "bdmarketAppLogo" as BrandAsset,
+    wordmarkAsset: "bdmarketWordmark" as BrandAsset,
+    status: { fr: "Disponible sur iOS et Android", en: "Available on iOS and Android" },
     title: {
-      fr: "L’épicerie africaine et caribéenne, livrée chez vous",
-      en: "African and Caribbean groceries, delivered to your door",
+      fr: "Le marché africain et caribéen à portée de main",
+      en: "Your African and Caribbean market at your fingertips",
     },
     body: {
-      fr: "Une application dédiée aux produits alimentaires des communautés africaines et caribéennes d’Île-de-France, avec des livraisons planifiées par secteurs.",
-      en: "An app dedicated to the food products of Île-de-France’s African and Caribbean communities, with deliveries scheduled by area.",
+      fr: "Commandez vos produits préférés, nous vous les livrons. En Île-de-France, les livraisons sont planifiées par secteur.",
+      en: "Order your favourite products and we deliver them to you. In Île-de-France, deliveries are scheduled by area.",
     },
     bullets: [
-      { text: { fr: "Catalogue et outils vendeurs", en: "Catalogue and vendor tools" } },
       {
         text: {
-          fr: "Paiement dans l’app : virement instantané via Bridge ou carte bancaire",
-          en: "In-app payment: instant bank transfer via Bridge or bank card",
+          fr: "Un large catalogue de produits alimentaires pour répondre à vos besoins",
+          en: "A wide range of food products to suit your needs",
         },
       },
       {
         text: {
-          fr: "Commandes diaspora pour la famille au pays",
-          en: "Diaspora orders for family back home",
+          fr: "Paiement dans l’application, uniquement par virement bancaire instantané via notre partenaire Bridge",
+          en: "Pay in the app exclusively by instant bank transfer through our partner Bridge",
+        },
+      },
+      {
+        text: {
+          fr: "Gagnez du temps : faites vos courses sans vous déplacer",
+          en: "Save time: shop for groceries without leaving home",
         },
       },
     ],
@@ -135,87 +152,154 @@ export const posts: Array<{
 export const faqs = [
   {
     question: {
-      fr: "Comment obtenir de l'aide sur une commande BDMarket ?",
-      en: "How do I get help with a BDMarket order?",
+      fr: "À qui s’adressent vos solutions ?",
+      en: "Who are your solutions for?",
     },
     answer: {
-      fr: "Ouvrez un ticket dans notre centre d'aide avec votre numéro de commande. Vous recevez une référence pour suivre son avancement.",
-      en: "Open a ticket in our help center with your order number. You get a reference to follow its progress.",
+      fr: "Nos systèmes et applications s’adressent aux communautés africaines en Afrique et à la diaspora en Occident, ainsi qu’à toute personne intéressée par les services que nous développons. Chaque solution répond à des besoins concrets pour faciliter le quotidien.",
+      en: "Our systems and applications serve African communities in Africa and the diaspora in the West, as well as anyone interested in the services we develop. Each solution addresses practical needs to make everyday life easier.",
     },
     order: 1,
   },
   {
     question: {
-      fr: "Développez-vous des apps pour d'autres entreprises ?",
-      en: "Do you build apps for other companies?",
+      fr: "Quel est le lien entre NOIZ SYSTEMS et BDMarket ?",
+      en: "How are NOIZ SYSTEMS and BDMarket connected?",
     },
     answer: {
-      fr: "Oui, de façon sélective, surtout dans le commerce et la logistique où nos propres produits nous donnent un vrai avantage.",
-      en: "Yes, selectively, mostly in commerce and logistics, where our own products give us a real edge.",
+      fr: "BDMarket est une application conçue et développée par NOIZ SYSTEMS. Elle traduit notre mission dans un usage concret : faire ses courses plus facilement.",
+      en: "BDMarket is an application designed and developed by NOIZ SYSTEMS. It brings our mission to life through a practical use: making grocery shopping easier.",
     },
     order: 2,
   },
   {
     question: {
-      fr: "Quels moyens de paiement acceptez-vous ?",
-      en: "Which payment methods do you accept?",
+      fr: "Comment obtenir de l’aide pour une commande BDMarket ?",
+      en: "How can I get help with a BDMarket order?",
     },
     answer: {
-      fr: "Uniquement dans l’application BDMarket : virement bancaire instantané via notre partenaire Bridge, ou paiement par carte bancaire.",
-      en: "Only in the BDMarket app: instant bank transfer via our partner Bridge, or payment by bank card.",
+      fr: "Ouvrez un ticket dans notre centre d’aide en indiquant votre numéro de commande. La référence reçue vous permettra de suivre votre demande.",
+      en: "Open a ticket in our help centre and include your order number. Use the reference you receive to track your request.",
     },
     order: 3,
   },
   {
-    question: { fr: "Levez-vous des fonds ?", en: "Are you raising funds?" },
+    question: {
+      fr: "Développez-vous des applications pour d’autres entreprises ?",
+      en: "Do you develop applications for other businesses?",
+    },
     answer: {
-      fr: "Nous échangeons avec des investisseurs qui connaissent le commerce africain. Écrivez-nous en précisant votre profil.",
-      en: "We talk with investors who know African commerce. Write to us and tell us about your profile.",
+      fr: "Oui, nous accompagnons déjà des sociétés dans différents domaines en développant des systèmes et des applications adaptés à leurs besoins.",
+      en: "Yes, we already support companies across different industries by developing systems and applications tailored to their needs.",
     },
     order: 4,
+  },
+  {
+    question: {
+      fr: "Quel moyen de paiement acceptez-vous ?",
+      en: "Which payment method do you accept?",
+    },
+    answer: {
+      fr: "Le paiement s’effectue dans l’application BDMarket, exclusivement par virement bancaire instantané via notre partenaire Bridge.",
+      en: "Payments are made in the BDMarket app exclusively by instant bank transfer through our partner Bridge.",
+    },
+    order: 5,
+  },
+  {
+    question: {
+      fr: "Levez-vous des fonds ?",
+      en: "Are you raising funds?",
+    },
+    answer: {
+      fr: "Nous échangeons avec des investisseurs qui connaissent les besoins et les priorités du continent africain et de ses communautés à travers le monde. Pour toute question, contactez-nous par e-mail à support@noizsystems.tech.",
+      en: "We are in discussions with investors who understand the needs and priorities of Africa and its communities around the world. For any questions, email us at support@noizsystems.tech.",
+    },
+    order: 6,
   },
 ];
 
 export const landing = {
   hero: {
-    imageAsset: "bdmarketWordmark" as BrandAsset,
     kicker: {
-      fr: "Bienvenue sur notre site web",
-      en: "Welcome to our website",
+      fr: "La technologie au service de nos communautés",
+      en: "Technology serving our communities",
     },
-    title: {
-      fr: "L’épicerie africaine<br-md> et caribéenne,<br> <accent>livrée chez vous.</accent>",
-      en: "African<br-md> and Caribbean groceries,<br> <accent>delivered to your door.</accent>",
+    title: { fr: "NOIZ SYSTEMS", en: "NOIZ SYSTEMS" },
+    tagline: {
+      fr: "Automatiser. Simplifier.<br><accent>Améliorer le quotidien.</accent>",
+      en: "Automate. Simplify.<br><accent>Improve everyday life.</accent>",
     },
     body: {
-      fr: "Vos produits alimentaires africains et caribéens, réunis dans une seule application. Des livraisons planifiées par secteurs en Île-de-France, avec Noiz Systems.",
-      en: "Your African and Caribbean food products, brought together in one app. Deliveries scheduled by area across Île-de-France, with Noiz Systems.",
+      fr: "Nous développons des systèmes et des applications pour les communautés africaines sur le continent et la diaspora en Occident.",
+      en: "We develop systems and applications for African communities across the continent and the diaspora in the West.",
     },
-    primaryCta: { fr: "Découvrir BDMarket", en: "Discover BDMarket" },
-    secondaryCta: { fr: "Centre d'aide", en: "Help center" },
-    ticker: [
-      { label: { fr: "BDMarket", en: "BDMarket" } },
-      { label: { fr: "Noiz Logistics", en: "Noiz Logistics" } },
-      { label: { fr: "Paris", en: "Paris" } },
-      { label: { fr: "Île-de-France", en: "Île-de-France" } },
-      { label: { fr: "Saint-Denis", en: "Saint-Denis" } },
-      { label: { fr: "Montreuil", en: "Montreuil" } },
-      { label: { fr: "Créteil", en: "Créteil" } },
-      { label: { fr: "Mobile money", en: "Mobile money" } },
-      { label: { fr: "Dernier kilomètre", en: "Last mile" } },
-    ],
-    stats: [
-      { value: { fr: "01", en: "01" }, label: { fr: "Produit en ligne", en: "Product live" } },
-      { value: { fr: "100%", en: "100%" }, label: { fr: "Conçu en interne", en: "Built in-house" } },
-      { value: { fr: "Île-de-France", en: "Île-de-France" }, label: { fr: "Marché actif", en: "Active market" } },
-    ],
+    primaryCta: { fr: "Découvrir la société", en: "Discover our company" },
+    secondaryCta: { fr: "Nos produits", en: "Our products" },
   },
   sections: {
-    products: {
-      title: { fr: "BDMarket", en: "BDMarket" },
+    company: {
+      title: { fr: "En Afrique.<br>Et au-delà.", en: "In Africa.<br>And beyond." },
+      lead: {
+        fr: "NOIZ SYSTEMS est une société technologique ancrée dans les réalités de celles et ceux qu’elle accompagne.",
+        en: "NOIZ SYSTEMS is a technology company rooted in the everyday realities of the people it serves.",
+      },
+      paragraphs: [
+        {
+          text: {
+            fr: "Sur le continent africain comme en Occident, les habitudes et les attentes varient. Nous partons de ces réalités pour concevoir des outils qui répondent à des besoins concrets.",
+            en: "Across Africa and in the West, habits and expectations differ. These realities guide us in designing tools that meet practical needs.",
+          },
+        },
+        {
+          text: {
+            fr: "Faire les courses, par exemple, peut prendre du temps et nécessiter plusieurs déplacements. C’est pour alléger ces contraintes que nous avons créé BDMarket.",
+            en: "Grocery shopping, for example, can be time-consuming and involve several trips. We created BDMarket to make it easier.",
+          },
+        },
+      ],
+      founder: {
+        portraitAsset: "founderPortrait" as BrandAsset,
+        name: "Kenny Matuka",
+        role: { fr: "Fondateur et dirigeant", en: "Founder and company director" },
+        kicker: { fr: "À l’origine de NOIZ SYSTEMS", en: "The founder of NOIZ SYSTEMS" },
+        cta: { fr: "Échanger avec nous", en: "Get in touch" },
+      },
+    },
+    vision: {
+      title: { fr: "Ce qui nous guide", en: "What drives us" },
       lede: {
-        fr: "Maîtrisé de bout en bout, de l'écran que touche le client jusqu'au service après-vente.",
-        en: "Owned end to end, from the screen the customer touches to after-sales service.",
+        fr: "Trois objectifs pour transformer les usages du quotidien.",
+        en: "Three goals to transform everyday experiences.",
+      },
+      items: [
+        {
+          title: { fr: "Automatiser", en: "Automate" },
+          body: {
+            fr: "Réduire les tâches répétitives pour libérer du temps.",
+            en: "Reduce repetitive tasks to free up time.",
+          },
+        },
+        {
+          title: { fr: "Simplifier", en: "Simplify" },
+          body: {
+            fr: "Faciliter les démarches et rendre les services plus accessibles.",
+            en: "Make processes easier and services more accessible.",
+          },
+        },
+        {
+          title: { fr: "Améliorer", en: "Improve" },
+          body: {
+            fr: "Proposer des outils utiles, adaptés aux habitudes de celles et ceux qui les utilisent.",
+            en: "Provide useful tools that fit the habits of the people using them.",
+          },
+        },
+      ],
+    },
+    products: {
+      title: { fr: "Notre vision prend vie", en: "Our vision comes to life" },
+      lede: {
+        fr: "BDMarket : une autre façon de faire ses courses.",
+        en: "BDMarket: a new way to shop for groceries.",
       },
     },
     capabilities: {
@@ -252,27 +336,27 @@ export const landing = {
       ],
     },
     method: {
-      title: { fr: "Notre méthode", en: "Our method" },
+      title: { fr: "Du besoin au produit", en: "From need to product" },
       steps: [
         {
           title: { fr: "Écouter", en: "Listen" },
           body: {
-            fr: "Nous échangeons avec vous pour comprendre vos besoins.",
-            en: "We talk with you to understand your needs.",
+            fr: "Comprendre les habitudes et les difficultés rencontrées pour identifier les priorités.",
+            en: "Understand habits and challenges to identify priorities.",
           },
         },
         {
-          title: { fr: "Simplifier", en: "Simplify" },
+          title: { fr: "Concevoir", en: "Design" },
           body: {
-            fr: "Nous rendons vos courses alimentaires plus simples.",
-            en: "We make your grocery shopping simpler.",
+            fr: "Imaginer des solutions adaptées, puis les développer en interne.",
+            en: "Design tailored solutions, then develop them in-house.",
           },
         },
         {
           title: { fr: "Accompagner", en: "Support" },
           body: {
-            fr: "Nos équipes vous accompagnent, de la commande au suivi.",
-            en: "Our teams support you, from order to follow-up.",
+            fr: "Assurer le suivi et faire évoluer nos produits grâce aux retours des utilisateurs.",
+            en: "Provide ongoing support and improve our products through user feedback.",
           },
         },
       ],
@@ -289,13 +373,13 @@ export const landing = {
       },
     },
     news: { title: { fr: "Actualités", en: "News" } },
-    faq: { title: { fr: "Questions", en: "Questions" } },
+    faq: { title: { fr: "Questions fréquentes", en: "Frequently asked questions" } },
   },
   contact: {
-    title: { fr: "Nous contacter", en: "Contact us" },
+    title: { fr: "Échangeons", en: "Let’s talk" },
     body: {
-      fr: "Une question ou une demande ? Nos équipes sont à votre écoute.",
-      en: "A question or a request? Our teams are here to listen.",
+      fr: "Une question sur NOIZ SYSTEMS, nos produits ou une collaboration ? Nos équipes sont à votre écoute.",
+      en: "Have a question about NOIZ SYSTEMS, our products or a partnership? Our team is here to listen.",
     },
     email: "support@noizsystems.tech",
   },
@@ -306,14 +390,17 @@ export const landing = {
     },
   },
   seo: {
-    title: { fr: "Noiz Systems — BDMarket", en: "Noiz Systems — BDMarket" },
+    title: {
+      fr: "NOIZ SYSTEMS — La société, notre vision et nos produits",
+      en: "NOIZ SYSTEMS — Our company, vision and products",
+    },
     description: {
-      fr: "Découvrez BDMarket, l’épicerie alimentaire des communautés africaines et caribéennes en Île-de-France, avec des livraisons planifiées par secteurs.",
-      en: "Discover BDMarket, the grocery store of Île-de-France’s African and Caribbean communities, with deliveries scheduled by area.",
+      fr: "NOIZ SYSTEMS développe des systèmes et des applications pour les communautés africaines en Afrique et la diaspora en Occident : automatiser, simplifier et améliorer le quotidien, notamment avec BDMarket.",
+      en: "NOIZ SYSTEMS develops systems and applications for African communities and the diaspora: automating, simplifying and improving everyday life, including grocery shopping with BDMarket.",
     },
     ogDescription: {
-      fr: "BDMarket réunit vos produits alimentaires africains et caribéens en Île-de-France, avec des livraisons planifiées par secteurs.",
-      en: "BDMarket brings together your African and Caribbean food products in Île-de-France, with deliveries scheduled by area.",
+      fr: "La technologie au service des communautés africaines et de la diaspora : NOIZ SYSTEMS automatise, simplifie et améliore le quotidien. BDMarket concrétise cette mission pour les courses alimentaires.",
+      en: "Technology serving African communities and the diaspora. Discover NOIZ SYSTEMS, our goals and BDMarket, our African and Caribbean grocery marketplace.",
     },
   },
 };

@@ -1,3 +1,4 @@
+import { Company } from "@/components/landing/company";
 import { Contact } from "@/components/landing/contact";
 import { Faq } from "@/components/landing/faq";
 import { HelpBand } from "@/components/landing/help-band";
@@ -6,7 +7,7 @@ import { Method } from "@/components/landing/method";
 import { Products } from "@/components/landing/products";
 import { SiteFooter } from "@/components/landing/site-footer";
 import { SiteHeader } from "@/components/landing/site-header";
-import { StatsBand } from "@/components/landing/stats-band";
+import { Vision } from "@/components/landing/vision";
 
 export default function HomePage() {
   return (
@@ -14,9 +15,10 @@ export default function HomePage() {
       <SiteHeader />
       <main id="main">
         <Hero />
-        <StatsBand />
-        <Products />
+        <Company />
+        <Vision />
         <Method />
+        <Products />
         <HelpBand />
         <Faq />
         <Contact />

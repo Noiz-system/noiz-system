@@ -11,20 +11,21 @@ import {
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Link } from "@/i18n/navigation";
 import { getLanding, getProducts, resolveMedia } from "@/lib/cms";
-import { SECTION_IDS, sectionIndex } from "@/lib/sections";
+import { SECTION_IDS, sectionLabel } from "@/lib/sections";
 import type { Product } from "@/payload-types";
 
 export async function Products() {
-  const [{ sections }, products, t] = await Promise.all([
+  const [{ sections }, products, t, labels] = await Promise.all([
     getLanding(),
     getProducts(),
     getTranslations("Products"),
+    getTranslations("Sections"),
   ]);
 
   return (
     <section id={SECTION_IDS.products} className="mx-auto max-w-6xl px-6 py-24">
       <SectionHeading
-        index={sectionIndex(SECTION_IDS.products)}
+        index={sectionLabel(SECTION_IDS.products, labels("products"))}
         title={sections.products.title}
         lede={sections.products.lede}
       />
@@ -102,6 +103,7 @@ function ProductCard({
   labels: CardLabels;
 }) {
   const icon = resolveMedia(product.image);
+  const wordmark = resolveMedia(product.wordmark);
   const hasStores = Boolean(product.appStoreUrl || product.playStoreUrl);
 
   return (
@@ -112,11 +114,22 @@ function ProductCard({
           <img
             src={icon.url}
             alt=""
-            className="h-12 w-12 rounded-md bg-paper p-1"
+            className="h-12 w-12 shrink-0 rounded-md object-contain"
           />
         ) : null}
         <div>
-          <p className="font-display text-xl font-semibold">{product.name}</p>
+          {wordmark ? (
+            // Brand logotype (SVG) from the CMS: a plain <img>, as next/image
+            // would need intrinsic dimensions and SVG opt-in.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={wordmark.url}
+              alt={product.name}
+              className="h-7 w-auto md:h-9"
+            />
+          ) : (
+            <p className="font-display text-xl font-semibold">{product.name}</p>
+          )}
           <p className="eyebrow text-muted-foreground">{product.status}</p>
         </div>
       </div>

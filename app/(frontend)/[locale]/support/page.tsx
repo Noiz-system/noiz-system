@@ -63,7 +63,11 @@ export default async function SupportPage() {
               <div className="flex items-center gap-4 border-l-2 border-primary pl-5">
                 {icon ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={icon.url} alt="" className="h-12 w-12" />
+                  <img
+                    src={icon.url}
+                    alt=""
+                    className="h-12 w-12 shrink-0 rounded-md object-contain"
+                  />
                 ) : null}
                 <div>
                   <p className="text-lg font-bold">{product.name}</p>

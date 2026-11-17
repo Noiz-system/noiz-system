@@ -17,7 +17,7 @@ const base =
   "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0";
 
 const variants: Record<ButtonVariant, string> = {
-  brand: "bg-primary text-primary-foreground hover:bg-primary/90",
+  brand: "bg-bar text-primary-foreground hover:brightness-110",
   brandOutline:
     "border border-primary bg-background text-primary hover:bg-secondary",
 };

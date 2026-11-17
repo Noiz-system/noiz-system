@@ -60,10 +60,11 @@ async function main() {
   const media = await ensureBrandMedia(payload);
 
   const productIds = new Map<string, number>();
-  for (const { imageAsset, ...product } of products) {
+  for (const { imageAsset, wordmarkAsset, ...product } of products) {
     const doc = await createLocalized(payload, "products", {
       ...product,
       image: media[imageAsset],
+      wordmark: media[wordmarkAsset],
     });
     productIds.set(product.name, doc.id);
   }
@@ -85,8 +86,21 @@ async function main() {
   for (const faq of faqs) await createLocalized(payload, "faqs", faq);
   payload.logger.info(`Seeded ${faqs.length} FAQs`);
 
-  const { imageAsset: heroAsset, ...hero } = landing.hero;
-  const landingData = { ...landing, hero: { ...hero, image: media[heroAsset] } };
+  const { founder, ...company } = landing.sections.company;
+  const { portraitAsset, ...founderData } = founder;
+  const landingData = {
+    ...landing,
+    // The current design shows no brand mark above the hero headline; clear
+    // the one an earlier seed may have set.
+    hero: { ...landing.hero, image: null },
+    sections: {
+      ...landing.sections,
+      company: {
+        ...company,
+        founder: { ...founderData, portrait: media[portraitAsset] },
+      },
+    },
+  };
 
   const doc = await payload.updateGlobal({
     slug: "landing",

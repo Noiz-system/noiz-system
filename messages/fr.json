@@ -1,13 +1,18 @@
 {
   "Nav": {
     "ariaLabel": "Navigation principale",
-    "bdmarket": "BDMarket",
-    "method": "Méthode",
-    "faq": "FAQ",
+    "mobileLabel": "Navigation mobile",
     "support": "Support",
     "contact": "Nous contacter ↗",
     "skipToContent": "Aller au contenu",
     "home": "Noiz Systems — accueil"
+  },
+
+  "Sections": {
+    "company": "La société",
+    "vision": "Notre vision",
+    "method": "Notre démarche",
+    "products": "Nos produits"
   },
 
   "Products": {
@@ -25,24 +30,32 @@
   },
 
   "Help": {
-    "kicker": "Centre d'aide",
+    "kicker": "Centre d’aide",
     "title": "Un souci avec une commande ?",
-    "body": "Ouvrez un ticket, recevez une référence et suivez sa résolution.",
+    "body": "Adressez votre demande à nos équipes et suivez son avancement.",
     "cta": "Ouvrir un ticket"
   },
 
   "Footer": {
     "cta": {
-      "kicker": "Découvrez BDMarket",
-      "title": "Votre épicerie africaine et caribéenne.<br></br><accent>Toujours à portée de main.</accent>",
-      "button": "Découvrir BDMarket"
+      "kicker": "NOIZ SYSTEMS",
+      "title": "Des idées utiles.<br></br><accent>Des produits concrets.</accent>",
+      "button": "Parlons de vos besoins"
     },
     "navLabel": "Navigation du bas de page",
+    "company": {
+      "heading": "NOIZ SYSTEMS",
+      "about": "La société",
+      "vision": "Notre vision et nos objectifs",
+      "approach": "Notre démarche",
+      "contact": "Nous contacter",
+      "address": "47 RUE VIVIENNE<br></br>75002 PARIS"
+    },
     "product": {
       "heading": "Produit",
       "name": "BDMarket",
       "discover": "Découvrir BDMarket",
-      "grocery": "L’épicerie africaine et caribéenne",
+      "market": "Votre marché africain et caribéen",
       "getApp": "Obtenir l’application",
       "support": "Support du produit"
     },
@@ -59,21 +72,19 @@
       "track": "Suivre un ticket",
       "order": "Aide sur une commande"
     },
-    "company": {
-      "heading": "Noiz Systems",
-      "home": "Accueil",
-      "approach": "Notre approche",
-      "contact": "Nous contacter"
-    },
     "talk": "Une question ? Parlons-en",
     "rights": "© 2026 Noiz Systems. Tous droits réservés.",
-    "contact": "Contact",
-    "languageLabel": "Langue"
+    "legal": "NOIZ SYSTEMS, SASU, société par actions simplifiée unipersonnelle · SIREN 981 198 807 · SIRET du siège 981 198 807 00019",
+    "contact": "Contact"
   },
 
   "Languages": {
     "fr": "Français",
-    "en": "English"
+    "en": "English",
+    "switch": {
+      "fr": "Passer en français",
+      "en": "Switch to English"
+    }
   },
 
   "Support": {

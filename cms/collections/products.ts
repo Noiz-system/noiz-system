@@ -95,6 +95,17 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      name: "wordmark",
+      type: "upload",
+      relationTo: "media",
+      admin: {
+        description: {
+          en: "Optional. Logotype shown in place of the name on the product card.",
+          fr: "Optionnel. Logotype affiché à la place du nom sur la carte produit.",
+        },
+      },
+    },
+    {
       type: "row",
       fields: [
         {

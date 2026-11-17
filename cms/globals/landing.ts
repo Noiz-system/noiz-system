@@ -59,6 +59,12 @@ export const Landing: GlobalConfig = {
               label: { en: "Kicker", fr: "Surtitre" },
             },
             accentedText("title"),
+            {
+              ...accentedText("tagline", { en: "Tagline", fr: "Accroche" }),
+              // Optional so the column can be added to a database that
+              // already holds a landing page.
+              required: false,
+            },
             { name: "body", type: "textarea", localized: true, required: true },
             {
               type: "row",
@@ -85,8 +91,8 @@ export const Landing: GlobalConfig = {
               relationTo: "media",
               admin: {
                 description: {
-                  en: "Optional. Brand mark shown above the headline (e.g. the BDMarket wordmark).",
-                  fr: "Optionnel. Logo affiché au-dessus du titre (ex. le logotype BDMarket).",
+                  en: "Not displayed on the current design.",
+                  fr: "Non affiché dans le design actuel.",
                 },
               },
             },
@@ -95,6 +101,12 @@ export const Landing: GlobalConfig = {
               type: "array",
               label: { en: "Ticker", fr: "Bandeau défilant" },
               minRows: 3,
+              admin: {
+                description: {
+                  en: "Not displayed on the current design.",
+                  fr: "Non affiché dans le design actuel.",
+                },
+              },
               fields: [
                 { name: "label", type: "text", localized: true, required: true },
               ],
@@ -107,8 +119,8 @@ export const Landing: GlobalConfig = {
               maxRows: 4,
               admin: {
                 description: {
-                  en: "One to four, laid out in a row under the hero.",
-                  fr: "Un à quatre, alignés sous l’en-tête.",
+                  en: "Not displayed on the current design.",
+                  fr: "Non affiché dans le design actuel.",
                 },
               },
               fields: [
@@ -138,15 +150,149 @@ export const Landing: GlobalConfig = {
           label: { en: "Sections", fr: "Sections" },
           fields: [
             {
+              name: "company",
+              type: "group",
+              label: { en: "01 · Company", fr: "01 · La société" },
+              fields: [
+                { ...accentedText("title"), required: false },
+                {
+                  name: "lead",
+                  type: "textarea",
+                  localized: true,
+                  label: { en: "Lead paragraph", fr: "Paragraphe d’introduction" },
+                  admin: {
+                    description: {
+                      en: "Shown larger, above the other paragraphs.",
+                      fr: "Affiché en plus grand, au-dessus des autres paragraphes.",
+                    },
+                  },
+                },
+                {
+                  name: "paragraphs",
+                  type: "array",
+                  maxRows: 4,
+                  labels: {
+                    singular: { en: "Paragraph", fr: "Paragraphe" },
+                    plural: { en: "Paragraphs", fr: "Paragraphes" },
+                  },
+                  fields: [
+                    {
+                      name: "text",
+                      type: "textarea",
+                      localized: true,
+                      required: true,
+                    },
+                  ],
+                },
+                {
+                  name: "founder",
+                  type: "group",
+                  label: { en: "Founder", fr: "Fondateur" },
+                  fields: [
+                    {
+                      type: "row",
+                      fields: [
+                        {
+                          name: "name",
+                          type: "text",
+                          label: { en: "Name", fr: "Nom" },
+                        },
+                        {
+                          name: "role",
+                          type: "text",
+                          localized: true,
+                          label: { en: "Role", fr: "Fonction" },
+                        },
+                      ],
+                    },
+                    {
+                      type: "row",
+                      fields: [
+                        {
+                          name: "kicker",
+                          type: "text",
+                          localized: true,
+                          label: { en: "Kicker", fr: "Surtitre" },
+                        },
+                        {
+                          name: "cta",
+                          type: "text",
+                          localized: true,
+                          label: { en: "Button label", fr: "Libellé du bouton" },
+                          admin: {
+                            description: {
+                              en: "Scrolls to the contact section.",
+                              fr: "Renvoie vers la section contact.",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      name: "portrait",
+                      type: "upload",
+                      relationTo: "media",
+                      admin: {
+                        description: {
+                          en: "Square photo, shown at 260 × 260.",
+                          fr: "Photo carrée, affichée en 260 × 260.",
+                        },
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: "vision",
+              type: "group",
+              label: { en: "02 · Vision", fr: "02 · Notre vision" },
+              fields: [
+                { name: "title", type: "text", localized: true },
+                {
+                  name: "lede",
+                  type: "textarea",
+                  localized: true,
+                  label: { en: "Lede", fr: "Chapeau" },
+                },
+                {
+                  name: "items",
+                  type: "array",
+                  maxRows: 3,
+                  labels: {
+                    singular: { en: "Goal", fr: "Objectif" },
+                    plural: { en: "Goals", fr: "Objectifs" },
+                  },
+                  fields: [
+                    {
+                      name: "title",
+                      type: "text",
+                      localized: true,
+                      required: true,
+                    },
+                    {
+                      name: "body",
+                      type: "textarea",
+                      localized: true,
+                      required: true,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
               name: "products",
               type: "group",
-              label: { en: "01 · Products", fr: "01 · Produits" },
+              label: { en: "04 · Products", fr: "04 · Produits" },
               fields: sectionHeading(true),
             },
             {
               name: "capabilities",
               type: "group",
-              label: { en: "02 · Capabilities", fr: "02 · Savoir-faire" },
+              label: {
+                en: "Capabilities (not displayed)",
+                fr: "Savoir-faire (non affiché)",
+              },
               fields: [
                 ...sectionHeading(true),
                 {
@@ -184,7 +330,7 @@ export const Landing: GlobalConfig = {
             {
               name: "method",
               type: "group",
-              label: { en: "03 · Method", fr: "03 · Méthode" },
+              label: { en: "03 · Approach", fr: "03 · Notre démarche" },
               fields: [
                 ...sectionHeading(false),
                 {
@@ -212,7 +358,7 @@ export const Landing: GlobalConfig = {
             {
               name: "markets",
               type: "group",
-              label: { en: "04 · Markets", fr: "04 · Marchés" },
+              label: { en: "Markets (not displayed)", fr: "Marchés (non affiché)" },
               fields: [
                 ...sectionHeading(false),
                 {
@@ -237,20 +383,20 @@ export const Landing: GlobalConfig = {
             {
               name: "news",
               type: "group",
-              label: { en: "05 · News", fr: "05 · Actualités" },
+              label: { en: "News (not displayed)", fr: "Actualités (non affiché)" },
               fields: sectionHeading(false),
             },
             {
               name: "faq",
               type: "group",
-              label: { en: "06 · Questions", fr: "06 · Questions" },
+              label: { en: "05 · Questions", fr: "05 · Questions" },
               fields: sectionHeading(false),
             },
           ],
         },
         {
           name: "contact",
-          label: { en: "07 · Contact", fr: "07 · Contact" },
+          label: { en: "06 · Contact", fr: "06 · Contact" },
           fields: [
             accentedText("title"),
             { name: "body", type: "textarea", localized: true, required: true },

@@ -6,8 +6,10 @@
  * reference design uses (`/#produits`, `/#methode`…).
  */
 export const SECTION_IDS = {
-  products: "produits",
+  company: "societe",
+  vision: "objectifs",
   method: "methode",
+  products: "produits",
   faq: "faq",
   contact: "contact",
 } as const;
@@ -16,8 +18,10 @@ export type SectionId = (typeof SECTION_IDS)[keyof typeof SECTION_IDS];
 
 /** Page order, top to bottom; drives the two-digit section index. */
 export const SECTION_ORDER = [
-  SECTION_IDS.products,
+  SECTION_IDS.company,
+  SECTION_IDS.vision,
   SECTION_IDS.method,
+  SECTION_IDS.products,
   SECTION_IDS.faq,
   SECTION_IDS.contact,
 ] as const;
@@ -25,6 +29,11 @@ export const SECTION_ORDER = [
 /** Two-digit label printed above a section title, e.g. "01". */
 export function sectionIndex(id: SectionId): string {
   return String(SECTION_ORDER.indexOf(id) + 1).padStart(2, "0");
+}
+
+/** The index followed by the section's name, e.g. "02 / Notre vision". */
+export function sectionLabel(id: SectionId, name: string): string {
+  return `${sectionIndex(id)} / ${name}`;
 }
 
 /** Anchors on the home page, as next-intl `<Link>` hrefs. */

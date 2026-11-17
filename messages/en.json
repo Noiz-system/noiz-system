@@ -1,13 +1,18 @@
 {
   "Nav": {
     "ariaLabel": "Main navigation",
-    "bdmarket": "BDMarket",
-    "method": "Method",
-    "faq": "FAQ",
+    "mobileLabel": "Mobile navigation",
     "support": "Support",
     "contact": "Contact us ↗",
     "skipToContent": "Skip to content",
     "home": "Noiz Systems — home"
+  },
+
+  "Sections": {
+    "company": "Our company",
+    "vision": "Our vision",
+    "method": "Our approach",
+    "products": "Our products"
   },
 
   "Products": {
@@ -25,55 +30,61 @@
   },
 
   "Help": {
-    "kicker": "Help center",
-    "title": "A problem with an order?",
-    "body": "Open a ticket, get a reference and follow its resolution.",
+    "kicker": "Help centre",
+    "title": "Need help with an order?",
+    "body": "Send your request to our team and track its progress.",
     "cta": "Open a ticket"
   },
 
   "Footer": {
     "cta": {
-      "kicker": "Discover BDMarket",
-      "title": "Your African and Caribbean grocery store.<br></br><accent>Always within reach.</accent>",
-      "button": "Discover BDMarket"
+      "kicker": "NOIZ SYSTEMS",
+      "title": "Useful ideas.<br></br><accent>Real products.</accent>",
+      "button": "Let’s discuss your needs"
     },
     "navLabel": "Footer navigation",
+    "company": {
+      "heading": "NOIZ SYSTEMS",
+      "about": "Our company",
+      "vision": "Our vision and goals",
+      "approach": "Our approach",
+      "contact": "Contact us",
+      "address": "47 RUE VIVIENNE<br></br>75002 PARIS"
+    },
     "product": {
       "heading": "Product",
       "name": "BDMarket",
       "discover": "Discover BDMarket",
-      "grocery": "African and Caribbean groceries",
+      "market": "Your African and Caribbean market",
       "getApp": "Get the app",
       "support": "Product support"
     },
     "resources": {
       "heading": "Resources",
       "faq": "Frequently asked questions",
-      "help": "Help center",
-      "method": "Our method"
+      "help": "Help centre",
+      "method": "Our process"
     },
     "assistance": {
-      "heading": "Assistance",
-      "sub": "By your side",
+      "heading": "Help",
+      "sub": "Here for you",
       "open": "Open a ticket",
       "track": "Track a ticket",
-      "order": "Help with an order"
+      "order": "Order assistance"
     },
-    "company": {
-      "heading": "Noiz Systems",
-      "home": "Home",
-      "approach": "Our approach",
-      "contact": "Contact us"
-    },
-    "talk": "A question? Let’s talk",
+    "talk": "Have a question? Let’s talk",
     "rights": "© 2026 Noiz Systems. All rights reserved.",
-    "contact": "Contact",
-    "languageLabel": "Language"
+    "legal": "NOIZ SYSTEMS, SASU (French single-shareholder simplified joint-stock company) · SIREN 981 198 807 · Registered office SIRET 981 198 807 00019",
+    "contact": "Contact"
   },
 
   "Languages": {
     "fr": "Français",
-    "en": "English"
+    "en": "English",
+    "switch": {
+      "fr": "Passer en français",
+      "en": "Switch to English"
+    }
   },
 
   "Support": {

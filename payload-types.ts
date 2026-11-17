@@ -155,6 +155,10 @@ export interface Product {
    * Optional. Square product icon shown next to the name and on the help center.
    */
   image?: (number | null) | Media;
+  /**
+   * Optional. Logotype shown in place of the name on the product card.
+   */
+  wordmark?: (number | null) | Media;
   cta: string;
   /**
    * Leave empty to scroll to the contact form.
@@ -377,6 +381,7 @@ export interface ProductsSelect<T extends boolean = true> {
         id?: T;
       };
   image?: T;
+  wordmark?: T;
   cta?: T;
   ctaHref?: T;
   appStoreUrl?: T;
@@ -514,13 +519,20 @@ export interface Landing {
      * Wrap words in <accent>…</accent> to highlight them with the brand gradient. <br> forces a line break; <br-md> breaks on wide screens only.
      */
     title: string;
+    /**
+     * Wrap words in <accent>…</accent> to highlight them with the brand gradient. <br> forces a line break; <br-md> breaks on wide screens only.
+     */
+    tagline?: string | null;
     body: string;
     primaryCta: string;
     secondaryCta: string;
     /**
-     * Optional. Brand mark shown above the headline (e.g. the BDMarket wordmark).
+     * Not displayed on the current design.
      */
     image?: (number | null) | Media;
+    /**
+     * Not displayed on the current design.
+     */
     ticker?:
       | {
           label: string;
@@ -528,7 +540,7 @@ export interface Landing {
         }[]
       | null;
     /**
-     * One to four, laid out in a row under the hero.
+     * Not displayed on the current design.
      */
     stats?:
       | {
@@ -539,6 +551,46 @@ export interface Landing {
       | null;
   };
   sections: {
+    company?: {
+      /**
+       * Wrap words in <accent>…</accent> to highlight them with the brand gradient. <br> forces a line break; <br-md> breaks on wide screens only.
+       */
+      title?: string | null;
+      /**
+       * Shown larger, above the other paragraphs.
+       */
+      lead?: string | null;
+      paragraphs?:
+        | {
+            text: string;
+            id?: string | null;
+          }[]
+        | null;
+      founder?: {
+        name?: string | null;
+        role?: string | null;
+        kicker?: string | null;
+        /**
+         * Scrolls to the contact section.
+         */
+        cta?: string | null;
+        /**
+         * Square photo, shown at 260 × 260.
+         */
+        portrait?: (number | null) | Media;
+      };
+    };
+    vision?: {
+      title?: string | null;
+      lede?: string | null;
+      items?:
+        | {
+            title: string;
+            body: string;
+            id?: string | null;
+          }[]
+        | null;
+    };
     products: {
       title: string;
       lede: string;
@@ -612,6 +664,7 @@ export interface LandingSelect<T extends boolean = true> {
     | {
         kicker?: T;
         title?: T;
+        tagline?: T;
         body?: T;
         primaryCta?: T;
         secondaryCta?: T;
@@ -633,6 +686,40 @@ export interface LandingSelect<T extends boolean = true> {
   sections?:
     | T
     | {
+        company?:
+          | T
+          | {
+              title?: T;
+              lead?: T;
+              paragraphs?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              founder?:
+                | T
+                | {
+                    name?: T;
+                    role?: T;
+                    kicker?: T;
+                    cta?: T;
+                    portrait?: T;
+                  };
+            };
+        vision?:
+          | T
+          | {
+              title?: T;
+              lede?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    body?: T;
+                    id?: T;
+                  };
+            };
         products?:
           | T
           | {
