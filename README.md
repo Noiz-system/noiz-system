@@ -59,11 +59,15 @@ messages/                  next-intl catalogues (UI strings only)
 ## Database
 
 Payload runs on Postgres; `DATABASE_URI` is a standard connection string
-(add `?sslmode=require` for hosted providers such as Neon). In development
-Payload pushes schema changes to the database automatically. In production
-the schema is applied through migrations instead:
+(add `?sslmode=require` for hosted providers such as Neon). Dev push is
+disabled (`push: false` in `payload.config.ts`), so the schema only changes
+through migrations, locally and in production:
 
 ```bash
-pnpm payload migrate:create   # after changing a collection or global
-pnpm payload migrate          # on deploy
+pnpm payload migrate:create <name>   # after changing a collection or global
+pnpm payload migrate                 # apply locally; Vercel runs it on deploy
 ```
+
+If `payload migrate` asks whether you ran Payload in dev mode, the database
+still has the dev-push marker. Remove it with
+`DELETE FROM payload_migrations WHERE batch = -1;`.
