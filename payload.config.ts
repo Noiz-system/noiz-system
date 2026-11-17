@@ -27,10 +27,14 @@ export default buildConfig({
 
   // Any Postgres works: a local container, Neon, Supabase… `sslmode=require`
   // in the URL is enough for the hosted ones; node-postgres reads it.
-  // Dev pushes the schema on its own; deployed databases only change through
-  // `migrations/`, applied by the `vercel-build` script before `next build`.
+  // Schema changes only go through `migrations/`, applied by the `vercel-build`
+  // script before `next build`. Dev push stays off: it marks the database as
+  // "pushed in dev mode", which makes `payload migrate` stop at an interactive
+  // prompt on Vercel. After editing a collection or global, run
+  // `pnpm payload migrate:create <name>` then `pnpm payload migrate`.
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI },
+    push: false,
   }),
 
   // Support tickets are not a collection here: they live in BDMarket's
