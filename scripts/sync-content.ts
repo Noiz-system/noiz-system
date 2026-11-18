@@ -40,8 +40,9 @@ import {
  *     extra ones deleted.
  *   - Brand media: reused by filename. A file missing from Media is reported
  *     and its fields left alone, unless `--upload-media` is passed. Uploads
- *     are stored on the disk of the machine running the script (`media/`),
- *     so only use it where that disk is the one serving the site.
+ *     go to the object storage bucket when `S3_BUCKET` is set, otherwise to
+ *     the `media/` folder of the machine running the script — useless for a
+ *     production database.
  *
  * Markets and posts are not displayed by the current design and are left as
  * they are. Run `pnpm payload migrate` first: the script writes fields the
