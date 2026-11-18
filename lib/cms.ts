@@ -24,6 +24,11 @@ export const getLanding = cache(async () => {
   return payload.findGlobal({ slug: "landing", locale, depth: 1 });
 });
 
+export const getSupportPage = cache(async () => {
+  const [payload, locale] = await client();
+  return payload.findGlobal({ slug: "support-page", locale, depth: 0 });
+});
+
 export const getProducts = cache(async () => {
   const [payload, locale] = await client();
   const { docs } = await payload.find({

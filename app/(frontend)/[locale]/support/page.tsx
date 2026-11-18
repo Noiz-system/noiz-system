@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
 import { SiteFooter } from "@/components/landing/site-footer";
 import { SiteHeader } from "@/components/landing/site-header";
 import { TicketForm } from "@/components/support/ticket-form";
 import { TicketLookup } from "@/components/support/ticket-lookup";
 import { ArrowUpRight, Headphones, Package } from "@/components/ui/icons";
-import { getLanding, getProducts, resolveMedia } from "@/lib/cms";
+import { renderAccented } from "@/lib/accent";
+import { getLanding, getProducts, getSupportPage, resolveMedia } from "@/lib/cms";
 import { readSession } from "@/lib/server/email-verification";
 import { SUPPORT_ANCHORS } from "@/lib/sections";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("Support");
+  // Optional chaining: the global has no row until it is first saved or synced.
+  const { seo } = await getSupportPage();
   return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
+    title: seo?.title,
+    description: seo?.description,
     openGraph: {
-      title: t("metaTitle"),
-      description: t("metaDescription"),
+      title: seo?.title,
+      description: seo?.ogDescription ?? seo?.description,
       type: "website",
     },
     twitter: { card: "summary" },
@@ -24,8 +25,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SupportPage() {
-  const [t, { contact }, products, verifiedEmail] = await Promise.all([
-    getTranslations("Support"),
+  const [{ hero, aside }, { contact }, products, verifiedEmail] = await Promise.all([
+    getSupportPage(),
     getLanding(),
     getProducts(),
     // An email verified in the last 30 minutes skips straight to the form.
@@ -44,18 +45,13 @@ export default async function SupportPage() {
             <div className="max-w-2xl">
               <p className="mb-5 flex items-center gap-2 text-xs font-bold text-primary uppercase">
                 <Headphones className="h-4 w-4" />
-                {t("kicker")}
+                {hero?.kicker}
               </p>
               <h1 className="text-4xl leading-tight font-bold md:text-5xl">
-                {t.rich("title", {
-                  br: () => <br />,
-                  accent: (chunks) => <span className="text-move">{chunks}</span>,
-                })}
+                {renderAccented(hero?.title ?? "")}
               </h1>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
-                {t.rich("intro", {
-                  brmd: () => <br className="hidden md:block" />,
-                })}
+                {renderAccented(hero?.intro ?? "")}
               </p>
             </div>
 
@@ -72,7 +68,7 @@ export default async function SupportPage() {
                 <div>
                   <p className="text-lg font-bold">{product.name}</p>
                   <p className="text-sm text-muted-foreground">
-                    {t("productTagline")}
+                    {hero?.productTagline}
                   </p>
                 </div>
               </div>
@@ -90,9 +86,9 @@ export default async function SupportPage() {
             <div className="px-1 text-sm leading-relaxed text-muted-foreground">
               <Package className="mb-3 h-6 w-6 text-primary" />
               <p className="mb-2 font-semibold text-foreground">
-                {t("aside.title")}
+                {aside?.title}
               </p>
-              {t("aside.body")}
+              {aside?.body}
               <a
                 href={`mailto:${contact.email}`}
                 className="mt-5 flex flex-wrap items-center gap-2 font-semibold break-all text-primary"

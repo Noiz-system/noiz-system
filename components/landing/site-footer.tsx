@@ -9,6 +9,8 @@ import {
   ShoppingBag,
 } from "@/components/ui/icons";
 import { Link } from "@/i18n/navigation";
+import { renderAccented } from "@/lib/accent";
+import { getLanding } from "@/lib/cms";
 import { homeAnchor, SECTION_IDS, SUPPORT_ANCHORS } from "@/lib/sections";
 
 const linkClass =
@@ -19,27 +21,36 @@ const headingClass =
   "border-b border-footer-border pb-3 text-sm font-bold text-footer-heading";
 
 export async function SiteFooter() {
-  const t = await getTranslations("Footer");
+  const [t, { footer }] = await Promise.all([
+    getTranslations("Footer"),
+    getLanding(),
+  ]);
+  const cta = footer.cta;
+  const addressLines = (footer.address ?? "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
 
   return (
     <footer className="border-t border-border bg-footer-gradient text-footer-foreground">
-      <div className="border-b border-border bg-background px-5 py-14 text-center text-foreground md:py-16">
-        <p className="text-xs font-bold text-primary uppercase">
-          {t("cta.kicker")}
-        </p>
-        <h2 className="mx-auto mt-4 max-w-2xl text-3xl leading-tight font-semibold md:text-4xl">
-          {t.rich("cta.title", {
-            br: () => <br />,
-            accent: (chunks) => <span className="text-move">{chunks}</span>,
-          })}
-        </h2>
-        <Link
-          href={homeAnchor(SECTION_IDS.contact)}
-          className={buttonClasses("brand", "mt-7 h-12 max-w-full px-6")}
-        >
-          {t("cta.button")} <ArrowUpRight />
-        </Link>
-      </div>
+      {cta?.title ? (
+        <div className="border-b border-border bg-background px-5 py-14 text-center text-foreground md:py-16">
+          {cta.kicker ? (
+            <p className="text-xs font-bold text-primary uppercase">{cta.kicker}</p>
+          ) : null}
+          <h2 className="mx-auto mt-4 max-w-2xl text-3xl leading-tight font-semibold md:text-4xl">
+            {renderAccented(cta.title)}
+          </h2>
+          {cta.button ? (
+            <Link
+              href={homeAnchor(SECTION_IDS.contact)}
+              className={buttonClasses("brand", "mt-7 h-12 max-w-full px-6")}
+            >
+              {cta.button} <ArrowUpRight />
+            </Link>
+          ) : null}
+        </div>
+      ) : null}
 
       <div className="h-1 bg-bar" aria-hidden="true" />
 
@@ -63,9 +74,15 @@ export async function SiteFooter() {
               <Link href={homeAnchor(SECTION_IDS.contact)} className={linkClass}>
                 {t("company.contact")}
               </Link>
-              <address className="mt-4 text-sm leading-relaxed text-footer-muted not-italic">
-                {t.rich("company.address", { br: () => <br /> })}
-              </address>
+              {addressLines.length > 0 ? (
+                <address className="mt-4 text-sm leading-relaxed text-footer-muted not-italic">
+                  {addressLines.map((line, index) => (
+                    <span key={index} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </address>
+              ) : null}
             </div>
           </div>
 
@@ -150,20 +167,22 @@ export async function SiteFooter() {
               Noiz Systems
             </span>
           </Link>
-          <Link
-            href="/support"
-            className="flex items-center gap-3 text-sm font-semibold text-footer-heading hover:underline hover:underline-offset-4"
-          >
-            <Headphones className="h-5 w-5" aria-hidden="true" />
-            {t("talk")}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
+          {footer.supportLink ? (
+            <Link
+              href="/support"
+              className="flex items-center gap-3 text-sm font-semibold text-footer-heading hover:underline hover:underline-offset-4"
+            >
+              <Headphones className="h-5 w-5" aria-hidden="true" />
+              {footer.supportLink}
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          ) : null}
         </div>
 
         <div className="flex flex-col gap-4 border-t border-footer-border py-6 text-xs text-footer-muted sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
-            <p>{t("rights")}</p>
-            <p>{t("legal")}</p>
+            {footer.rights ? <p>{footer.rights}</p> : null}
+            {footer.legal ? <p>{footer.legal}</p> : null}
           </div>
           <div className="flex items-center gap-6">
             <Link

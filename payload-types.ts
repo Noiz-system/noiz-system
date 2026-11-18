@@ -97,9 +97,11 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'en') | ('fr' | 'en')[];
   globals: {
     landing: Landing;
+    'support-page': SupportPage;
   };
   globalsSelect: {
     landing: LandingSelect<false> | LandingSelect<true>;
+    'support-page': SupportPageSelect<false> | SupportPageSelect<true>;
   };
   locale: 'fr' | 'en';
   widgets: {
@@ -628,6 +630,15 @@ export interface Landing {
     news: {
       title: string;
     };
+    /**
+     * Call to action between the products and the questions. Leave the title empty to hide it.
+     */
+    help?: {
+      kicker?: string | null;
+      cta?: string | null;
+      title?: string | null;
+      body?: string | null;
+    };
     faq: {
       title: string;
     };
@@ -644,7 +655,73 @@ export interface Landing {
     email: string;
   };
   footer: {
+    /**
+     * The white band above the footer. Leave the title empty to hide it.
+     */
+    cta?: {
+      kicker?: string | null;
+      /**
+       * Wrap words in <accent>…</accent> to highlight them with the brand gradient. <br> forces a line break; <br-md> breaks on wide screens only.
+       */
+      title?: string | null;
+      /**
+       * Scrolls to the contact section.
+       */
+      button?: string | null;
+    };
+    /**
+     * One line per row, shown under the company links.
+     */
+    address?: string | null;
+    /**
+     * Shown next to the logo, links to the help centre.
+     */
+    supportLink?: string | null;
+    rights?: string | null;
+    /**
+     * Company form and registration numbers.
+     */
+    legal?: string | null;
+    /**
+     * Not displayed on the current design.
+     */
     tagline: string;
+  };
+  seo: {
+    title: string;
+    description: string;
+    ogDescription: string;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-page".
+ */
+export interface SupportPage {
+  id: number;
+  hero: {
+    kicker: string;
+    /**
+     * Wrap words in <accent>…</accent> to highlight them with the brand gradient. <br> forces a line break; <br-md> breaks on wide screens only.
+     */
+    title: string;
+    /**
+     * Wrap words in <accent>…</accent> to highlight them with the brand gradient. <br> forces a line break; <br-md> breaks on wide screens only.
+     */
+    intro: string;
+    /**
+     * Shown under the product name, next to its icon.
+     */
+    productTagline: string;
+  };
+  /**
+   * Shown under the ticket lookup, above the contact email.
+   */
+  aside: {
+    title: string;
+    body: string;
   };
   seo: {
     title: string;
@@ -764,6 +841,14 @@ export interface LandingSelect<T extends boolean = true> {
           | {
               title?: T;
             };
+        help?:
+          | T
+          | {
+              kicker?: T;
+              cta?: T;
+              title?: T;
+              body?: T;
+            };
         faq?:
           | T
           | {
@@ -780,7 +865,48 @@ export interface LandingSelect<T extends boolean = true> {
   footer?:
     | T
     | {
+        cta?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              button?: T;
+            };
+        address?: T;
+        supportLink?: T;
+        rights?: T;
+        legal?: T;
         tagline?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogDescription?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-page_select".
+ */
+export interface SupportPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        intro?: T;
+        productTagline?: T;
+      };
+  aside?:
+    | T
+    | {
+        title?: T;
+        body?: T;
       };
   seo?:
     | T
