@@ -373,6 +373,15 @@ export const landing = {
       },
     },
     news: { title: { fr: "Actualités", en: "News" } },
+    help: {
+      kicker: { fr: "Centre d’aide", en: "Help centre" },
+      title: { fr: "Un souci avec une commande ?", en: "Need help with an order?" },
+      body: {
+        fr: "Adressez votre demande à nos équipes et suivez son avancement.",
+        en: "Send your request to our team and track its progress.",
+      },
+      cta: { fr: "Ouvrir un ticket", en: "Open a ticket" },
+    },
     faq: { title: { fr: "Questions fréquentes", en: "Frequently asked questions" } },
   },
   contact: {
@@ -384,6 +393,24 @@ export const landing = {
     email: "support@noizsystems.tech",
   },
   footer: {
+    cta: {
+      kicker: { fr: "NOIZ SYSTEMS", en: "NOIZ SYSTEMS" },
+      title: {
+        fr: "Des idées utiles.<br><accent>Des produits concrets.</accent>",
+        en: "Useful ideas.<br><accent>Real products.</accent>",
+      },
+      button: { fr: "Parlons de vos besoins", en: "Let’s discuss your needs" },
+    },
+    address: "47 RUE VIVIENNE\n75002 PARIS",
+    supportLink: { fr: "Une question ? Parlons-en", en: "Have a question? Let’s talk" },
+    rights: {
+      fr: "© 2026 Noiz Systems. Tous droits réservés.",
+      en: "© 2026 Noiz Systems. All rights reserved.",
+    },
+    legal: {
+      fr: "NOIZ SYSTEMS, SASU, société par actions simplifiée unipersonnelle · SIREN 981 198 807 · SIRET du siège 981 198 807 00019",
+      en: "NOIZ SYSTEMS, SASU (French single-shareholder simplified joint-stock company) · SIREN 981 198 807 · Registered office SIRET 981 198 807 00019",
+    },
     tagline: {
       fr: "Deux frères, une vision, des solutions tech.",
       en: "Deux frères, une vision, des solutions tech.",
@@ -401,6 +428,49 @@ export const landing = {
     ogDescription: {
       fr: "La technologie au service des communautés africaines et de la diaspora : NOIZ SYSTEMS automatise, simplifie et améliore le quotidien. BDMarket concrétise cette mission pour les courses alimentaires.",
       en: "Technology serving African communities and the diaspora. Discover NOIZ SYSTEMS, our goals and BDMarket, our African and Caribbean grocery marketplace.",
+    },
+  },
+};
+
+/** The help centre's editorial copy (`/support`). */
+export const supportPage = {
+  hero: {
+    kicker: { fr: "Centre d’aide · BDMarket", en: "Help centre · BDMarket" },
+    title: {
+      fr: "Vous aider.<br><accent>Tout simplement.</accent>",
+      en: "Helping you.<br><accent>Simply.</accent>",
+    },
+    intro: {
+      fr: "Une commande, une livraison ou une question ?<br-md> Nous sommes là pour vous.",
+      en: "An order, a delivery or a question?<br-md> We’re here for you.",
+    },
+    productTagline: {
+      fr: "Le marché africain et caribéen à portée de main.",
+      en: "Your African and Caribbean market at your fingertips.",
+    },
+  },
+  aside: {
+    title: {
+      fr: "Votre commande à portée de main",
+      en: "Your order at your fingertips",
+    },
+    body: {
+      fr: "Indiquez votre numéro de commande pour un traitement plus rapide.",
+      en: "Add your order number for faster handling.",
+    },
+  },
+  seo: {
+    title: {
+      fr: "Centre d’aide BDMarket — Noiz Systems",
+      en: "BDMarket Help Centre — Noiz Systems",
+    },
+    description: {
+      fr: "Contactez l’assistance pour une commande BDMarket ou toute autre demande d’aide, puis suivez son avancement.",
+      en: "Contact support about a BDMarket order or any other request, then track its progress.",
+    },
+    ogDescription: {
+      fr: "Créez et suivez vos tickets de support BDMarket.",
+      en: "Create and track your BDMarket support tickets.",
     },
   },
 };

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__lovable__list_projects",
+      "mcp__lovable__get_project",
+      "mcp__lovable__list_files",
+      "mcp__lovable__read_file",
+      "mcp__lovable__get_diff"
+    ]
+  }
+}

@@ -20,10 +20,11 @@ pnpm dev
 
 | What                                                  | Where                                    |
 | ----------------------------------------------------- | ---------------------------------------- |
-| Headlines, hero, stats, ticker, section intros, SEO   | Admin → **Landing page** (global)        |
-| Product cards, markets table, news cards, FAQ entries | Admin → **Products / Markets / Posts / FAQs** |
+| Hero, sections, help band, contact, footer CTA, address, legal notice, SEO | Admin → **Landing page** (global) |
+| Help centre header, aside and SEO (`/support`)        | Admin → **Help centre** (global)         |
+| Product cards, FAQ entries (markets, posts: not displayed) | Admin → **Products / FAQs**         |
 | Images                                                | Admin → **Media**                        |
-| UI microcopy (nav labels, form fields, aria text)     | `messages/fr.json`, `messages/en.json`   |
+| UI microcopy (nav and footer links, form fields, errors, emails, aria text) | `messages/fr.json`, `messages/en.json` |
 
 Every editorial field is localized. French is the default locale and the
 fallback: an English field left empty shows the French text. Headline fields
@@ -39,6 +40,8 @@ the next request.
 | `pnpm dev` / `pnpm build` | Next.js dev server / production build                            |
 | `pnpm seed`               | Fill an empty database with the launch copy in both languages    |
 | `pnpm seed reset`         | Wipe products, markets, posts and FAQs, then seed again          |
+| `pnpm sync:content`       | Dry run: list what differs from `scripts/seed/content.ts`        |
+| `pnpm sync:content --apply` | Write those differences into the database `DATABASE_URI` points at |
 | `pnpm generate:types`     | Regenerate `payload-types.ts` after changing a collection/global |
 | `pnpm generate:importmap` | Regenerate the admin import map after adding custom components   |
 | `pnpm typecheck`          | Route typegen + `tsc`                                            |
@@ -67,6 +70,30 @@ through migrations, locally and in production:
 pnpm payload migrate:create <name>   # after changing a collection or global
 pnpm payload migrate                 # apply locally; Vercel runs it on deploy
 ```
+
+## Syncing content with the reference design
+
+`scripts/seed/content.ts` holds the copy of the reference design (the
+"BD Marketing Support Hub" Lovable project) in both languages. To bring an
+existing database — dev or production — in line with it without wiping
+anything, point `DATABASE_URI` at it and run:
+
+```bash
+pnpm payload migrate            # the script writes fields the latest migration adds
+pnpm sync:content               # dry run: prints every field that would change
+pnpm sync:content --apply       # writes them
+```
+
+It updates the two globals, the products (matched by name; store links are
+kept) and the FAQs (matched by position). Markets and posts are left alone.
+A brand image missing from Media is reported and skipped; `--upload-media`
+uploads it, but the file lands in the `media/` folder of the machine running
+the script, so only use it where that disk serves the site.
+
+The script bypasses revalidation, so for production run it **before** the
+deploy that ships the new code: the build then renders the synced content.
+Run afterwards, pages pick it up on the next deploy or the next save in
+`/admin`.
 
 If `payload migrate` asks whether you ran Payload in dev mode, the database
 still has the dev-push marker. Remove it with

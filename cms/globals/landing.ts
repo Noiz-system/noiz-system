@@ -1,4 +1,4 @@
-import type { Field, GlobalConfig } from "payload";
+import type { Field, GlobalConfig, TextField } from "payload";
 import { publicRead } from "@/cms/access";
 import { accentedText } from "@/cms/fields/accent";
 import { revalidateGlobalAfterChange } from "@/cms/hooks/revalidate";
@@ -24,6 +24,14 @@ function sectionHeading(withLede: boolean): Field[] {
         ]
       : []),
   ];
+}
+
+/**
+ * Localized text that may stay empty: fields added after the landing row
+ * existed cannot be NOT NULL, and an empty value hides that bit of the page.
+ */
+function optionalText(name: string, label?: TextField["label"]): TextField {
+  return { name, type: "text", localized: true, ...(label ? { label } : {}) };
 }
 
 /**
@@ -387,6 +395,30 @@ export const Landing: GlobalConfig = {
               fields: sectionHeading(false),
             },
             {
+              name: "help",
+              type: "group",
+              label: { en: "Help centre band", fr: "Bandeau centre d’aide" },
+              admin: {
+                description: {
+                  en: "Call to action between the products and the questions. Leave the title empty to hide it.",
+                  fr: "Appel à l’action entre les produits et les questions. Laissez le titre vide pour le masquer.",
+                },
+              },
+              // Optional so the columns can be added to a database that
+              // already holds a landing page.
+              fields: [
+                {
+                  type: "row",
+                  fields: [
+                    optionalText("kicker", { en: "Kicker", fr: "Surtitre" }),
+                    optionalText("cta", { en: "Button label", fr: "Libellé du bouton" }),
+                  ],
+                },
+                optionalText("title"),
+                { name: "body", type: "textarea", localized: true },
+              ],
+            },
+            {
               name: "faq",
               type: "group",
               label: { en: "05 · Questions", fr: "05 · Questions" },
@@ -418,10 +450,76 @@ export const Landing: GlobalConfig = {
           label: { en: "Footer", fr: "Pied de page" },
           fields: [
             {
+              name: "cta",
+              type: "group",
+              label: { en: "Closing call to action", fr: "Appel à l’action final" },
+              admin: {
+                description: {
+                  en: "The white band above the footer. Leave the title empty to hide it.",
+                  fr: "Le bandeau blanc au-dessus du pied de page. Laissez le titre vide pour le masquer.",
+                },
+              },
+              fields: [
+                optionalText("kicker", { en: "Kicker", fr: "Surtitre" }),
+                { ...accentedText("title"), required: false },
+                {
+                  ...optionalText("button", { en: "Button label", fr: "Libellé du bouton" }),
+                  admin: {
+                    description: {
+                      en: "Scrolls to the contact section.",
+                      fr: "Renvoie vers la section contact.",
+                    },
+                  },
+                },
+              ],
+            },
+            {
+              name: "address",
+              type: "textarea",
+              label: { en: "Postal address", fr: "Adresse postale" },
+              admin: {
+                description: {
+                  en: "One line per row, shown under the company links.",
+                  fr: "Une ligne par rangée, affichée sous les liens de la société.",
+                },
+              },
+            },
+            {
+              ...optionalText("supportLink", {
+                en: "Support link",
+                fr: "Lien vers le support",
+              }),
+              admin: {
+                description: {
+                  en: "Shown next to the logo, links to the help centre.",
+                  fr: "Affiché à côté du logo, renvoie vers le centre d’aide.",
+                },
+              },
+            },
+            optionalText("rights", { en: "Copyright line", fr: "Mention de copyright" }),
+            {
+              name: "legal",
+              type: "textarea",
+              localized: true,
+              label: { en: "Legal notice", fr: "Mentions légales" },
+              admin: {
+                description: {
+                  en: "Company form and registration numbers.",
+                  fr: "Forme juridique et numéros d’immatriculation.",
+                },
+              },
+            },
+            {
               name: "tagline",
               type: "text",
               localized: true,
               required: true,
+              admin: {
+                description: {
+                  en: "Not displayed on the current design.",
+                  fr: "Non affiché dans le design actuel.",
+                },
+              },
             },
           ],
         },

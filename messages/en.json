@@ -29,27 +29,14 @@
     }
   },
 
-  "Help": {
-    "kicker": "Help centre",
-    "title": "Need help with an order?",
-    "body": "Send your request to our team and track its progress.",
-    "cta": "Open a ticket"
-  },
-
   "Footer": {
-    "cta": {
-      "kicker": "NOIZ SYSTEMS",
-      "title": "Useful ideas.<br></br><accent>Real products.</accent>",
-      "button": "Let’s discuss your needs"
-    },
     "navLabel": "Footer navigation",
     "company": {
       "heading": "NOIZ SYSTEMS",
       "about": "Our company",
       "vision": "Our vision and goals",
       "approach": "Our approach",
-      "contact": "Contact us",
-      "address": "47 RUE VIVIENNE<br></br>75002 PARIS"
+      "contact": "Contact us"
     },
     "product": {
       "heading": "Product",
@@ -72,9 +59,6 @@
       "track": "Track a ticket",
       "order": "Order assistance"
     },
-    "talk": "Have a question? Let’s talk",
-    "rights": "© 2026 Noiz Systems. All rights reserved.",
-    "legal": "NOIZ SYSTEMS, SASU (French single-shareholder simplified joint-stock company) · SIREN 981 198 807 · Registered office SIRET 981 198 807 00019",
     "contact": "Contact"
   },
 
@@ -88,12 +72,6 @@
   },
 
   "Support": {
-    "metaTitle": "BDMarket Help Center — Noiz Systems",
-    "metaDescription": "Open a ticket for a BDMarket order or a help request, and track its progress.",
-    "kicker": "Help center · BDMarket",
-    "title": "Helping you.<br></br><accent>Simply.</accent>",
-    "intro": "An order, a delivery or a question?<brmd></brmd> We’re here for you.",
-    "productTagline": "African and Caribbean groceries, delivered to your door.",
     "created": {
       "kicker": "Ticket created",
       "body": "Keep this reference: with your email, it lets you track your request.",
@@ -148,10 +126,6 @@
       "en_cours": "In progress",
       "resolu": "Resolved",
       "ferme": "Closed"
-    },
-    "aside": {
-      "title": "Your order at your fingertips",
-      "body": "Add your order number for faster handling."
     },
     "verify": {
       "kicker": "Email verification",

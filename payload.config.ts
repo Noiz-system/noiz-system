@@ -12,6 +12,7 @@ import { Posts } from "@/cms/collections/posts";
 import { Products } from "@/cms/collections/products";
 import { Users } from "@/cms/collections/users";
 import { Landing } from "@/cms/globals/landing";
+import { SupportPage } from "@/cms/globals/support-page";
 import { routing } from "@/i18n/routing";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,7 +41,7 @@ export default buildConfig({
   // Support tickets are not a collection here: they live in BDMarket's
   // Firestore so its back-office can process them (lib/server/support-tickets.ts).
   collections: [Products, Markets, Posts, Faqs, Media, Users],
-  globals: [Landing],
+  globals: [Landing, SupportPage],
 
   // Content locales mirror the site's routing config so adding a language is
   // a one-line change in `i18n/routing.ts`. French is the source of truth;

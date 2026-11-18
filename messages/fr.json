@@ -29,27 +29,14 @@
     }
   },
 
-  "Help": {
-    "kicker": "Centre d’aide",
-    "title": "Un souci avec une commande ?",
-    "body": "Adressez votre demande à nos équipes et suivez son avancement.",
-    "cta": "Ouvrir un ticket"
-  },
-
   "Footer": {
-    "cta": {
-      "kicker": "NOIZ SYSTEMS",
-      "title": "Des idées utiles.<br></br><accent>Des produits concrets.</accent>",
-      "button": "Parlons de vos besoins"
-    },
     "navLabel": "Navigation du bas de page",
     "company": {
       "heading": "NOIZ SYSTEMS",
       "about": "La société",
       "vision": "Notre vision et nos objectifs",
       "approach": "Notre démarche",
-      "contact": "Nous contacter",
-      "address": "47 RUE VIVIENNE<br></br>75002 PARIS"
+      "contact": "Nous contacter"
     },
     "product": {
       "heading": "Produit",
@@ -72,9 +59,6 @@
       "track": "Suivre un ticket",
       "order": "Aide sur une commande"
     },
-    "talk": "Une question ? Parlons-en",
-    "rights": "© 2026 Noiz Systems. Tous droits réservés.",
-    "legal": "NOIZ SYSTEMS, SASU, société par actions simplifiée unipersonnelle · SIREN 981 198 807 · SIRET du siège 981 198 807 00019",
     "contact": "Contact"
   },
 
@@ -88,15 +72,9 @@
   },
 
   "Support": {
-    "metaTitle": "Centre d'aide BDMarket — Noiz Systems",
-    "metaDescription": "Ouvrez un ticket pour une commande BDMarket ou une demande d'aide, et suivez son avancement.",
-    "kicker": "Centre d’aide · BDMarket",
-    "title": "Vous aider.<br></br><accent>Tout simplement.</accent>",
-    "intro": "Une commande, une livraison ou une question ?<brmd></brmd> Nous sommes là pour vous.",
-    "productTagline": "L’épicerie africaine et caribéenne, livrée chez vous.",
     "created": {
       "kicker": "Ticket créé",
-      "body": "Conservez cette référence : elle vous permet de suivre votre demande avec votre email.",
+      "body": "Conservez cette référence : elle vous permet de suivre votre demande avec votre adresse e-mail.",
       "again": "Ouvrir un autre ticket",
       "emailed": "Un e-mail de confirmation avec cette référence vient de vous être envoyé."
     },
@@ -105,21 +83,21 @@
       "title": "Ouvrir un ticket",
       "category": "Type de demande",
       "name": "Nom",
-      "email": "Email",
+      "email": "Adresse e-mail",
       "orderNumber": "Numéro de commande (facultatif)",
-      "orderPlaceholder": "ex. BD-102938",
+      "orderPlaceholder": "Ex. : BD-102938",
       "subject": "Sujet",
       "message": "Message",
       "submit": "Envoyer le ticket",
       "sending": "Envoi…",
-      "failed": "Impossible d'envoyer le ticket, réessayez."
+      "failed": "Impossible d’envoyer le ticket. Veuillez réessayer."
     },
     "categories": {
       "commande": "Problème de commande",
       "livraison": "Livraison",
       "paiement": "Paiement / remboursement",
-      "compte": "Compte & connexion",
-      "autre": "Autre demande d'aide"
+      "compte": "Compte et connexion",
+      "autre": "Autre demande d’aide"
     },
     "errors": {
       "nameRequired": "Nom requis",
@@ -135,8 +113,8 @@
       "title": "Suivre un ticket",
       "reference": "Référence du ticket",
       "referencePlaceholder": "Référence (NZ-XXXXXX)",
-      "email": "Votre email",
-      "emailPlaceholder": "Votre email",
+      "email": "Votre adresse e-mail",
+      "emailPlaceholder": "Votre adresse e-mail",
       "submit": "Rechercher",
       "notFound": "Aucun ticket trouvé avec ces informations.",
       "status": "Statut :",
@@ -148,10 +126,6 @@
       "en_cours": "En cours",
       "resolu": "Résolu",
       "ferme": "Fermé"
-    },
-    "aside": {
-      "title": "Votre commande à portée de main",
-      "body": "Indiquez votre numéro de commande pour un traitement plus rapide."
     },
     "verify": {
       "kicker": "Vérification de l’e-mail",

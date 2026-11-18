@@ -1,20 +1,16 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { getPayload, type CollectionSlug, type Payload } from "payload";
 import config from "@payload-config";
-import { routing, type Locale } from "@/i18n/routing";
+import { faqs, landing, markets, posts, products, supportPage } from "./content";
 import {
-  brandAssets,
-  faqs,
-  landing,
-  markets,
-  posts,
-  products,
-  type BrandAsset,
-  type L,
-} from "./content";
-
-const ASSETS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "assets");
+  context,
+  ensureBrandMedia,
+  landingData,
+  pick,
+  primary,
+  secondary,
+  withRowIds,
+  writeGlobal,
+} from "./lib";
 
 /**
  * Populates the CMS with the landing page's launch copy in every locale.
@@ -33,12 +29,6 @@ const ASSETS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "a
  */
 
 const CONTENT_COLLECTIONS = ["markets", "products", "posts", "faqs"] as const;
-const [primary, ...secondary] = [
-  routing.defaultLocale,
-  ...routing.locales.filter((locale) => locale !== routing.defaultLocale),
-] as const;
-
-const context = { disableRevalidate: true };
 
 async function main() {
   const payload = await getPayload({ config });
@@ -58,6 +48,7 @@ async function main() {
   }
 
   const media = await ensureBrandMedia(payload);
+  payload.logger.info(`Brand media ready (${Object.keys(media).length} files)`);
 
   const productIds = new Map<string, number>();
   for (const { imageAsset, wordmarkAsset, ...product } of products) {
@@ -86,37 +77,10 @@ async function main() {
   for (const faq of faqs) await createLocalized(payload, "faqs", faq);
   payload.logger.info(`Seeded ${faqs.length} FAQs`);
 
-  const { founder, ...company } = landing.sections.company;
-  const { portraitAsset, ...founderData } = founder;
-  const landingData = {
-    ...landing,
-    // The current design shows no brand mark above the hero headline; clear
-    // the one an earlier seed may have set.
-    hero: { ...landing.hero, image: null },
-    sections: {
-      ...landing.sections,
-      company: {
-        ...company,
-        founder: { ...founderData, portrait: media[portraitAsset] },
-      },
-    },
-  };
-
-  const doc = await payload.updateGlobal({
-    slug: "landing",
-    data: pick(landingData, primary),
-    locale: primary,
-    context,
-  });
-  for (const locale of secondary) {
-    await payload.updateGlobal({
-      slug: "landing",
-      data: withRowIds(doc, pick(landingData, locale)),
-      locale,
-      context,
-    });
-  }
+  await writeGlobal(payload, "landing", landingData(landing, media));
   payload.logger.info("Seeded landing page");
+  await writeGlobal(payload, "support-page", supportPage);
+  payload.logger.info("Seeded help centre page");
 
   payload.logger.info("Done. Open /admin to edit the content.");
 }
@@ -137,55 +101,6 @@ async function ensureAdminUser(payload: Payload) {
     data: { email, password, name: "Noiz admin" },
   });
   payload.logger.info(`Created admin user ${email} (password from .env)`);
-}
-
-/**
- * Uploads the brand files in `scripts/seed/assets/` to Media, reusing an
- * upload that already carries the same filename, so re-seeding does not pile
- * up duplicates. Returns each asset's media id.
- */
-async function ensureBrandMedia(
-  payload: Payload,
-): Promise<Record<BrandAsset, number>> {
-  const ids = {} as Record<BrandAsset, number>;
-
-  for (const [key, asset] of Object.entries(brandAssets) as Array<
-    [BrandAsset, (typeof brandAssets)[BrandAsset]]
-  >) {
-    const { docs } = await payload.find({
-      collection: "media",
-      where: { filename: { equals: asset.file } },
-      limit: 1,
-      depth: 0,
-    });
-
-    let id = docs[0]?.id;
-    if (!id) {
-      const doc = await payload.create({
-        collection: "media",
-        data: { alt: asset.alt[primary] },
-        filePath: path.join(ASSETS_DIR, asset.file),
-        locale: primary,
-        context,
-      });
-      id = doc.id;
-    }
-
-    for (const locale of secondary) {
-      await payload.update({
-        collection: "media",
-        id,
-        data: { alt: asset.alt[locale] },
-        locale,
-        context,
-      });
-    }
-
-    ids[key] = id;
-  }
-
-  payload.logger.info(`Brand media ready (${Object.keys(ids).length} files)`);
-  return ids;
 }
 
 async function countContent(payload: Payload) {
@@ -236,63 +151,6 @@ async function createLocalized(
   }
 
   return doc;
-}
-
-function isLocalized(value: unknown): value is L {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    routing.locales.every(
-      (locale) => typeof (value as Record<string, unknown>)[locale] === "string",
-    )
-  );
-}
-
-/* The two transforms below return `any` on purpose. Erasing `{fr, en}` pairs
-   into strings is not expressible as a type, and Payload validates the result
-   against the collection's fields at runtime anyway. */
-
-/** Resolves every `{fr, en}` leaf in `value` to one locale's string. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function pick(value: unknown, locale: Locale): any {
-  if (isLocalized(value)) return value[locale];
-  if (Array.isArray(value)) return value.map((item) => pick(item, locale));
-  if (typeof value === "object" && value !== null) {
-    return Object.fromEntries(
-      Object.entries(value).map(([key, item]) => [key, pick(item, locale)]),
-    );
-  }
-  return value;
-}
-
-/**
- * Copies array-row ids from a saved document onto translated data with the
- * same shape, so an update in another locale targets the existing rows.
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function withRowIds(saved: unknown, data: unknown): any {
-  if (Array.isArray(data)) {
-    const savedRows = Array.isArray(saved) ? saved : [];
-    return data.map((item, index) => {
-      const savedRow = savedRows[index];
-      if (typeof item !== "object" || item === null) return item;
-      const merged = withRowIds(savedRow, item) as Record<string, unknown>;
-      return savedRow?.id ? { id: savedRow.id, ...merged } : merged;
-    });
-  }
-  if (typeof data === "object" && data !== null) {
-    const savedObject =
-      typeof saved === "object" && saved !== null
-        ? (saved as Record<string, unknown>)
-        : {};
-    return Object.fromEntries(
-      Object.entries(data).map(([key, item]) => [
-        key,
-        withRowIds(savedObject[key], item),
-      ]),
-    );
-  }
-  return data;
 }
 
 await main();
