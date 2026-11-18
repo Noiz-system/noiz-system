@@ -42,6 +42,7 @@ the next request.
 | `pnpm seed reset`         | Wipe products, markets, posts and FAQs, then seed again          |
 | `pnpm sync:content`       | Dry run: list what differs from `scripts/seed/content.ts`        |
 | `pnpm sync:content --apply` | Write those differences into the database `DATABASE_URI` points at |
+| `pnpm media:upload [--apply]` | Copy existing Media files into the object storage bucket       |
 | `pnpm generate:types`     | Regenerate `payload-types.ts` after changing a collection/global |
 | `pnpm generate:importmap` | Regenerate the admin import map after adding custom components   |
 | `pnpm typecheck`          | Route typegen + `tsc`                                            |
@@ -71,6 +72,42 @@ pnpm payload migrate:create <name>   # after changing a collection or global
 pnpm payload migrate                 # apply locally; Vercel runs it on deploy
 ```
 
+## Media storage
+
+Uploads go to **Neon Object Storage** (S3-compatible) whenever `S3_BUCKET` is
+set, through `@payloadcms/storage-s3` (`payload.config.ts`). Without it they
+stay in the git-ignored `media/` folder, which is fine locally but not on
+Vercel, whose disk is wiped on every deploy. The bucket is private: Payload
+serves files at `/api/media/file/<name>` either way.
+
+One-time setup per environment (each Neon project has its own bucket):
+
+1. Neon Console → project → branch → **Object storage** → **New bucket**,
+   e.g. `media`, access level **private**.
+2. **Settings → Credentials → Create credential** with `storage:read` and
+   `storage:write`. Copy the secret now: it is shown once.
+3. Set the variables (Vercel → Settings → Environment Variables, and `.env`
+   to run scripts against that environment):
+
+   | Variable | Value |
+   | --- | --- |
+   | `S3_BUCKET` | the bucket name |
+   | `S3_ENDPOINT` | branch storage endpoint, `https://br-….storage.c-….aws.neon.tech` |
+   | `S3_REGION` | `us-east-2` |
+   | `S3_ACCESS_KEY_ID` | the credential's `token_id` (`nak_live_…`) |
+   | `S3_SECRET_ACCESS_KEY` | the credential's `s3_secret_access_key` (`nsk_live_…`) |
+
+4. `pnpm payload migrate` (adds `media.prefix`), then copy the files behind
+   the existing Media documents into the bucket:
+
+   ```bash
+   pnpm media:upload            # dry run: lists what is missing
+   pnpm media:upload --apply
+   ```
+
+`S3_*` rather than `AWS_*`: Vercel reserves the `AWS_*` names. Uploads pass
+through the serverless function, so a single file is capped at about 4.5 MB.
+
 ## Syncing content with the reference design
 
 `scripts/seed/content.ts` holds the copy of the reference design (the
@@ -87,8 +124,7 @@ pnpm sync:content --apply       # writes them
 It updates the two globals, the products (matched by name; store links are
 kept) and the FAQs (matched by position). Markets and posts are left alone.
 A brand image missing from Media is reported and skipped; `--upload-media`
-uploads it, but the file lands in the `media/` folder of the machine running
-the script, so only use it where that disk serves the site.
+uploads it (to the bucket when `S3_BUCKET` is set, see below).
 
 The script bypasses revalidation, so for production run it **before** the
 deploy that ships the new code: the build then renders the synced content.

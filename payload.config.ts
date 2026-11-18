@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
+import { s3Storage } from "@payloadcms/storage-s3";
 import { en } from "@payloadcms/translations/languages/en";
 import { fr } from "@payloadcms/translations/languages/fr";
 import { buildConfig } from "payload";
@@ -70,6 +71,38 @@ export default buildConfig({
   // The frontend reads through the local API, and the admin panel uses REST,
   // so GraphQL would only be surface area to secure.
   graphQL: { disable: true },
+
+  plugins: [
+    // Uploads go to Neon Object Storage (S3-compatible) when `S3_BUCKET` is
+    // set — always the case on Vercel, whose disk does not survive a deploy.
+    // Without it, files stay in `media/` as before.
+    //
+    // The bucket is private: Payload streams each file through
+    // `/api/media/file/<name>`, so stored URLs are the same either way and no
+    // credential reaches the browser. `S3_*` rather than `AWS_*` names, as
+    // Vercel reserves the latter for its own runtime.
+    s3Storage({
+      enabled: Boolean(process.env.S3_BUCKET),
+      // Keeps the `prefix` column in the schema whether or not storage is on,
+      // so local and production databases share one set of migrations.
+      alwaysInsertFields: true,
+      bucket: process.env.S3_BUCKET ?? "",
+      collections: { media: true },
+      config: {
+        endpoint: process.env.S3_ENDPOINT,
+        region: process.env.S3_REGION ?? "us-east-2",
+        forcePathStyle: true,
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? "",
+        },
+        // Recent AWS SDKs add CRC checksums by default, which Neon's endpoint
+        // does not expect; only send them when an operation requires one.
+        requestChecksumCalculation: "WHEN_REQUIRED",
+        responseChecksumValidation: "WHEN_REQUIRED",
+      },
+    }),
+  ],
 
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
 
